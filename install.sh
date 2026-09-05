@@ -11,12 +11,13 @@ GITHUB_REPO="darshancosmic/lynvest"
 BIN_DIR="$HOME/.local/bin"
 DESKTOP_DIR="$HOME/.local/share/applications"
 ICON_DIR="$HOME/.local/share/icons/hicolor/512x512/apps"
+PIXMAP_DIR="$HOME/.local/share/pixmaps"
 
 echo "=========================================================="
 echo " Installing $DISPLAY_NAME — Personal Finance & Investments "
 echo "=========================================================="
 
-mkdir -p "$BIN_DIR" "$DESKTOP_DIR" "$ICON_DIR"
+mkdir -p "$BIN_DIR" "$DESKTOP_DIR" "$ICON_DIR" "$PIXMAP_DIR"
 
 # Detect if running from local file or piped via curl
 SCRIPT_DIR=""
@@ -55,14 +56,21 @@ else
 fi
 
 echo "Installing binary to $BIN_DIR/lynvest..."
-cp "$SOURCE_BIN" "$BIN_DIR/lynvest"
-chmod +x "$BIN_DIR/lynvest"
+install -m 755 "$SOURCE_BIN" "$BIN_DIR/lynvest"
 
-echo "Installing application icon..."
-cp "$SOURCE_ICON" "$ICON_DIR/lynvest.png"
+echo "Installing application icons..."
+cp -f "$SOURCE_ICON" "$ICON_DIR/lynvest.png"
+cp -f "$SOURCE_ICON" "$PIXMAP_DIR/lynvest.png"
+
+for size in 16 24 32 48 64 96 128 256; do
+    mkdir -p "$HOME/.local/share/icons/hicolor/${size}x${size}/apps"
+    cp -f "$SOURCE_ICON" "$HOME/.local/share/icons/hicolor/${size}x${size}/apps/lynvest.png" 2>/dev/null || true
+done
 
 echo "Configuring desktop launcher..."
-sed 's|^Exec=lynvest %U|Exec='"$BIN_DIR"'/lynvest %U|' "$SOURCE_DESKTOP" > "$DESKTOP_DIR/lynvest.desktop"
+sed -e 's|^Exec=lynvest %U|Exec='"$BIN_DIR"'/lynvest %U|' \
+    -e 's|^Icon=.*|Icon='"$ICON_DIR"'/lynvest.png|' \
+    "$SOURCE_DESKTOP" > "$DESKTOP_DIR/lynvest.desktop"
 chmod +x "$DESKTOP_DIR/lynvest.desktop"
 
 if command -v update-desktop-database >/dev/null 2>&1; then
@@ -70,8 +78,10 @@ if command -v update-desktop-database >/dev/null 2>&1; then
 fi
 
 if command -v gtk-update-icon-cache >/dev/null 2>&1; then
-    gtk-update-icon-cache -q "$HOME/.local/share/icons/hicolor" 2>/dev/null || true
+    gtk-update-icon-cache -f -t "$HOME/.local/share/icons/hicolor" 2>/dev/null || true
 fi
+
+touch "$DESKTOP_DIR/lynvest.desktop"
 
 if [ -n "$TEMP_DIR" ] && [ -d "$TEMP_DIR" ]; then
     rm -rf "$TEMP_DIR"
@@ -79,10 +89,9 @@ fi
 
 echo ""
 echo "=========================================================="
-echo " [✓] $DISPLAY_NAME installed successfully!"
+echo " [✓] $DISPLAY_NAME installed successfully with new logo!"
 echo "=========================================================="
-echo "• Run '$APP_NAME' from terminal (ensure ~/.local/bin is in your PATH)"
-echo "• Or launch '$DISPLAY_NAME' directly from your application menu / rofi / wofi."
+echo "• Launch '$DISPLAY_NAME' from your application menu or terminal."
 echo ""
 echo "Support the project on Ko-fi:"
 echo "https://ko-fi.com/cosmicdarshan"
