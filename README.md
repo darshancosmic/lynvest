@@ -2,10 +2,10 @@
 
 <div align="center">
 
-**Fast, 100% Offline Personal Finance & Investment Tracker for Linux**
+**Fast, 100% Offline Personal Finance & Investment Tracker for Linux & Windows**
 
-[![License: GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Platform: Linux](https://img.shields.io/badge/Platform-Linux%20x86__64-orange.svg)]()
+[![License: Dual Platform](https://img.shields.io/badge/License-Dual--Platform-blue.svg)](LICENSE)
+[![Platform: Linux & Windows](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-orange.svg)]()
 [![Built with: Tauri v2](https://img.shields.io/badge/Built%20with-Tauri%20v2-24C8D8.svg)](https://tauri.app/)
 [![Rust: 1.84+](https://img.shields.io/badge/Rust-1.84%2B-DEA584.svg)](https://www.rust-lang.org/)
 [![Ko-fi: Support](https://img.shields.io/badge/Ko--fi-Support%20Creator-FF5E5B?logo=kofi&logoColor=white)](https://ko-fi.com/cosmicdarshan)
@@ -92,6 +92,17 @@ For Fedora/RHEL users who prefer building their own native RPM:
 ```bash
 rpmbuild -ba packaging/lynvest.spec
 ```
+
+---
+
+### 3. Windows (10 / 11 64-bit)
+
+> **🎉 Launch Special**: Lynvest is **100% Free** for Windows users during the first 30 days of release! 
+> Following the 30-day introductory period, continuing usage requires a one-time purchase of **$5.00 USD / ₹499 INR**.
+
+Download from the [Releases](https://github.com/darshancosmic/lynvest/releases) page:
+- **Standard Installer (`.exe`)**: Download `Lynvest_0.1.0_x64-setup.exe` and double-click to install.
+- **Enterprise Package (`.msi`)**: Download `Lynvest_0.1.0_x64_en-US.msi`.
 
 ---
 
@@ -198,5 +209,8 @@ All generated distribution packages and checksums will be placed in `./dist-pack
 
 ## License
 
-This project is licensed under the **GNU General Public License v3.0** (`GPL-3.0-or-later`).
-See the [LICENSE](LICENSE) file for complete terms and permissions.
+Lynvest is licensed under a **Dual-Platform License**:
+- **Linux Platform**: Exclusively and permanently **100% Free and Open-Source Software** under the [GNU General Public License v3.0 (GPL-3.0)](LICENSE). No fees or subscriptions will ever be charged for Linux.
+- **Microsoft Windows Platform**: Free for personal evaluation during the initial **30-day promotional launch period**. Continued usage thereafter requires a one-time commercial license purchase ($5.00 USD / ₹499 INR).
+
+See the full [LICENSE](LICENSE) agreement for details.
