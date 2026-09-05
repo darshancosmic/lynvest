@@ -384,18 +384,8 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       await invoke('wipe_all_data');
-      const settings = await invoke<AppSettings>('get_app_settings');
-      set({
-        settings,
-        accounts: [],
-        categories: [],
-        transactions: [],
-        tags: [],
-        recurringRules: [],
-        monthSummary: null,
-        isUnlocked: false,
-        isLoading: false,
-      });
+      await get().initApp();
+      set({ isLoading: false });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       set({ isLoading: false, error: msg });

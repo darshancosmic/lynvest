@@ -268,7 +268,8 @@ pub fn wipe_all_data(state: State<'_, AppState>) -> Result<(), String> {
          DELETE FROM categories;
          DELETE FROM accounts;
          DELETE FROM app_settings;
-         DELETE FROM schema_migrations;"
+         DELETE FROM schema_migrations;
+         DELETE FROM sqlite_sequence;"
     ).map_err(|e| format!("Failed to wipe database: {}", e))?;
 
     tx.commit().map_err(|e| e.to_string())?;
@@ -760,7 +761,15 @@ pub fn create_transaction(
 
         (None, Some(dest_id))
     } else {
-        (payload.category_id, None)
+        let verified_cat_id = payload.category_id.and_then(|cat_id| {
+            let exists: bool = tx.query_row(
+                "SELECT 1 FROM categories WHERE id = ?1",
+                params![cat_id],
+                |_| Ok(true),
+            ).unwrap_or(false);
+            if exists { Some(cat_id) } else { None }
+        });
+        (verified_cat_id, None)
     };
 
     let is_confirmed_val = if payload.is_confirmed { 1 } else { 0 };
@@ -932,7 +941,15 @@ pub fn update_transaction(
 
         (None, Some(dest_id))
     } else {
-        (payload.category_id, None)
+        let verified_cat_id = payload.category_id.and_then(|cat_id| {
+            let exists: bool = tx.query_row(
+                "SELECT 1 FROM categories WHERE id = ?1",
+                params![cat_id],
+                |_| Ok(true),
+            ).unwrap_or(false);
+            if exists { Some(cat_id) } else { None }
+        });
+        (verified_cat_id, None)
     };
 
     let is_confirmed_val = if payload.is_confirmed { 1 } else { 0 };

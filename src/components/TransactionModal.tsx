@@ -117,6 +117,13 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
     setFormError(null);
   }, [initialTransaction, isClone, isOpen, accounts, prefillNote, prefillType]);
 
+  useEffect(() => {
+    if (isOpen) {
+      useAppStore.getState().loadAccounts(false);
+      useAppStore.getState().loadCategories();
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const activeAccounts = accounts.filter((a) => a.is_archived === 0 || a.id === accountId);
