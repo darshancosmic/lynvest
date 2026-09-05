@@ -10,8 +10,15 @@ BUNDLE_OUT="$ROOT_DIR/dist-packages/lynvest-0.1.0.flatpak"
 echo "==> Preparing local Flatpak build..."
 rm -rf "$BUILD_DIR" "$REPO_DIR"
 
-# Initialize flatpak build directory
-flatpak build-init "$BUILD_DIR" com.lynvest.desktop org.freedesktop.Platform org.freedesktop.Platform 25.08
+# Detect installed GNOME runtime branch
+GNOME_BRANCH=$(flatpak list --runtime --columns=application,branch | grep "org.gnome.Platform" | awk '{print $2}' | head -n 1 || echo "50")
+if [ -z "$GNOME_BRANCH" ]; then
+  GNOME_BRANCH="50"
+fi
+echo "==> Using GNOME Platform runtime branch: $GNOME_BRANCH"
+
+# Initialize flatpak build directory using org.gnome.Platform
+flatpak build-init "$BUILD_DIR" com.lynvest.desktop org.gnome.Platform org.gnome.Platform "$GNOME_BRANCH"
 
 install -Dm755 "$ROOT_DIR/src-tauri/target/release/lynvest" "$BUILD_DIR/files/bin/lynvest"
 install -Dm644 "$DIR/com.lynvest.desktop.desktop" "$BUILD_DIR/files/share/applications/com.lynvest.desktop.desktop"
