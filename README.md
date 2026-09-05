@@ -175,7 +175,7 @@ npm run tauri dev
 
 # 4. Build optimized release binary
 npm run build
-cd src-tauri && cargo build --release && cd ..
+npx tauri build --bundles deb
 
 # 5. Build distribution packages (.deb, .pkg.tar.zst, .tar.gz)
 ./packaging/build_packages.sh

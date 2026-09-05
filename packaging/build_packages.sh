@@ -8,7 +8,7 @@ PKG_DIR="$ROOT_DIR/packaging"
 VERSION="0.1.0"
 
 if [ ! -f "$BIN" ]; then
-    echo "Binary $BIN not found! Run cargo build --release first."
+    echo "Binary $BIN not found! Run npx tauri build --bundles deb first."
     exit 1
 fi
 
