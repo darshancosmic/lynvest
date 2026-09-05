@@ -268,7 +268,6 @@ pub fn wipe_all_data(state: State<'_, AppState>) -> Result<(), String> {
          DELETE FROM categories;
          DELETE FROM accounts;
          DELETE FROM app_settings;
-         DELETE FROM schema_migrations;
          DELETE FROM sqlite_sequence;"
     ).map_err(|e| format!("Failed to wipe database: {}", e))?;
 

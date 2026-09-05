@@ -132,8 +132,17 @@ pub fn run_migrations(conn: &mut Connection) -> Result<(), String> {
         let migration_sql = include_str!("../migrations/003_notifications.sql");
         let tx = conn.transaction().map_err(|e| format!("Failed to start migration 003 transaction: {}", e))?;
 
-        tx.execute_batch(migration_sql)
-            .map_err(|e| format!("Failed to execute migration 003: {}", e))?;
+        for statement in migration_sql.split(';') {
+            let stmt = statement.trim();
+            if !stmt.is_empty() {
+                if let Err(e) = tx.execute(stmt, []) {
+                    let err_str = e.to_string();
+                    if !err_str.contains("duplicate column name") {
+                        return Err(format!("Failed to execute migration 003 statement: {}", err_str));
+                    }
+                }
+            }
+        }
 
         tx.execute(
             "INSERT OR REPLACE INTO schema_migrations (version) VALUES (3);",
@@ -147,8 +156,17 @@ pub fn run_migrations(conn: &mut Connection) -> Result<(), String> {
         let migration_sql = include_str!("../migrations/004_telegram_sync.sql");
         let tx = conn.transaction().map_err(|e| format!("Failed to start migration 004 transaction: {}", e))?;
 
-        tx.execute_batch(migration_sql)
-            .map_err(|e| format!("Failed to execute migration 004: {}", e))?;
+        for statement in migration_sql.split(';') {
+            let stmt = statement.trim();
+            if !stmt.is_empty() {
+                if let Err(e) = tx.execute(stmt, []) {
+                    let err_str = e.to_string();
+                    if !err_str.contains("duplicate column name") {
+                        return Err(format!("Failed to execute migration 004 statement: {}", err_str));
+                    }
+                }
+            }
+        }
 
         tx.execute(
             "INSERT OR REPLACE INTO schema_migrations (version) VALUES (4);",
