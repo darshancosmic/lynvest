@@ -41,4 +41,7 @@ packaging/*_staging/
 packaging/deb_build/
 packaging/*staging/
 packaging/*build/
-node_modules/
+packaging/flatpak/build_dir/
+packaging/flatpak/repo_dir/
+node_modules
+.schema

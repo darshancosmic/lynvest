@@ -76,6 +76,17 @@ Or run directly without installing:
 ./lynvest
 ```
 
+#### Flatpak Bundle (`.flatpak`)
+Install the sandboxed Flatpak package on any Linux system:
+```bash
+flatpak install --user lynvest-0.1.0.flatpak
+```
+Run with:
+```bash
+flatpak run com.lynvest.desktop
+```
+*(Flathub package manifest and AppStream metadata are maintained in `packaging/flatpak/`)*
+
 #### Fedora / RHEL (`.spec`)
 For Fedora/RHEL users who prefer building their own native RPM:
 ```bash
