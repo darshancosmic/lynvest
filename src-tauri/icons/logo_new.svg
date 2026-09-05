@@ -1,20 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <!-- Background Gradient: Deep Midnight Obsidian to Navy -->
+    <!-- Background Gradient: Deep Midnight Obsidian to Navy Slate -->
     <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#080E1A" />
-      <stop offset="50%" stop-color="#0F172A" />
-      <stop offset="100%" stop-color="#1E293B" />
+      <stop offset="0%" stop-color="#090E17" />
+      <stop offset="60%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#192438" />
     </linearGradient>
 
-    <!-- Border Glow Gradient -->
+    <!-- Crisp Subtle Border Highlight -->
     <linearGradient id="border-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.6" />
-      <stop offset="50%" stop-color="#10B981" stop-opacity="0.3" />
-      <stop offset="100%" stop-color="#6366F1" stop-opacity="0.1" />
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.7" />
+      <stop offset="40%" stop-color="#10B981" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#6366F1" stop-opacity="0.15" />
     </linearGradient>
 
-    <!-- Emblem Primary Gradient: Electric Emerald to Cyan to Sky Blue -->
+    <!-- Ascending Vector Gradient: Emerald to Cyan to Sky Blue -->
     <linearGradient id="emblem-grad" x1="0%" y1="100%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#059669" />
       <stop offset="35%" stop-color="#10B981" />
@@ -22,66 +22,61 @@
       <stop offset="100%" stop-color="#38BDF8" />
     </linearGradient>
 
-    <!-- Secondary Accent Gradient -->
-    <linearGradient id="accent-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- 'L' Monogram Stem Gradient -->
+    <linearGradient id="stem-grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#38BDF8" />
-      <stop offset="100%" stop-color="#818CF8" />
+      <stop offset="100%" stop-color="#6366F1" />
     </linearGradient>
 
-    <!-- Soft Glow Filter -->
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="16" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
-
-    <!-- Outer Shadow for Squircle -->
-    <filter id="card-shadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.6" />
-    </filter>
+    <!-- Clip Path ensuring absolutely nothing bleeds outside the squircle -->
+    <clipPath id="squircle-clip">
+      <rect x="32" y="32" width="448" height="448" rx="104" ry="104" />
+    </clipPath>
   </defs>
 
-  <!-- Squircle Base Canvas with Soft Shadow -->
-  <rect x="24" y="24" width="464" height="464" rx="112" ry="112" fill="url(#bg-grad)" filter="url(#card-shadow)" />
-  <rect x="24" y="24" width="464" height="464" rx="112" ry="112" fill="none" stroke="url(#border-grad)" stroke-width="3" />
+  <!-- Clean, Razor-Sharp Squircle Body (No drop shadows that cause box borders) -->
+  <rect x="32" y="32" width="448" height="448" rx="104" ry="104" fill="url(#bg-grad)" />
 
-  <!-- Subtle Internal Grid Ambient Lines (Symbolizing Ledger / Market Charts) -->
-  <g opacity="0.1" stroke="#94A3B8" stroke-width="2" stroke-dasharray="6,6">
-    <line x1="90" y1="180" x2="422" y2="180" />
-    <line x1="90" y1="260" x2="422" y2="260" />
-    <line x1="90" y1="340" x2="422" y2="340" />
+  <!-- Content Group clipped strictly inside the squircle boundary -->
+  <g clip-path="url(#squircle-clip)">
+    <!-- Faint Technical Market Grid -->
+    <g opacity="0.08" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="8,8">
+      <line x1="80" y1="175" x2="432" y2="175" />
+      <line x1="80" y1="260" x2="432" y2="260" />
+      <line x1="80" y1="345" x2="432" y2="345" />
+    </g>
+
+    <!-- Soft Inner Radial Glow behind the peak arrow -->
+    <radialGradient id="peak-glow" cx="75%" cy="35%" r="35%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#06B6D4" stop-opacity="0" />
+    </radialGradient>
+    <rect x="32" y="32" width="448" height="448" fill="url(#peak-glow)" />
+
+    <!-- Stylized Monogram 'L' Ledger Base -->
+    <path d="M 124 150 C 124 138 134 128 146 128 C 158 128 168 138 168 150 L 168 326 C 168 344 182 358 200 358 L 358 358 C 370 358 380 368 380 380 C 380 392 370 402 358 402 L 180 402 C 149 402 124 377 124 346 Z" 
+          fill="url(#stem-grad)" />
+
+    <!-- Ascending Investment Growth Curve -->
+    <path d="M 180 330 L 246 250 C 252 243 262 243 268 249 L 306 283 C 312 289 322 288 328 281 L 388 194" 
+          fill="none" 
+          stroke="url(#emblem-grad)" 
+          stroke-width="30" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
+
+    <!-- Arrowhead Peak -->
+    <path d="M 344 180 L 398 180 C 404 180 409 185 409 191 L 409 245" 
+          fill="none" 
+          stroke="url(#emblem-grad)" 
+          stroke-width="30" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
+
+    <!-- Investment Star Node -->
+    <circle cx="396" cy="190" r="14" fill="#FFFFFF" />
   </g>
 
-  <!-- Glowing Ascending Growth Aura -->
-  <path d="M 120 350 L 210 270 L 290 310 L 392 165" 
-        fill="none" 
-        stroke="url(#emblem-grad)" 
-        stroke-width="32" 
-        stroke-linecap="round" 
-        stroke-linejoin="round" 
-        opacity="0.3" 
-        filter="url(#glow)" />
-
-  <!-- Bold Minimalist 'L' Ascending Investment Emblem -->
-  <!-- Vertical stem of the 'L' that roots the foundation (Capital/Ledger) -->
-  <path d="M 120 160 C 120 148 130 138 142 138 C 154 138 164 148 164 160 L 164 330 C 164 345 175 356 190 356 L 360 356 C 372 356 382 366 382 378 C 382 390 372 400 360 400 L 170 400 C 142 400 120 378 120 350 Z" 
-        fill="url(#accent-grad)" />
-
-  <!-- Dynamic Upward Vector: Cutting across like an ascending stock/growth vector -->
-  <path d="M 175 335 L 245 255 C 251 248 261 248 267 254 L 305 288 C 311 294 321 293 327 286 L 388 200" 
-        fill="none" 
-        stroke="url(#emblem-grad)" 
-        stroke-width="28" 
-        stroke-linecap="round" 
-        stroke-linejoin="round" />
-
-  <!-- Arrowhead / Peak Crest at top right -->
-  <path d="M 345 185 L 398 185 C 404 185 409 190 409 196 L 409 248" 
-        fill="none" 
-        stroke="url(#emblem-grad)" 
-        stroke-width="28" 
-        stroke-linecap="round" 
-        stroke-linejoin="round" />
-
-  <!-- Peak Wealth Star / Investment Node -->
-  <circle cx="395" cy="195" r="14" fill="#FFFFFF" />
+  <!-- Crisp 2px Edge Rim (Contained completely inside the boundary) -->
+  <rect x="33" y="33" width="446" height="446" rx="103" ry="103" fill="none" stroke="url(#border-grad)" stroke-width="2" />
 </svg>
