@@ -2,10 +2,10 @@
 
 <div align="center">
 
-**Fast, 100% Offline Personal Finance & Investment Tracker for Linux & Windows**
+**Fast, 100% Offline Personal Finance & Investment Tracker for Linux**
 
-[![License: Dual Platform](https://img.shields.io/badge/License-Dual--Platform-blue.svg)](LICENSE)
-[![Platform: Linux & Windows](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-orange.svg)]()
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
+[![Platform: Linux](https://img.shields.io/badge/Platform-Linux-orange.svg)]()
 [![Built with: Tauri v2](https://img.shields.io/badge/Built%20with-Tauri%20v2-24C8D8.svg)](https://tauri.app/)
 [![Rust: 1.84+](https://img.shields.io/badge/Rust-1.84%2B-DEA584.svg)](https://www.rust-lang.org/)
 [![Ko-fi: Support](https://img.shields.io/badge/Ko--fi-Support%20Creator-FF5E5B?logo=kofi&logoColor=white)](https://ko-fi.com/cosmicdarshan)
@@ -35,75 +35,41 @@
 
 ## Installation
 
-### 1. One-Line Fast Install (Any Linux distro)
+### One-Line Fast Install (Any Linux Distro)
 
-Run in your terminal (installs to `~/.local/bin` and adds application shortcut — no root password needed):
+Run this command in any Linux terminal (Ubuntu, Arch, Fedora, Debian, Mint, Pop!_OS, openSUSE, etc.):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/darshancosmic/lynvest/main/install.sh | bash
 ```
 
-To uninstall at any time:
+- **User-Level**: Installs to `~/.local/bin/lynvest` (no `sudo` or root password needed).
+- **Desktop Integrated**: Adds high-res icon and application launcher shortcut to your app menu.
+- **Zero Dependencies**: Fully compiled standalone binary with SQLite embedded.
+
+### One-Line Clean Uninstall
+
+To completely remove Lynvest at any time:
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/darshancosmic/lynvest/main/uninstall.sh | bash
 ```
 
----
-
-### 2. Distro-Specific Packages
-
-Download the pre-built packages from the [Releases](https://github.com/darshancosmic/lynvest/releases) page or build locally:
-
-#### Debian, Ubuntu, Linux Mint, Pop!_OS (`.deb`)
-```bash
-sudo apt install ./lynvest_0.1.0_amd64.deb
-```
-
-#### Arch Linux, Manjaro, EndeavourOS (`.pkg.tar.zst`)
-```bash
-sudo pacman -U lynvest-0.1.0-1-x86_64.pkg.tar.zst
-```
-*(Or compile from source using `packaging/PKGBUILD` with `makepkg -si`)*
-
-#### Universal Portable Archive (`.tar.gz`)
-Works on Fedora, openSUSE, Debian, Arch, Void, Alpine, or any Linux distribution:
-```bash
-tar -xzf lynvest-0.1.0-linux-x86_64.tar.gz
-cd lynvest-0.1.0
-./install.sh
-```
-Or run directly without installing:
-```bash
-./lynvest
-```
-
-#### Flatpak Bundle (`.flatpak`)
-Install the sandboxed Flatpak package on any Linux system:
-```bash
-flatpak install --user lynvest-0.1.0.flatpak
-```
-Run with:
-```bash
-flatpak run com.lynvest.desktop
-```
-*(Flathub package manifest and AppStream metadata are maintained in `packaging/flatpak/`)*
-
-#### Fedora / RHEL (`.spec`)
-For Fedora/RHEL users who prefer building their own native RPM:
-```bash
-rpmbuild -ba packaging/lynvest.spec
-```
+- Removes the binary, desktop entry, and icon assets.
+- Asks whether you wish to keep or wipe your local database vault.
 
 ---
 
-### 3. Windows (10 / 11 64-bit)
+### Build From Source
 
-> **🎉 Launch Special**: Lynvest is **100% Free** for Windows users during the first 30 days of release! 
-> Following the 30-day introductory period, continuing usage requires a one-time purchase of **$5.00 USD / ₹499 INR**.
+```bash
+git clone https://github.com/darshancosmic/lynvest.git
+cd lynvest
+npm install
+npm run release
+```
 
-Download from the [Releases](https://github.com/darshancosmic/lynvest/releases) page:
-- **Standard Installer (`.exe`)**: Download `Lynvest_0.1.0_x64-setup.exe` and double-click to install.
-- **Enterprise Package (`.msi`)**: Download `Lynvest_0.1.0_x64_en-US.msi`.
+The compiled binary will be placed at `~/.local/bin/lynvest` and `src-tauri/target/release/lynvest`.
 
 ---
 
