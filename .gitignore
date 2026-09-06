@@ -36,7 +36,9 @@ target/
 
 
 # Packaging & Dist output
-dist-packages/
+dist-packages/*
+!dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz
+!dist-packages/SHA256SUMS
 packaging/*_staging/
 packaging/deb_build/
 packaging/*staging/

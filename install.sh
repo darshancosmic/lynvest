@@ -104,6 +104,16 @@ if [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/src-tauri/target/release/lynvest" ]
     SOURCE_BIN="$SCRIPT_DIR/src-tauri/target/release/lynvest"
     SOURCE_ICON="$SCRIPT_DIR/src-tauri/icons/icon.png"
     SOURCE_DESKTOP="$SCRIPT_DIR/packaging/lynvest.desktop"
+elif [ -f "./src-tauri/target/release/lynvest" ]; then
+    print_sub "Using release binary from current directory workspace"
+    SOURCE_BIN="./src-tauri/target/release/lynvest"
+    SOURCE_ICON="./src-tauri/icons/icon.png"
+    SOURCE_DESKTOP="./packaging/lynvest.desktop"
+elif [ -f "$HOME/Projects/lynvest/src-tauri/target/release/lynvest" ]; then
+    print_sub "Using release binary from ~/Projects/lynvest workspace"
+    SOURCE_BIN="$HOME/Projects/lynvest/src-tauri/target/release/lynvest"
+    SOURCE_ICON="$HOME/Projects/lynvest/src-tauri/icons/icon.png"
+    SOURCE_DESKTOP="$HOME/Projects/lynvest/packaging/lynvest.desktop"
 elif [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/lynvest" ]; then
     print_sub "Using local package directory binary"
     SOURCE_BIN="$SCRIPT_DIR/lynvest"
@@ -116,11 +126,24 @@ elif [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/dist-packages/lynvest-0.1.0-linux
     SOURCE_BIN="$TEMP_DIR/lynvest-0.1.0/lynvest"
     SOURCE_ICON="$TEMP_DIR/lynvest-0.1.0/lynvest.png"
     SOURCE_DESKTOP="$TEMP_DIR/lynvest-0.1.0/lynvest.desktop"
+elif [ -f "$HOME/Projects/lynvest/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz" ]; then
+    print_sub "Extracting from ~/Projects/lynvest dist-packages tarball"
+    TEMP_DIR=$(mktemp -d)
+    tar -xzf "$HOME/Projects/lynvest/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz" -C "$TEMP_DIR"
+    SOURCE_BIN="$TEMP_DIR/lynvest-0.1.0/lynvest"
+    SOURCE_ICON="$TEMP_DIR/lynvest-0.1.0/lynvest.png"
+    SOURCE_DESKTOP="$TEMP_DIR/lynvest-0.1.0/lynvest.desktop"
 else
     print_sub "Downloading verified release package from GitHub..."
     TEMP_DIR=$(mktemp -d)
-    TARBALL_URL="https://github.com/$GITHUB_REPO/releases/download/v0.1.0/lynvest-0.1.0-linux-x86_64.tar.gz"
-    curl -fSL --progress-bar "$TARBALL_URL" -o "$TEMP_DIR/lynvest.tar.gz"
+    RAW_URL="https://raw.githubusercontent.com/$GITHUB_REPO/main/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz"
+    RELEASE_URL="https://github.com/$GITHUB_REPO/releases/download/v0.1.0/lynvest-0.1.0-linux-x86_64.tar.gz"
+    
+    if curl -fSL --progress-bar "$RAW_URL" -o "$TEMP_DIR/lynvest.tar.gz" 2>/dev/null; then
+        print_ok "Downloaded latest build from repository"
+    else
+        curl -fSL --progress-bar "$RELEASE_URL" -o "$TEMP_DIR/lynvest.tar.gz"
+    fi
     tar -xzf "$TEMP_DIR/lynvest.tar.gz" -C "$TEMP_DIR"
     SOURCE_BIN="$TEMP_DIR/lynvest-0.1.0/lynvest"
     SOURCE_ICON="$TEMP_DIR/lynvest-0.1.0/lynvest.png"
