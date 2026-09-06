@@ -92,7 +92,8 @@ UNINSTALL:
     ./uninstall.sh
 
 Support & Sponsorship:
-  Ko-fi: https://ko-fi.com/cosmicdarshan
+  Buy Me a Coffee: https://buymeacoffee.com/cosmicdarshan
+  Ko-fi:           https://ko-fi.com/cosmicdarshan
 README_EOF
 
 tar -czf "$DIST/lynvest-${VERSION}-linux-x86_64.tar.gz" -C "$PKG_DIR/tarball_staging" "lynvest-$VERSION"

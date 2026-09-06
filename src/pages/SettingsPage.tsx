@@ -347,19 +347,31 @@ export const SettingsPage: React.FC = () => {
             </div>
             <p className="text-xs text-zinc-400 max-w-xl leading-relaxed">
               Lynvest is free, 100% offline, and private desktop software built for Linux users worldwide. Zero tracking, zero telemetry.
-              If you find it useful, consider supporting its creator with a coffee on Ko-fi!
+              If you find it useful, consider supporting its creator with a coffee on Ko-fi or Buy Me a Coffee!
             </p>
           </div>
-          <a
-            href="https://ko-fi.com/cosmicdarshan"
-            target="_blank"
-            rel="noreferrer"
-            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-zinc-950 font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-orange-950/50 cursor-pointer transition-all active:scale-95 shrink-0"
-          >
-            <Coffee className="w-4 h-4" />
-            <span>Support on Ko-fi</span>
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            <a
+              href="https://buymeacoffee.com/cosmicdarshan"
+              target="_blank"
+              rel="noreferrer"
+              className="px-3.5 py-2.5 rounded-xl bg-[#FFDD00] hover:bg-[#FFEA20] text-zinc-950 font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-yellow-950/40 cursor-pointer transition-all active:scale-95 shrink-0"
+            >
+              <Coffee className="w-4 h-4" />
+              <span>Buy Me a Coffee</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+            <a
+              href="https://ko-fi.com/cosmicdarshan"
+              target="_blank"
+              rel="noreferrer"
+              className="px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-zinc-950 font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-orange-950/50 cursor-pointer transition-all active:scale-95 shrink-0"
+            >
+              <Heart className="w-4 h-4 fill-zinc-950" />
+              <span>Ko-fi</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
         </div>
         <div className="pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[11px] text-zinc-500">
           <span>Created by <strong className="text-zinc-300 font-semibold">Darshan Cosmic</strong></span>
