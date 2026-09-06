@@ -494,7 +494,7 @@ export const BillsPage: React.FC = () => {
                 <select
                   value={accountId || ''}
                   onChange={(e) => setAccountId(e.target.value ? parseInt(e.target.value) : null)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-950 font-bold text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl  font-bold text-xs focus:outline-none focus:border-purple-500"
                 >
                   <option value="">-- Auto select default account --</option>
                   {activeAccounts.map((a) => (
@@ -513,7 +513,7 @@ export const BillsPage: React.FC = () => {
                 <select
                   value={categoryId || ''}
                   onChange={(e) => setCategoryId(e.target.value ? parseInt(e.target.value) : null)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-950 font-bold text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl  font-bold text-xs focus:outline-none focus:border-purple-500"
                 >
                   <option value="">-- Select Category --</option>
                   {expenseCategories.map((c) => (
@@ -554,7 +554,7 @@ export const BillsPage: React.FC = () => {
             </form>
 
             {/* Sticky Actions Footer */}
-            <div className="flex justify-end gap-3 p-4 border-t border-zinc-800 bg-zinc-900/95 shrink-0">
+            <div className="flex justify-end gap-3 p-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/95 shrink-0">
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
@@ -587,7 +587,7 @@ export const BillsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setDeletingId(null)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-medium cursor-pointer"
               >
                 Cancel
               </button>

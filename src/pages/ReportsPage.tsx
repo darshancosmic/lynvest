@@ -420,7 +420,7 @@ export const ReportsPage: React.FC = () => {
                 <select
                   value={selectedAccountId}
                   onChange={(e) => setSelectedAccountId(e.target.value)}
-                  className="bg-white border border-zinc-300 text-zinc-950 font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-purple-500"
+                  className=" font-bold text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-purple-500"
                 >
                   <option value="all">All Accounts</option>
                   {accounts.map((acc) => (

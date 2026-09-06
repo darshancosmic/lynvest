@@ -930,7 +930,7 @@ export const InvestmentsPage: React.FC = () => {
                       currency: selected?.currency || formData.currency,
                     });
                   }}
-                  className="w-full px-3 py-2 rounded-xl bg-white border border-zinc-300 text-xs text-zinc-950 font-bold focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-xl text-xs font-bold focus:outline-none focus:border-purple-500"
                 >
                   <option value={0} disabled>
                     Select an investment account
@@ -954,7 +954,7 @@ export const InvestmentsPage: React.FC = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, asset_type: e.target.value as AssetType })
                     }
-                    className="w-full px-3 py-2 rounded-xl bg-white border border-zinc-300 text-xs text-zinc-950 font-bold focus:outline-none focus:border-purple-500"
+                    className="w-full px-3 py-2 rounded-xl text-xs font-bold focus:outline-none focus:border-purple-500"
                   >
                     <option value="stock">Stock</option>
                     <option value="crypto">Crypto</option>
@@ -1099,7 +1099,7 @@ export const InvestmentsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsAddModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold transition-colors cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-semibold transition-colors cursor-pointer"
               >
                 Cancel
               </button>
@@ -1160,7 +1160,7 @@ export const InvestmentsPage: React.FC = () => {
                         asset_type: e.target.value as AssetType,
                       })
                     }
-                    className="w-full px-3 py-2 rounded-xl bg-white border border-zinc-300 text-xs text-zinc-950 font-bold focus:outline-none focus:border-purple-500"
+                    className="w-full px-3 py-2 rounded-xl text-xs font-bold focus:outline-none focus:border-purple-500"
                   >
                     <option value="stock">Stock</option>
                     <option value="crypto">Crypto</option>
@@ -1263,7 +1263,7 @@ export const InvestmentsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsEditModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold transition-colors cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-semibold transition-colors cursor-pointer"
               >
                 Cancel
               </button>
@@ -1352,7 +1352,7 @@ export const InvestmentsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsBulkModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-semibold cursor-pointer"
               >
                 Cancel
               </button>
@@ -1482,7 +1482,7 @@ export const InvestmentsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setHistoryHolding(null)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-semibold cursor-pointer"
               >
                 Close
               </button>

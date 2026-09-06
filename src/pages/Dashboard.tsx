@@ -36,6 +36,7 @@ export const Dashboard: React.FC = () => {
   const goals = useAppStore(state => state.goals);
   const bills = useAppStore(state => state.bills);
   const settings = useAppStore(state => state.settings);
+  const theme = useAppStore(state => state.theme);
   const netWorthSummary = useAppStore(state => state.netWorthSummary);
   const netWorthHistory = useAppStore(state => state.netWorthHistory);
   const loadAccounts = useAppStore(state => state.loadAccounts);
@@ -130,53 +131,73 @@ export const Dashboard: React.FC = () => {
             type="button"
             title="Snapshot Net Worth Now"
             onClick={() => recordNetWorthSnapshot()}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium border border-zinc-700 transition-colors cursor-pointer"
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
+              theme === 'light'
+                ? 'bg-white hover:bg-zinc-100 text-black border-zinc-300'
+                : 'bg-zinc-900 hover:bg-zinc-800 text-white border-zinc-700'
+            }`}
           >
-            <Camera className="w-3.5 h-3.5 text-zinc-400" />
-            Snapshot Now
+            <Camera className="w-3.5 h-3.5" />
+            <span>Snapshot Now</span>
           </button>
           <button
             type="button"
             onClick={() => setIsTxnModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-lg shadow-purple-950/50 transition-all cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-black shadow-md transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
-            Add Transaction
+            <span>Add Transaction</span>
           </button>
         </div>
       </div>
 
       {/* Headline: Big Net Worth + Historical Trend Line Card (Task 7) */}
-      <div className="p-6 rounded-2xl bg-gradient-to-br from-zinc-900 via-purple-950/15 to-zinc-950 border border-purple-900/30 shadow-xl relative overflow-hidden">
+      <div className={`p-6 rounded-2xl border relative overflow-hidden ${
+        theme === 'light'
+          ? 'bg-white border-zinc-200 shadow-sm'
+          : 'bg-black border-zinc-800'
+      }`}>
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
           <div className="lg:col-span-1 space-y-3">
-            <div className="flex items-center gap-2 text-xs font-semibold text-purple-400 tracking-wide uppercase">
+            <div className={`flex items-center gap-2 text-xs font-black tracking-wide uppercase ${
+              theme === 'light' ? 'text-purple-700' : 'text-purple-400'
+            }`}>
               <ShieldCheck className="w-4 h-4" />
               <span>Total Net Worth ({baseCurrency})</span>
             </div>
 
-            <div className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+            <div className={`text-3xl sm:text-5xl font-black tracking-tight ${
+              theme === 'light' ? 'text-black' : 'text-white'
+            }`}>
               {formatCurrency(netWorthSummary?.net_worth ?? 0)}
             </div>
 
-            <p className="text-xs text-zinc-400 leading-relaxed">
+            <p className={`text-xs leading-relaxed ${
+              theme === 'light' ? 'text-slate-600' : 'text-zinc-400'
+            }`}>
               Consolidated net worth across all bank & cash accounts, investment holdings, minus outstanding liabilities.
             </p>
 
             <div className="flex items-center gap-4 pt-1 text-xs">
               <div>
-                <span className="text-zinc-500 block text-[11px]">Total Assets</span>
-                <span className="text-zinc-200 font-bold font-mono">
+                <span className={`block text-[11px] font-medium ${
+                  theme === 'light' ? 'text-slate-500' : 'text-zinc-400'
+                }`}>Total Assets</span>
+                <span className={`font-black font-mono ${
+                  theme === 'light' ? 'text-black' : 'text-white'
+                }`}>
                   {formatCurrency(
                     (netWorthSummary?.total_accounts ?? 0) +
                       (netWorthSummary?.total_investments ?? 0)
                   )}
                 </span>
               </div>
-              <div className="h-6 w-px bg-zinc-800" />
+              <div className={`h-6 w-px ${theme === 'light' ? 'bg-zinc-200' : 'bg-zinc-800'}`} />
               <div>
-                <span className="text-zinc-500 block text-[11px]">Total Debts</span>
-                <span className="text-rose-400 font-bold font-mono">
+                <span className={`block text-[11px] font-medium ${
+                  theme === 'light' ? 'text-slate-500' : 'text-zinc-400'
+                }`}>Total Debts</span>
+                <span className="text-red-600 dark:text-red-400 font-black font-mono">
                   -{formatCurrency(netWorthSummary?.total_debts ?? 0)}
                 </span>
               </div>
@@ -184,13 +205,19 @@ export const Dashboard: React.FC = () => {
           </div>
 
           {/* Trend Line Chart */}
-          <div className="lg:col-span-2 h-44 w-full bg-zinc-950/40 rounded-xl p-2 border border-zinc-800/80 flex flex-col justify-between">
-            <div className="flex items-center justify-between px-2 pt-1 text-[11px] text-zinc-400">
-              <span className="flex items-center gap-1.5 font-medium">
-                <ChartIcon className="w-3.5 h-3.5 text-purple-400" />
+          <div className={`lg:col-span-2 h-44 w-full rounded-xl p-2 border flex flex-col justify-between ${
+            theme === 'light' ? 'bg-white/80 border-purple-200' : 'bg-black/60 border-purple-900/40'
+          }`}>
+            <div className="flex items-center justify-between px-2 pt-1 text-[11px]">
+              <span className={`flex items-center gap-1.5 font-bold ${
+                theme === 'light' ? 'text-purple-700' : 'text-purple-400'
+              }`}>
+                <ChartIcon className="w-3.5 h-3.5" />
                 Net Worth Trend ({chartPoints.length} day{chartPoints.length === 1 ? '' : 's'})
               </span>
-              <span className="text-zinc-500 text-[10px]">Daily Snapshots</span>
+              <span className={`text-[10px] ${
+                theme === 'light' ? 'text-slate-500' : 'text-zinc-400'
+              }`}>Daily Snapshots</span>
             </div>
 
             <div className="h-32 w-full">
@@ -207,18 +234,31 @@ export const Dashboard: React.FC = () => {
                   </defs>
                   <XAxis
                     dataKey="date"
-                    stroke="#52525b"
+                    stroke={theme === 'light' ? '#64748b' : '#a1a1aa'}
                     fontSize={10}
+                    fontWeight={700}
                     tickLine={false}
                     tickFormatter={(val) => formatIndianDate(val)}
                   />
                   <YAxis hide domain={['auto', 'auto']} />
                   <RechartsTooltip
                     contentStyle={{
-                      backgroundColor: '#18181b',
-                      borderColor: '#27272a',
+                      backgroundColor: theme === 'light' ? '#ffffff' : '#18181b',
+                      borderColor: theme === 'light' ? '#cbd5e1' : '#3f3f46',
                       borderRadius: '0.75rem',
                       fontSize: '11px',
+                      color: theme === 'light' ? '#000000' : '#ffffff',
+                      boxShadow: theme === 'light' ? '0 10px 25px -5px rgba(0,0,0,0.1)' : '0 10px 25px -5px rgba(0,0,0,0.6)',
+                      fontWeight: 800,
+                    }}
+                    labelStyle={{
+                      color: theme === 'light' ? '#000000' : '#ffffff',
+                      fontWeight: 800,
+                      marginBottom: '4px',
+                    }}
+                    itemStyle={{
+                      color: '#7c3aed',
+                      fontWeight: 800,
                     }}
                     labelFormatter={(val) => formatIndianDate(String(val))}
                     formatter={(val: any) => [formatCurrency(Number(val)), 'Net Worth']}

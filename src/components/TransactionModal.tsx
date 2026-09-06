@@ -333,7 +333,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
               required
               value={accountId}
               onChange={(e) => setAccountId(Number(e.target.value))}
-              className="w-full px-3 py-2 bg-white border border-zinc-300 rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+              className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
             >
               {activeAccounts.map((acc) => (
                 <option key={acc.id} value={acc.id}>
@@ -358,7 +358,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                 required
                 value={transferToAccountId || ''}
                 onChange={(e) => setTransferToAccountId(Number(e.target.value))}
-                className="w-full px-3 py-2 bg-white border border-zinc-300 rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
               >
                 <option value="">-- Select Destination Account --</option>
                 {activeAccounts
@@ -386,7 +386,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
               <select
                 value={categoryId || ''}
                 onChange={(e) => setCategoryId(e.target.value ? Number(e.target.value) : null)}
-                className="w-full px-3 py-2 bg-white border border-zinc-300 rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
               >
                 <option value="">Uncategorized</option>
                 {filteredCategories.map((c) => (
@@ -440,7 +440,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setTxnDate(new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0])}
-                    className="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium transition-colors"
+                    className="px-2 py-0.5 rounded text-[10px] font-semibold transition-colors bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 cursor-pointer"
                   >
                     Today
                   </button>
@@ -450,7 +450,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                       const d = new Date(Date.now() - 86400000);
                       setTxnDate(new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().split('T')[0]);
                     }}
-                    className="px-1.5 py-0.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-medium transition-colors"
+                    className="px-2 py-0.5 rounded text-[10px] font-semibold transition-colors bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 cursor-pointer"
                   >
                     Yesterday
                   </button>
@@ -464,7 +464,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                   setTxnDate(e.target.value);
                   (e.target as HTMLInputElement).blur();
                 }}
-                className="w-full px-3.5 py-2.5 bg-zinc-950/80 border border-zinc-700/80 hover:border-zinc-600 rounded-xl text-xs text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 cursor-pointer font-mono transition-all shadow-inner"
+                className="w-full px-3.5 py-2.5 rounded-xl text-xs focus:outline-none focus:border-purple-500 cursor-pointer font-mono transition-all shadow-sm"
               />
             </div>
 
@@ -475,7 +475,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
               <select
                 value={paymentType}
                 onChange={(e) => setPaymentType(e.target.value as PaymentType)}
-                className="w-full px-3 py-2 bg-white border border-zinc-300 rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
               >
                 <option value="upi">UPI</option>
                 <option value="card">Debit/Credit Card</option>
@@ -496,7 +496,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="e.g. Dinner with friends, Netflix subscription"
-              className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-xl text-sm text-white focus:outline-none focus:border-purple-500"
+              className="w-full px-3 py-2 rounded-xl text-sm focus:outline-none focus:border-purple-500"
             />
           </div>
 
@@ -512,12 +512,12 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleAddTag}
                 placeholder="Type tag & press Enter"
-                className="flex-1 px-3 py-1.5 bg-zinc-950 border border-zinc-800 rounded-lg text-xs text-white focus:outline-none focus:border-purple-500"
+                className="flex-1 px-3 py-1.5 rounded-lg text-xs focus:outline-none focus:border-purple-500"
               />
               <button
                 type="button"
                 onClick={handleAddTag}
-                className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-750 text-zinc-300 text-xs font-medium flex items-center gap-1 cursor-pointer"
+                className="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold flex items-center gap-1 cursor-pointer shadow-sm"
               >
                 <Plus className="w-3.5 h-3.5" />
                 Add
@@ -529,7 +529,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                 {tags.map((t) => (
                   <span
                     key={t}
-                    className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300 text-[11px] border border-zinc-700 font-mono"
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-purple-100 dark:bg-purple-950/60 text-purple-900 dark:text-purple-200 text-[11px] border border-purple-300 dark:border-purple-800 font-mono font-bold"
                   >
                     #{t}
                     <button
@@ -565,8 +565,8 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                 onClick={() => setTrackWarranty(!trackWarranty)}
                 className={`px-3 py-1 rounded-lg text-xs font-bold border transition-colors cursor-pointer ${
                   trackWarranty
-                    ? 'bg-indigo-500/20 text-indigo-400 border-indigo-500/40'
-                    : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:text-white'
+                    ? 'bg-purple-600 text-white border-purple-600'
+                    : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border-zinc-300 dark:border-zinc-700 hover:border-purple-500'
                 }`}
               >
                 {trackWarranty ? 'Tracking On' : 'Track Warranty'}
@@ -584,7 +584,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                     value={warrantyItemName}
                     onChange={(e) => setWarrantyItemName(e.target.value)}
                     placeholder={note || 'e.g. Sony WH-1000XM5'}
-                    className="w-full px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none focus:border-indigo-500"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
@@ -599,7 +599,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                         setWarrantyPurchaseDate(e.target.value);
                         (e.target as HTMLInputElement).blur();
                       }}
-                      className="w-full px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                      className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none focus:border-indigo-500"
                     />
                   </div>
                   <div>
@@ -613,7 +613,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                         setWarrantyExpiresOn(e.target.value);
                         (e.target as HTMLInputElement).blur();
                       }}
-                      className="w-full px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                      className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none focus:border-indigo-500"
                     />
                   </div>
                 </div>
@@ -626,7 +626,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                     value={warrantyNotes}
                     onChange={(e) => setWarrantyNotes(e.target.value)}
                     placeholder="Invoice #12345, 2 year extended coverage"
-                    className="w-full px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-1.5 rounded-lg text-xs focus:outline-none focus:border-indigo-500"
                   />
                 </div>
               </div>
@@ -668,11 +668,11 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
         </form>
 
         {/* Sticky Actions Footer */}
-        <div className="flex justify-end gap-3 p-4 border-t border-zinc-800 bg-zinc-900/95 shrink-0">
+        <div className="flex justify-end gap-3 p-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/95 shrink-0">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold cursor-pointer transition-colors"
+            className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-bold cursor-pointer transition-colors"
           >
             Cancel
           </button>

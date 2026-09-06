@@ -608,7 +608,7 @@ export const GoalsPage: React.FC = () => {
                   <select
                     value={accountId || ''}
                     onChange={(e) => setAccountId(e.target.value ? parseInt(e.target.value) : null)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-950 font-bold text-xs focus:outline-none focus:border-purple-500 shadow-inner"
+                    className="w-full px-3.5 py-2.5 rounded-xl  font-bold text-xs focus:outline-none focus:border-purple-500 shadow-inner"
                   >
                     <option value="">-- None (Generic Goal) --</option>
                     {accounts.map((a) => (
@@ -658,7 +658,7 @@ export const GoalsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsAddModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold cursor-pointer transition-colors"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-semibold cursor-pointer transition-colors"
               >
                 Cancel
               </button>
@@ -773,7 +773,7 @@ export const GoalsPage: React.FC = () => {
                   <select
                     value={editIsReached}
                     onChange={(e) => setEditIsReached(Number(e.target.value))}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-950 font-bold text-xs focus:outline-none focus:border-purple-500 shadow-inner"
+                    className="w-full px-3.5 py-2.5 rounded-xl  font-bold text-xs focus:outline-none focus:border-purple-500 shadow-inner"
                   >
                     <option value={0}>In Progress</option>
                     <option value={1}>Reached / Completed 🎉</option>
@@ -818,7 +818,7 @@ export const GoalsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setEditingGoal(null)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold cursor-pointer transition-colors"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-semibold cursor-pointer transition-colors"
               >
                 Cancel
               </button>
@@ -929,7 +929,7 @@ export const GoalsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setContributingGoal(null)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold cursor-pointer transition-colors"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-semibold cursor-pointer transition-colors"
               >
                 Cancel
               </button>

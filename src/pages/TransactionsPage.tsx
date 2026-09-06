@@ -196,7 +196,7 @@ export const TransactionsPage: React.FC = () => {
               <select
                 value={filterAccountId}
                 onChange={(e) => setFilterAccountId(e.target.value)}
-                className="w-full px-2.5 py-1.5 bg-white border border-zinc-300 rounded-lg text-zinc-950 font-bold focus:outline-none focus:border-purple-500"
+                className="w-full px-2.5 py-1.5  rounded-lg text-zinc-950 font-bold focus:outline-none focus:border-purple-500"
               >
                 <option value="all">All Accounts</option>
                 {accounts.map((a) => (
@@ -212,7 +212,7 @@ export const TransactionsPage: React.FC = () => {
               <select
                 value={filterCategoryId}
                 onChange={(e) => setFilterCategoryId(e.target.value)}
-                className="w-full px-2.5 py-1.5 bg-white border border-zinc-300 rounded-lg text-zinc-950 font-bold focus:outline-none focus:border-purple-500"
+                className="w-full px-2.5 py-1.5  rounded-lg text-zinc-950 font-bold focus:outline-none focus:border-purple-500"
               >
                 <option value="all">All Categories</option>
                 {categories.map((c) => (
@@ -228,7 +228,7 @@ export const TransactionsPage: React.FC = () => {
               <select
                 value={filterTag}
                 onChange={(e) => setFilterTag(e.target.value)}
-                className="w-full px-2.5 py-1.5 bg-white border border-zinc-300 rounded-lg text-zinc-950 font-bold focus:outline-none focus:border-purple-500"
+                className="w-full px-2.5 py-1.5  rounded-lg text-zinc-950 font-bold focus:outline-none focus:border-purple-500"
               >
                 <option value="all">All Tags</option>
                 {tags.map((tg) => (
@@ -244,7 +244,7 @@ export const TransactionsPage: React.FC = () => {
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="w-full px-2.5 py-1.5 bg-white border border-zinc-300 rounded-lg text-zinc-950 font-bold focus:outline-none focus:border-purple-500"
+                className="w-full px-2.5 py-1.5  rounded-lg text-zinc-950 font-bold focus:outline-none focus:border-purple-500"
               >
                 <option value="all">All Statuses</option>
                 <option value="confirmed">Confirmed Only</option>

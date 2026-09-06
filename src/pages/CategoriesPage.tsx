@@ -350,7 +350,7 @@ export const CategoriesPage: React.FC = () => {
                 <select
                   value={parentId || ''}
                   onChange={(e) => setParentId(e.target.value ? Number(e.target.value) : null)}
-                  className="w-full px-3 py-2 bg-white border border-zinc-300 rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                  className="w-full px-3 py-2  rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
                 >
                   <option value="">None (Top-Level Category)</option>
                   {rootCategories
@@ -387,7 +387,7 @@ export const CategoriesPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-medium cursor-pointer"
               >
                 Cancel
               </button>

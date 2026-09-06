@@ -482,11 +482,11 @@ export const AccountsPage: React.FC = () => {
             </form>
 
             {/* Sticky Actions Footer */}
-            <div className="flex justify-end gap-3 p-4 border-t border-zinc-800 bg-zinc-900/95 shrink-0">
+            <div className="flex justify-end gap-3 p-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/95 shrink-0">
               <button
                 type="button"
                 onClick={() => setIsCreateModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold cursor-pointer transition-colors"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-semibold cursor-pointer transition-colors"
               >
                 Cancel
               </button>
@@ -612,7 +612,7 @@ export const AccountsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setEditingAccount(null)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-medium cursor-pointer"
               >
                 Cancel
               </button>
@@ -711,7 +711,7 @@ export const AccountsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setViewingLedgerAccount(null)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-medium cursor-pointer"
               >
                 Close
               </button>

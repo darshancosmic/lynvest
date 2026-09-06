@@ -482,7 +482,7 @@ export const DebtsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsAddModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold cursor-pointer transition-colors"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-semibold cursor-pointer transition-colors"
               >
                 Cancel
               </button>
@@ -631,7 +631,7 @@ export const DebtsPage: React.FC = () => {
                   onChange={(e) =>
                     setEditFormData({ ...editFormData, is_active: Number(e.target.value) })
                   }
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-zinc-300 text-xs text-zinc-950 font-bold focus:outline-none focus:border-purple-500 transition-all shadow-inner"
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold focus:outline-none focus:border-purple-500 transition-all shadow-inner"
                 >
                   <option value={1}>Active (Subtracts from Net Worth)</option>
                   <option value={0}>Paid Off / Closed (Excluded)</option>
@@ -655,7 +655,7 @@ export const DebtsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setEditingDebt(null)}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold cursor-pointer transition-colors"
+                className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-semibold cursor-pointer transition-colors"
               >
                 Cancel
               </button>

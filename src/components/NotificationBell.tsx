@@ -135,7 +135,7 @@ export const NotificationBell: React.FC = () => {
                 onClick={handleRefresh}
                 title="Refresh reminders"
                 disabled={isRefreshing}
-                className="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors cursor-pointer"
+                className="p-1.5 rounded-lg bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 hover:text-white transition-colors cursor-pointer"
               >
                 <RefreshCw
                   className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-purple-400' : ''}`}
@@ -305,7 +305,7 @@ export const NotificationBell: React.FC = () => {
                 setIsOpen(false);
                 setActiveTab('settings');
               }}
-              className="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[11px] font-medium cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-[11px] font-medium cursor-pointer"
             >
               Alert Settings
             </button>

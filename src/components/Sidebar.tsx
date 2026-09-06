@@ -52,20 +52,28 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenQuickTransaction }) => {
   const setTheme = useAppStore(state => state.setTheme);
 
   return (
-    <aside className="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col justify-between select-none h-full shrink-0 z-30 shadow-xl">
+    <aside className={`w-64 border-r flex flex-col justify-between select-none h-full shrink-0 z-30 transition-colors ${
+      theme === 'light' ? 'bg-white border-zinc-200' : 'bg-black border-zinc-850'
+    }`}>
       {/* Brand Header */}
-      <div className="p-3.5 flex items-center justify-between border-b border-zinc-800/80 shrink-0">
+      <div className={`p-3.5 flex items-center justify-between border-b shrink-0 ${
+        theme === 'light' ? 'border-zinc-200' : 'border-zinc-850'
+      }`}>
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 shadow-sm shadow-purple-950/50">
+          <div className="w-9 h-9 rounded-xl bg-purple-600 flex items-center justify-center text-white shadow-sm">
             <Coins className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="font-bold text-sm text-white tracking-tight leading-tight">
+            <h1 className={`font-black text-sm tracking-tight leading-tight ${
+              theme === 'light' ? 'text-black' : 'text-white'
+            }`}>
               Lynvest
             </h1>
-            <p className="text-[10px] text-purple-400 font-medium tracking-wide flex items-center gap-1">
+            <p className={`text-[10px] font-extrabold tracking-wide flex items-center gap-1 ${
+              theme === 'light' ? 'text-purple-700' : 'text-purple-400'
+            }`}>
               <span>{settings?.base_currency || 'USD'} Mode</span>
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
             </p>
           </div>
         </div>
@@ -77,11 +85,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenQuickTransaction }) => {
         <button
           type="button"
           onClick={onOpenQuickTransaction}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all shadow-md shadow-purple-950/60 cursor-pointer active:scale-[0.98]"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-black transition-all shadow-md cursor-pointer active:scale-[0.98]"
         >
           <Plus className="w-4 h-4" />
           <span>New Transaction</span>
-          <kbd className="ml-auto text-[10px] bg-purple-700/60 px-1.5 py-0.5 rounded text-purple-200 font-mono">
+          <kbd className="ml-auto text-[10px] bg-purple-700 px-1.5 py-0.5 rounded text-white font-mono font-bold">
             Ctrl+N
           </kbd>
         </button>
@@ -97,18 +105,30 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenQuickTransaction }) => {
               key={item.id}
               type="button"
               onClick={() => setActiveTab(item.id as typeof activeTab)}
-              className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all cursor-pointer !border-0 !shadow-none ${
                 isActive
-                  ? 'bg-purple-600/20 text-purple-300 border border-purple-500/40 shadow-sm shadow-purple-950/40 font-bold'
-                  : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60'
+                  ? theme === 'light'
+                    ? 'bg-purple-100/90 text-purple-900 font-extrabold'
+                    : 'bg-purple-950/70 text-purple-200 font-extrabold'
+                  : theme === 'light'
+                  ? 'text-slate-700 hover:text-black hover:bg-slate-100/70 font-semibold'
+                  : 'text-zinc-400 hover:text-white hover:bg-zinc-850/50 font-semibold'
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-purple-400' : 'text-zinc-400'}`} />
+                <Icon className={`w-4 h-4 shrink-0 ${
+                  isActive
+                    ? theme === 'light' ? 'text-purple-700' : 'text-purple-300'
+                    : theme === 'light' ? 'text-black' : 'text-white'
+                }`} />
                 <span>{item.label}</span>
               </div>
               {item.id === 'bills' && billReminders.length > 0 && (
-                <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/25 text-purple-300 border border-purple-500/40">
+                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-black border ${
+                  theme === 'light'
+                    ? 'bg-purple-100 text-purple-800 border-purple-300'
+                    : 'bg-purple-900 text-purple-200 border-purple-500'
+                }`}>
                   {billReminders.length}
                 </span>
               )}
@@ -118,27 +138,37 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenQuickTransaction }) => {
       </nav>
 
       {/* Theme Toggle & Footer */}
-      <div className="p-3 border-t border-zinc-800/80 shrink-0 flex items-center justify-between gap-2">
+      <div className={`p-3 border-t shrink-0 flex items-center justify-between gap-2 ${
+        theme === 'light' ? 'border-zinc-200' : 'border-zinc-850'
+      }`}>
         <button
           type="button"
           onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border bg-zinc-800/80 hover:bg-zinc-700/80 border-zinc-700/80 active:scale-[0.98]"
-          title={theme === 'light' ? 'Switch to Night Mode (Dark)' : 'Switch to Day Mode (Apple Light)'}
+          className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black transition-all cursor-pointer border active:scale-[0.98] ${
+            theme === 'light'
+              ? 'bg-white hover:bg-zinc-100 border-zinc-300 text-black'
+              : 'bg-zinc-900 hover:bg-zinc-800 border-zinc-800 text-white'
+          }`}
+          title={theme === 'light' ? 'Switch to Night Mode (Dark)' : 'Switch to Day Mode (Light)'}
         >
           {theme === 'light' ? (
             <>
               <Sun className="w-4 h-4 text-amber-500" />
-              <span className="text-zinc-950 font-black">Day Mode</span>
+              <span className="text-black font-black">Day Mode</span>
             </>
           ) : (
             <>
               <Moon className="w-4 h-4 text-purple-400" />
-              <span className="text-zinc-200 font-bold">Night Mode</span>
+              <span className="text-white font-black">Night Mode</span>
             </>
           )}
         </button>
 
-        <span className="font-mono text-xs text-purple-400 bg-purple-950/50 px-2.5 py-2 rounded-xl border border-purple-800/50 font-black shrink-0">
+        <span className={`font-mono text-xs px-2.5 py-2 rounded-xl border font-black shrink-0 ${
+          theme === 'light'
+            ? 'bg-purple-100 border-purple-300 text-purple-800'
+            : 'bg-purple-950 border-purple-700 text-purple-300'
+        }`}>
           {settings?.base_currency || 'USD'}
         </span>
       </div>

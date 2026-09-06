@@ -249,7 +249,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                 required
                 value={accountId}
                 onChange={(e) => setAccountId(Number(e.target.value))}
-                className="w-full px-3 py-2 bg-white border border-zinc-300 rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                className="w-full px-3 py-2  rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
               >
                 {activeAccounts.map((acc) => (
                   <option key={acc.id} value={acc.id}>
@@ -268,7 +268,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                   required
                   value={transferToAccountId || ''}
                   onChange={(e) => setTransferToAccountId(Number(e.target.value))}
-                  className="w-full px-3 py-2 bg-white border border-zinc-300 rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                  className="w-full px-3 py-2  rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
                 >
                   <option value="">-- Select Target --</option>
                   {activeAccounts
@@ -288,7 +288,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                 <select
                   value={categoryId || ''}
                   onChange={(e) => setCategoryId(e.target.value ? Number(e.target.value) : null)}
-                  className="w-full px-3 py-2 bg-white border border-zinc-300 rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                  className="w-full px-3 py-2  rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
                 >
                   <option value="">Uncategorized</option>
                   {filteredCategories.map((c) => (
@@ -325,7 +325,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
               <select
                 value={frequency}
                 onChange={(e) => setFrequency(e.target.value as RecurringFrequency)}
-                className="w-full px-3 py-2 bg-white border border-zinc-300 rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                className="w-full px-3 py-2  rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
               >
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
@@ -359,7 +359,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
               <select
                 value={paymentType}
                 onChange={(e) => setPaymentType(e.target.value as PaymentType)}
-                className="w-full px-3 py-2 bg-white border border-zinc-300 rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                className="w-full px-3 py-2  rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
               >
                 <option value="upi">UPI</option>
                 <option value="card">Card</option>
@@ -400,11 +400,11 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
         </form>
 
         {/* Sticky Actions Footer */}
-        <div className="flex justify-end gap-3 p-4 border-t border-zinc-800 bg-zinc-900/95 shrink-0">
+        <div className="flex justify-end gap-3 p-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/95 shrink-0">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-semibold cursor-pointer transition-colors"
+            className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-semibold cursor-pointer transition-colors"
           >
             Cancel
           </button>

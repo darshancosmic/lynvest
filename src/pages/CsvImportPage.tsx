@@ -270,7 +270,7 @@ export const CsvImportPage: React.FC = () => {
           <button
             type="button"
             onClick={handleReset}
-            className="px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
+            className="px-3 py-1.5 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-medium flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Reset
@@ -332,7 +332,7 @@ export const CsvImportPage: React.FC = () => {
               <select
                 value={targetAccountId}
                 onChange={(e) => setTargetAccountId(parseInt(e.target.value))}
-                className="w-full px-3.5 py-2 rounded-xl bg-white border border-zinc-300 text-zinc-950 font-bold text-xs focus:outline-none focus:border-purple-500"
+                className="w-full px-3.5 py-2 rounded-xl  font-bold text-xs focus:outline-none focus:border-purple-500"
               >
                 {activeAccounts.map((a) => (
                   <option key={a.id} value={a.id}>
@@ -349,7 +349,7 @@ export const CsvImportPage: React.FC = () => {
               <select
                 value={defaultCategoryId || ''}
                 onChange={(e) => setDefaultCategoryId(e.target.value ? parseInt(e.target.value) : null)}
-                className="w-full px-3.5 py-2 rounded-xl bg-white border border-zinc-300 text-zinc-950 font-bold text-xs focus:outline-none focus:border-purple-500"
+                className="w-full px-3.5 py-2 rounded-xl  font-bold text-xs focus:outline-none focus:border-purple-500"
               >
                 <option value="">-- None (Keep Uncategorized) --</option>
                 {categories.map((c) => (
@@ -377,7 +377,7 @@ export const CsvImportPage: React.FC = () => {
                 <select
                   value={dateColIdx}
                   onChange={(e) => setDateColIdx(parseInt(e.target.value))}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-300 text-zinc-950 font-bold text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-lg  font-bold text-xs focus:outline-none focus:border-purple-500"
                 >
                   <option value={-1}>-- Not selected --</option>
                   {headers.map((h, i) => (
@@ -396,7 +396,7 @@ export const CsvImportPage: React.FC = () => {
                 <select
                   value={amountColIdx}
                   onChange={(e) => setAmountColIdx(parseInt(e.target.value))}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-300 text-zinc-950 font-bold text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-lg  font-bold text-xs focus:outline-none focus:border-purple-500"
                 >
                   <option value={-1}>-- Not selected --</option>
                   {headers.map((h, i) => (
@@ -415,7 +415,7 @@ export const CsvImportPage: React.FC = () => {
                 <select
                   value={typeColIdx}
                   onChange={(e) => setTypeColIdx(parseInt(e.target.value))}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-300 text-zinc-950 font-bold text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-lg  font-bold text-xs focus:outline-none focus:border-purple-500"
                 >
                   <option value={-1}>Default to '{defaultType}'</option>
                   {headers.map((h, i) => (
@@ -446,7 +446,7 @@ export const CsvImportPage: React.FC = () => {
                 <select
                   value={categoryColIdx}
                   onChange={(e) => setCategoryColIdx(parseInt(e.target.value))}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-300 text-zinc-950 font-bold text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-lg  font-bold text-xs focus:outline-none focus:border-purple-500"
                 >
                   <option value={-1}>-- Optional --</option>
                   {headers.map((h, i) => (
@@ -465,7 +465,7 @@ export const CsvImportPage: React.FC = () => {
                 <select
                   value={noteColIdx}
                   onChange={(e) => setNoteColIdx(parseInt(e.target.value))}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-300 text-zinc-950 font-bold text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-lg  font-bold text-xs focus:outline-none focus:border-purple-500"
                 >
                   <option value={-1}>-- Optional --</option>
                   {headers.map((h, i) => (
@@ -484,7 +484,7 @@ export const CsvImportPage: React.FC = () => {
                 <select
                   value={paymentTypeColIdx}
                   onChange={(e) => setPaymentTypeColIdx(parseInt(e.target.value))}
-                  className="w-full px-3 py-2 rounded-lg bg-white border border-zinc-300 text-zinc-950 font-bold text-xs focus:outline-none focus:border-purple-500"
+                  className="w-full px-3 py-2 rounded-lg  font-bold text-xs focus:outline-none focus:border-purple-500"
                 >
                   <option value={-1}>-- Optional (other) --</option>
                   {headers.map((h, i) => (
@@ -639,7 +639,7 @@ export const CsvImportPage: React.FC = () => {
             <button
               type="button"
               onClick={handleReset}
-              className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-medium cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 text-xs font-medium cursor-pointer"
             >
               Import Another File
             </button>
