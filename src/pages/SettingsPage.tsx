@@ -26,6 +26,8 @@ import {
   ExternalLink,
   Globe,
   Calendar,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import {
   getNumberFormatSystem,
@@ -39,6 +41,8 @@ import {
 
 export const SettingsPage: React.FC = () => {
   const settings = useAppStore(state => state.settings);
+  const theme = useAppStore(state => state.theme);
+  const setTheme = useAppStore(state => state.setTheme);
   const exchangeRates = useAppStore(state => state.exchangeRates);
   const backups = useAppStore(state => state.backups);
   const loadExchangeRates = useAppStore(state => state.loadExchangeRates);
@@ -475,16 +479,39 @@ export const SettingsPage: React.FC = () => {
               </select>
             </div>
 
-            <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800/80 flex items-center justify-between">
+            <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div>
                 <span className="text-zinc-400 block font-medium">Application Theme</span>
                 <span className="text-[11px] text-zinc-500">
-                  Default dark theme for optimal readability
+                  Switch between Apple-style Day Theme (Light) and Night Theme (Dark)
                 </span>
               </div>
-              <span className="px-3 py-1 rounded-lg bg-zinc-800 text-purple-400 font-medium">
-                Dark Mode
-              </span>
+              <div className="flex items-center gap-1.5 p-1 rounded-xl bg-zinc-900 border border-zinc-800">
+                <button
+                  type="button"
+                  onClick={() => setTheme('light')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    theme === 'light'
+                      ? 'bg-purple-600 text-white shadow-sm shadow-purple-950/40'
+                      : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  <Sun className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Day Theme (Light)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTheme('dark')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    theme === 'dark'
+                      ? 'bg-purple-600 text-white shadow-sm shadow-purple-950/40'
+                      : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  <Moon className="w-3.5 h-3.5 text-purple-300" />
+                  <span>Night Theme (Dark)</span>
+                </button>
+              </div>
             </div>
 
             <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800/80 flex items-center justify-between md:col-span-2">

@@ -101,6 +101,7 @@ pub fn run() {
             commands::check_and_run_daily_backup,
             commands::restore_backup,
             commands::set_base_currency,
+            commands::set_app_theme,
             commands::change_pin,
             commands::update_notification_settings,
             commands::check_and_send_due_reminders,

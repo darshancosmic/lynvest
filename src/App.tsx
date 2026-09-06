@@ -28,6 +28,8 @@ export const App: React.FC = () => {
   const loadAccounts = useAppStore(state => state.loadAccounts);
   const loadNetWorthSummary = useAppStore(state => state.loadNetWorthSummary);
 
+  const theme = useAppStore(state => state.theme);
+
   const [isQuickTxnOpen, setIsQuickTxnOpen] = React.useState(false);
 
   useEffect(() => {
@@ -74,9 +76,11 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-zinc-950 text-zinc-100 flex">
+    <div className={`h-screen w-screen overflow-hidden flex transition-colors duration-200 ${
+      theme === 'light' ? 'theme-light bg-[#f8fafc] text-zinc-950' : 'theme-dark bg-zinc-950 text-zinc-100'
+    }`}>
       <Sidebar onOpenQuickTransaction={() => setIsQuickTxnOpen(true)} />
-      <main className="flex-1 h-full overflow-y-auto p-8 max-w-7xl">
+      <main className="flex-1 h-full overflow-y-auto p-6 sm:p-8 max-w-7xl custom-scrollbar">
         {activeTab === 'dashboard' && <Dashboard />}
         {activeTab === 'accounts' && <AccountsPage />}
         {activeTab === 'transactions' && <TransactionsPage />}

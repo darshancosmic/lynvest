@@ -4171,6 +4171,25 @@ pub fn set_base_currency(state: State<AppState>, new_currency: String) -> Result
 }
 
 #[tauri::command]
+pub fn set_app_theme(state: State<AppState>, theme: String) -> Result<(), String> {
+    let t = theme.trim().to_lowercase();
+    if t != "dark" && t != "light" {
+        return Err("Theme must be 'dark' or 'light'".to_string());
+    }
+
+    let conn = state.db.lock().map_err(|e| e.to_string())?;
+    let _ = crate::db::seed_defaults(&conn);
+
+    conn.execute(
+        "INSERT INTO app_settings (id, theme) VALUES (1, ?1)
+         ON CONFLICT(id) DO UPDATE SET theme = excluded.theme",
+        params![t],
+    ).map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+#[tauri::command]
 pub fn change_pin(state: State<AppState>, payload: ChangePinPayload) -> Result<(), String> {
     let conn = state.db.lock().map_err(|e| e.to_string())?;
     let _ = crate::db::seed_defaults(&conn);

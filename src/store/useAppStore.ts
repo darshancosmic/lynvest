@@ -81,6 +81,7 @@ interface AppStoreState {
   backups: BackupFileInfo[];
   isUnlocked: boolean;
   isLoading: boolean;
+  theme: 'dark' | 'light';
   error: string | null;
   activeTab:
     | 'dashboard'
@@ -108,6 +109,7 @@ interface AppStoreState {
 
   // Settings & Security
   setBaseCurrency: (currency: string) => Promise<void>;
+  setTheme: (theme: 'dark' | 'light') => Promise<void>;
   changePin: (payload: ChangePinPayload) => Promise<void>;
   updateNotificationSettings: (payload: UpdateNotificationSettingsPayload) => Promise<AppSettings>;
   sendOsDesktopNotification: (title: string, body: string) => Promise<boolean>;
@@ -247,6 +249,7 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
   backups: [],
   isUnlocked: true,
   isLoading: true,
+  theme: 'dark',
   error: null,
   activeTab: 'dashboard',
 
@@ -259,7 +262,22 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
       if (typeof window !== 'undefined' && settings?.base_currency) {
         localStorage.setItem('lynvest_base_currency', settings.base_currency);
       }
-      set({ settings });
+      const savedTheme = (typeof window !== 'undefined' ? localStorage.getItem('lynvest_desktop_theme') : null) as 'dark' | 'light' | null;
+      const initialTheme: 'dark' | 'light' = (savedTheme === 'light' || settings?.theme === 'light') ? 'light' : 'dark';
+      set({ settings, theme: initialTheme });
+      if (typeof window !== 'undefined') {
+        if (initialTheme === 'light') {
+          document.documentElement.classList.add('theme-light');
+          document.documentElement.classList.remove('theme-dark');
+          document.body.classList.add('theme-light');
+          document.body.classList.remove('theme-dark');
+        } else {
+          document.documentElement.classList.remove('theme-light');
+          document.documentElement.classList.add('theme-dark');
+          document.body.classList.remove('theme-light');
+          document.body.classList.add('theme-dark');
+        }
+      }
 
       // Load all data directly on launch without any PIN login gate
       await get().processRecurringRules();
@@ -1277,6 +1295,31 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
       const msg = err instanceof Error ? err.message : String(err);
       set({ error: msg });
       throw new Error(msg);
+    }
+  },
+
+  setTheme: async (theme: 'dark' | 'light') => {
+    set({ theme });
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('lynvest_desktop_theme', theme);
+      if (theme === 'light') {
+        document.documentElement.classList.add('theme-light');
+        document.documentElement.classList.remove('theme-dark');
+        document.body.classList.add('theme-light');
+        document.body.classList.remove('theme-dark');
+      } else {
+        document.documentElement.classList.remove('theme-light');
+        document.documentElement.classList.add('theme-dark');
+        document.body.classList.remove('theme-light');
+        document.body.classList.add('theme-dark');
+      }
+    }
+    try {
+      await invoke('set_app_theme', { theme });
+      const updatedSettings = await invoke<AppSettings>('get_app_settings');
+      set({ settings: updatedSettings });
+    } catch (err) {
+      console.warn('Could not persist theme to backend:', err);
     }
   },
 

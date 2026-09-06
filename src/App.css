@@ -8,7 +8,7 @@
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 262.1 83.3% 57.8%; /* Royal Purple / Violet */
+    --primary: 262.1 83.3% 57.8%; /* Royal Purple */
     --primary-foreground: 0 0% 100%;
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
@@ -32,14 +32,256 @@ html, body, #root {
   overflow: hidden;
   margin: 0;
   padding: 0;
-  background-color: #09090b;
-  color: #f4f4f5;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   user-select: none;
   -webkit-user-select: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Global High-Visibility Royal Purple Scrollbars */
+/* =========================================================================
+   APPLE STYLE DAY THEME (LIGHT MODE)
+   "same royal purple colur just white and when white mode all text will be
+    black and bold in white background and white and bold in black background"
+   ========================================================================= */
+
+html.theme-light,
+body.theme-light,
+.theme-light,
+.theme-light #root {
+  background-color: #f8fafc !important;
+  color: #09090b !important;
+}
+
+/* Background Card & Container Remapping in Light Mode */
+.theme-light .bg-zinc-950,
+.theme-light .bg-zinc-950\/40,
+.theme-light .bg-zinc-950\/60,
+.theme-light .bg-zinc-950\/80 {
+  background-color: #ffffff !important;
+}
+
+.theme-light .bg-zinc-900,
+.theme-light .bg-zinc-900\/80,
+.theme-light .bg-zinc-900\/70,
+.theme-light .bg-zinc-900\/60,
+.theme-light .bg-zinc-900\/50,
+.theme-light .bg-zinc-900\/40,
+.theme-light aside.bg-zinc-900 {
+  background-color: #ffffff !important;
+}
+
+.theme-light .bg-zinc-800,
+.theme-light .bg-zinc-800\/80,
+.theme-light .bg-zinc-800\/60,
+.theme-light .bg-zinc-800\/50,
+.theme-light .bg-zinc-800\/40,
+.theme-light .bg-zinc-800\/30,
+.theme-light .bg-zinc-800\/20 {
+  background-color: #f1f5f9 !important;
+}
+
+.theme-light .hover\:bg-zinc-800:hover,
+.theme-light .hover\:bg-zinc-700:hover,
+.theme-light .hover\:bg-zinc-800\/60:hover,
+.theme-light .hover\:bg-zinc-800\/80:hover {
+  background-color: #e2e8f0 !important;
+  color: #09090b !important;
+}
+
+/* Borders in Light Mode */
+.theme-light .border-zinc-800,
+.theme-light .border-zinc-800\/80,
+.theme-light .border-zinc-800\/60,
+.theme-light .border-zinc-800\/50,
+.theme-light .border-zinc-800\/40,
+.theme-light .border-zinc-900,
+.theme-light aside.border-zinc-800 {
+  border-color: #e2e8f0 !important;
+}
+
+.theme-light .border-zinc-700,
+.theme-light .border-zinc-700\/80,
+.theme-light .border-zinc-700\/60 {
+  border-color: #cbd5e1 !important;
+}
+
+/* High-Contrast Bold Black Typography on White Background in Light Mode */
+.theme-light .text-white,
+.theme-light .text-zinc-100 {
+  color: #09090b !important;
+  font-weight: 800 !important;
+}
+
+.theme-light .text-zinc-200 {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+.theme-light .text-zinc-300 {
+  color: #1e293b !important;
+  font-weight: 700 !important;
+}
+
+.theme-light .text-zinc-400 {
+  color: #334155 !important;
+  font-weight: 600 !important;
+}
+
+.theme-light .text-zinc-500 {
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+
+.theme-light h1,
+.theme-light h2,
+.theme-light h3,
+.theme-light h4,
+.theme-light h5,
+.theme-light h6 {
+  color: #000000 !important;
+  font-weight: 900 !important;
+}
+
+.theme-light .font-mono {
+  font-weight: 700 !important;
+}
+
+/* Signature Royal Purple Colors in Light Mode */
+.theme-light .bg-purple-600 {
+  background-color: #7c3aed !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.theme-light .hover\:bg-purple-500:hover {
+  background-color: #6d28d9 !important;
+}
+
+.theme-light .text-purple-400,
+.theme-light .text-purple-300 {
+  color: #6d28d9 !important;
+  font-weight: 700 !important;
+}
+
+.theme-light .text-purple-500,
+.theme-light .text-purple-600 {
+  color: #7c3aed !important;
+  font-weight: 800 !important;
+}
+
+.theme-light .bg-purple-500\/15,
+.theme-light .bg-purple-500\/20,
+.theme-light .bg-purple-500\/25,
+.theme-light .bg-purple-600\/20,
+.theme-light .bg-purple-950\/15,
+.theme-light .bg-purple-950\/30,
+.theme-light .bg-purple-950\/40,
+.theme-light .bg-purple-950\/50,
+.theme-light .bg-purple-950\/60 {
+  background-color: #f5f3ff !important;
+  border-color: #ddd6fe !important;
+}
+
+.theme-light .border-purple-500\/30,
+.theme-light .border-purple-500\/40,
+.theme-light .border-purple-800\/40,
+.theme-light .border-purple-800\/50,
+.theme-light .border-purple-900\/30 {
+  border-color: #ddd6fe !important;
+}
+
+/* Net Worth Banner in Light Mode */
+.theme-light .bg-gradient-to-br.from-zinc-900.via-purple-950\/15.to-zinc-950 {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 45%, #ffffff 100%) !important;
+  border-color: #ddd6fe !important;
+  box-shadow: 0 10px 30px -10px rgba(124, 58, 237, 0.08) !important;
+}
+
+/* Inputs, Textareas, and Dropdowns in Light Mode */
+.theme-light input,
+.theme-light textarea {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+  font-weight: 700 !important;
+  border: 1.5px solid #cbd5e1 !important;
+}
+
+.theme-light input::placeholder,
+.theme-light textarea::placeholder {
+  color: #64748b !important;
+  font-weight: 500 !important;
+}
+
+.theme-light input:focus,
+.theme-light textarea:focus {
+  border-color: #7c3aed !important;
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.25) !important;
+  outline: none !important;
+}
+
+/* Modal Backdrops in Light Mode */
+.theme-light .bg-black\/40,
+.theme-light .bg-black\/50,
+.theme-light .bg-black\/60,
+.theme-light .bg-black\/70,
+.theme-light .bg-black\/80 {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+/* Card Drop Shadows in Light Mode */
+.theme-light .shadow-xl,
+.theme-light .shadow-2xl,
+.theme-light .shadow-lg {
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Scrollbars in Light Mode */
+.theme-light * {
+  scrollbar-color: #c084fc #f1f5f9 !important;
+}
+
+.theme-light ::-webkit-scrollbar-track {
+  background: #f1f5f9 !important;
+}
+
+.theme-light ::-webkit-scrollbar-thumb {
+  background: #c084fc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.theme-light ::-webkit-scrollbar-thumb:hover {
+  background: #9333ea !important;
+}
+
+/* =========================================================================
+   NIGHT THEME (DARK MODE)
+   "and white and bold in black background"
+   ========================================================================= */
+
+html.theme-dark,
+body.theme-dark,
+.theme-dark,
+.theme-dark #root {
+  background-color: #09090b !important;
+  color: #f4f4f5 !important;
+}
+
+.theme-dark .text-white,
+.theme-dark .text-zinc-100 {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+}
+
+.theme-dark h1,
+.theme-dark h2,
+.theme-dark h3,
+.theme-dark h4 {
+  color: #ffffff !important;
+  font-weight: 900 !important;
+}
+
+/* Global High-Visibility Royal Purple Scrollbars (Dark Mode) */
 * {
   scrollbar-width: thin;
   scrollbar-color: #6b21a8 #18181b;
@@ -56,13 +298,13 @@ html, body, #root {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #6b21a8; /* Deep Purple */
+  background: #6b21a8;
   border-radius: 4px;
   border: 1px solid #18181b;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9333ea; /* Royal Purple bright on hover */
+  background: #9333ea;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

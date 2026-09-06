@@ -18,6 +18,8 @@ import {
   CreditCard,
   Plus,
   Target,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -46,6 +48,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenQuickTransaction }) => {
   const setActiveTab = useAppStore(state => state.setActiveTab);
   const billReminders = useAppStore(state => state.billReminders);
   const settings = useAppStore(state => state.settings);
+  const theme = useAppStore(state => state.theme);
+  const setTheme = useAppStore(state => state.setTheme);
 
   return (
     <aside className="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col justify-between select-none h-full shrink-0 z-30 shadow-xl">
@@ -113,10 +117,28 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenQuickTransaction }) => {
         })}
       </nav>
 
-      {/* Footer */}
-      <div className="px-4 py-3 border-t border-zinc-800/80 shrink-0 bg-zinc-900 flex items-center justify-between text-[11px] text-zinc-500">
-        <span className="font-semibold text-zinc-400">Lynvest</span>
-        <span className="font-mono text-purple-400 bg-purple-950/50 px-2 py-0.5 rounded border border-purple-800/40 font-bold">
+      {/* Theme Toggle & Footer */}
+      <div className="p-3 border-t border-zinc-800/80 shrink-0 flex items-center justify-between gap-2">
+        <button
+          type="button"
+          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border bg-zinc-800/80 hover:bg-zinc-700/80 border-zinc-700/80 active:scale-[0.98]"
+          title={theme === 'light' ? 'Switch to Night Mode (Dark)' : 'Switch to Day Mode (Apple Light)'}
+        >
+          {theme === 'light' ? (
+            <>
+              <Sun className="w-4 h-4 text-amber-500" />
+              <span className="text-zinc-950 font-black">Day Mode</span>
+            </>
+          ) : (
+            <>
+              <Moon className="w-4 h-4 text-purple-400" />
+              <span className="text-zinc-200 font-bold">Night Mode</span>
+            </>
+          )}
+        </button>
+
+        <span className="font-mono text-xs text-purple-400 bg-purple-950/50 px-2.5 py-2 rounded-xl border border-purple-800/50 font-black shrink-0">
           {settings?.base_currency || 'USD'}
         </span>
       </div>
