@@ -13,6 +13,22 @@ pub struct AppSettings {
     pub last_notification_check_at: Option<String>,
 }
 
+impl Default for AppSettings {
+    fn default() -> Self {
+        Self {
+            id: 1,
+            base_currency: "INR".to_string(),
+            has_pin: false,
+            theme: "dark".to_string(),
+            last_backup_at: None,
+            last_networth_snapshot_at: None,
+            notify_os: true,
+            notify_advance_days: 1,
+            last_notification_check_at: None,
+        }
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdateNotificationSettingsPayload {
     pub notify_os: bool,

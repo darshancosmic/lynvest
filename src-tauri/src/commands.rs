@@ -165,6 +165,9 @@ pub fn calculate_budget_period(
 pub fn get_app_settings(state: State<'_, AppState>) -> Result<AppSettings, String> {
     let conn = state.db.lock().map_err(|e| e.to_string())?;
 
+    // Auto-seed defaults if missing (e.g. after reset or first launch)
+    let _ = crate::db::seed_defaults(&conn);
+
     let mut stmt = conn
         .prepare(
             "SELECT id, base_currency, pin_hash, theme, last_backup_at, last_networth_snapshot_at,
@@ -191,7 +194,7 @@ pub fn get_app_settings(state: State<'_, AppState>) -> Result<AppSettings, Strin
                 last_notification_check_at: row.get(8)?,
             })
         })
-        .map_err(|e| format!("Failed to load app settings: {}", e))?;
+        .unwrap_or_else(|_| AppSettings::default());
 
     Ok(settings)
 }
@@ -204,6 +207,7 @@ pub fn set_initial_pin(state: State<'_, AppState>, pin: String) -> Result<(), St
     }
 
     let conn = state.db.lock().map_err(|e| e.to_string())?;
+    let _ = crate::db::seed_defaults(&conn);
 
     let existing_pin_hash: Option<String> = conn
         .query_row("SELECT pin_hash FROM app_settings WHERE id = 1", [], |r| r.get(0))
@@ -219,7 +223,8 @@ pub fn set_initial_pin(state: State<'_, AppState>, pin: String) -> Result<(), St
         .map_err(|e| format!("Failed to hash PIN: {}", e))?;
 
     conn.execute(
-        "UPDATE app_settings SET pin_hash = ?1 WHERE id = 1",
+        "INSERT INTO app_settings (id, pin_hash) VALUES (1, ?1)
+         ON CONFLICT(id) DO UPDATE SET pin_hash = excluded.pin_hash",
         params![hashed],
     ).map_err(|e| format!("Failed to save PIN: {}", e))?;
 
@@ -232,7 +237,7 @@ pub fn verify_pin(state: State<'_, AppState>, pin: String) -> Result<bool, Strin
 
     let pin_hash: Option<String> = conn
         .query_row("SELECT pin_hash FROM app_settings WHERE id = 1", [], |r| r.get(0))
-        .map_err(|e| format!("Failed to load PIN settings: {}", e))?;
+        .unwrap_or(None);
 
     let hash = match pin_hash {
         Some(h) if !h.trim().is_empty() => h,
@@ -264,6 +269,8 @@ pub fn wipe_all_data(state: State<'_, AppState>) -> Result<(), String> {
          DELETE FROM shopping_list_items;
          DELETE FROM warranties;
          DELETE FROM recurring_rules;
+         DELETE FROM goal_contributions;
+         DELETE FROM goals;
          DELETE FROM tags;
          DELETE FROM categories;
          DELETE FROM accounts;
@@ -271,11 +278,10 @@ pub fn wipe_all_data(state: State<'_, AppState>) -> Result<(), String> {
          DELETE FROM sqlite_sequence;"
     ).map_err(|e| format!("Failed to wipe database: {}", e))?;
 
-    tx.commit().map_err(|e| e.to_string())?;
+    // Immediately re-seed app_settings, categories, tags, and exchange rates in the same transaction
+    crate::db::seed_defaults(&tx)?;
 
-    drop(conn);
-    let mut conn2 = state.db.lock().map_err(|e| e.to_string())?;
-    crate::db::run_migrations(&mut conn2)?;
+    tx.commit().map_err(|e| e.to_string())?;
 
     Ok(())
 }
@@ -4135,6 +4141,7 @@ pub fn restore_backup(
     ).map_err(|e| e.to_string())?;
 
     crate::db::run_migrations(&mut new_conn)?;
+    let _ = crate::db::seed_defaults(&new_conn);
 
     let mut conn_guard = state.db.lock().map_err(|e| e.to_string())?;
     *conn_guard = new_conn;
@@ -4152,8 +4159,11 @@ pub fn set_base_currency(state: State<AppState>, new_currency: String) -> Result
     }
 
     let conn = state.db.lock().map_err(|e| e.to_string())?;
+    let _ = crate::db::seed_defaults(&conn);
+
     conn.execute(
-        "UPDATE app_settings SET base_currency = ?1 WHERE id = 1",
+        "INSERT INTO app_settings (id, base_currency) VALUES (1, ?1)
+         ON CONFLICT(id) DO UPDATE SET base_currency = excluded.base_currency",
         params![cur],
     ).map_err(|e| e.to_string())?;
 
@@ -4163,6 +4173,7 @@ pub fn set_base_currency(state: State<AppState>, new_currency: String) -> Result
 #[tauri::command]
 pub fn change_pin(state: State<AppState>, payload: ChangePinPayload) -> Result<(), String> {
     let conn = state.db.lock().map_err(|e| e.to_string())?;
+    let _ = crate::db::seed_defaults(&conn);
 
     let current_hash: Option<String> = conn
         .query_row("SELECT pin_hash FROM app_settings WHERE id = 1", [], |r| r.get(0))
@@ -4185,7 +4196,8 @@ pub fn change_pin(state: State<AppState>, payload: ChangePinPayload) -> Result<(
         .map_err(|e| format!("Failed to hash PIN: {}", e))?;
 
     conn.execute(
-        "UPDATE app_settings SET pin_hash = ?1 WHERE id = 1",
+        "INSERT INTO app_settings (id, pin_hash) VALUES (1, ?1)
+         ON CONFLICT(id) DO UPDATE SET pin_hash = excluded.pin_hash",
         params![new_hash],
     ).map_err(|e| e.to_string())?;
 
@@ -4200,14 +4212,15 @@ pub fn update_notification_settings(
     payload: UpdateNotificationSettingsPayload,
 ) -> Result<AppSettings, String> {
     let conn = state.db.lock().map_err(|e| e.to_string())?;
+    let _ = crate::db::seed_defaults(&conn);
     let os_val = if payload.notify_os { 1 } else { 0 };
     let advance_days = if payload.notify_advance_days < 0 { 1 } else { payload.notify_advance_days };
 
     conn.execute(
-        "UPDATE app_settings SET
-            notify_os = ?1,
-            notify_advance_days = ?2
-         WHERE id = 1",
+        "INSERT INTO app_settings (id, notify_os, notify_advance_days) VALUES (1, ?1, ?2)
+         ON CONFLICT(id) DO UPDATE SET
+            notify_os = excluded.notify_os,
+            notify_advance_days = excluded.notify_advance_days",
         params![os_val, advance_days],
     ).map_err(|e| format!("Failed to update notification settings: {}", e))?;
 
@@ -4243,7 +4256,7 @@ pub fn check_and_send_due_reminders(state: State<AppState>) -> Result<Vec<BillRe
             r.get::<_, Option<String>>(2)?.unwrap_or_else(|| "INR".to_string()),
             r.get(3)?
         )),
-    ).map_err(|e| e.to_string())?;
+    ).unwrap_or((1, 1, "INR".to_string(), None));
 
     let today = Local::now().date_naive();
     let today_str = today.format("%Y-%m-%d").to_string();

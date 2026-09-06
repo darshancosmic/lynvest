@@ -42,6 +42,7 @@ pub fn init_database(db_path: &PathBuf) -> Result<Connection, String> {
     ).map_err(|e| format!("Failed to configure SQLite pragmas: {}", e))?;
 
     run_migrations(&mut conn)?;
+    seed_defaults(&conn)?;
 
     Ok(conn)
 }
@@ -70,40 +71,10 @@ pub fn run_migrations(conn: &mut Connection) -> Result<(), String> {
         tx.execute_batch(migration_sql)
             .map_err(|e| format!("Failed to execute migration 001: {}", e))?;
 
-        // Seed initial app_settings if not present
         tx.execute(
             "INSERT OR IGNORE INTO app_settings (id, base_currency, theme) VALUES (1, 'INR', 'dark');",
             [],
         ).map_err(|e| format!("Failed to seed app_settings: {}", e))?;
-
-        // Seed starter categories (editable, not fixed)
-        let count: i64 = tx.query_row("SELECT COUNT(*) FROM categories", [], |r| r.get(0)).unwrap_or(0);
-        if count == 0 {
-            let seed_categories = [
-                // Income
-                ("Salary", "income", "briefcase", "#10b981"),
-                ("Business Income", "income", "trending-up", "#06b6d4"),
-                ("Interest", "income", "percent", "#8b5cf6"),
-                ("Other Income", "income", "plus-circle", "#64748b"),
-                // Expense
-                ("Food", "expense", "utensils", "#f97316"),
-                ("Transport", "expense", "car", "#3b82f6"),
-                ("Bills & Utilities", "expense", "zap", "#eab308"),
-                ("Shopping", "expense", "shopping-bag", "#ec4899"),
-                ("Entertainment", "expense", "film", "#a855f7"),
-                ("Health", "expense", "heart-pulse", "#ef4444"),
-                ("Rent", "expense", "home", "#14b8a6"),
-                ("Investments", "expense", "line-chart", "#6366f1"),
-                ("Other", "expense", "more-horizontal", "#64748b"),
-            ];
-
-            for (name, kind, icon, color) in seed_categories {
-                tx.execute(
-                    "INSERT INTO categories (name, kind, icon, color) VALUES (?1, ?2, ?3, ?4);",
-                    params![name, kind, icon, color],
-                ).map_err(|e| format!("Failed to seed category {}: {}", name, e))?;
-            }
-        }
 
         tx.execute(
             "INSERT OR REPLACE INTO schema_migrations (version) VALUES (1);",
@@ -174,6 +145,79 @@ pub fn run_migrations(conn: &mut Connection) -> Result<(), String> {
         ).map_err(|e| format!("Failed to record migration 004: {}", e))?;
 
         tx.commit().map_err(|e| format!("Failed to commit migration 004: {}", e))?;
+    }
+
+    seed_defaults(conn)?;
+
+    Ok(())
+}
+
+pub fn seed_defaults(conn: &Connection) -> Result<(), String> {
+    // 1. Ensure app_settings row 1 exists
+    conn.execute(
+        "INSERT OR IGNORE INTO app_settings (id, base_currency, theme) VALUES (1, 'INR', 'dark');",
+        [],
+    ).map_err(|e| format!("Failed to seed app_settings: {}", e))?;
+
+    // 2. Starter categories
+    let count: i64 = conn.query_row("SELECT COUNT(*) FROM categories", [], |r| r.get(0)).unwrap_or(0);
+    if count == 0 {
+        let seed_categories = [
+            // Income
+            ("Salary", "income", "briefcase", "#10b981"),
+            ("Business Income", "income", "trending-up", "#06b6d4"),
+            ("Interest", "income", "percent", "#8b5cf6"),
+            ("Other Income", "income", "plus-circle", "#64748b"),
+            // Expense
+            ("Food", "expense", "utensils", "#f97316"),
+            ("Transport", "expense", "car", "#3b82f6"),
+            ("Bills & Utilities", "expense", "zap", "#eab308"),
+            ("Shopping", "expense", "shopping-bag", "#ec4899"),
+            ("Entertainment", "expense", "film", "#a855f7"),
+            ("Health", "expense", "heart-pulse", "#ef4444"),
+            ("Rent", "expense", "home", "#14b8a6"),
+            ("Investments", "expense", "line-chart", "#6366f1"),
+            ("Other", "expense", "more-horizontal", "#64748b"),
+        ];
+
+        for (name, kind, icon, color) in seed_categories {
+            let _ = conn.execute(
+                "INSERT INTO categories (name, kind, icon, color) VALUES (?1, ?2, ?3, ?4);",
+                params![name, kind, icon, color],
+            );
+        }
+    }
+
+    // 3. Starter tags
+    let tag_count: i64 = conn.query_row("SELECT COUNT(*) FROM tags", [], |r| r.get(0)).unwrap_or(0);
+    if tag_count == 0 {
+        let seed_tags = ["essential", "discretionary", "vacation", "tax", "personal"];
+        for tag in seed_tags {
+            let _ = conn.execute("INSERT OR IGNORE INTO tags (name) VALUES (?1);", params![tag]);
+        }
+    }
+
+    // 4. Baseline exchange rates
+    let rates_count: i64 = conn.query_row("SELECT COUNT(*) FROM exchange_rates", [], |r| r.get(0)).unwrap_or(0);
+    if rates_count == 0 {
+        let seed_rates = [
+            ("USD", "INR", 86.50),
+            ("EUR", "INR", 91.20),
+            ("GBP", "INR", 108.50),
+            ("CAD", "INR", 61.20),
+            ("AUD", "INR", 54.80),
+            ("SGD", "INR", 64.10),
+            ("NZD", "INR", 51.00),
+            ("AED", "INR", 23.55),
+            ("EUR", "USD", 1.05),
+            ("GBP", "USD", 1.25),
+        ];
+        for (from, to, rate) in seed_rates {
+            let _ = conn.execute(
+                "INSERT OR IGNORE INTO exchange_rates (from_currency, to_currency, rate) VALUES (?1, ?2, ?3);",
+                params![from, to, rate],
+            );
+        }
     }
 
     Ok(())
@@ -392,7 +436,7 @@ mod tests {
 
         // Set exchange rate: 1 USD = 85 INR
         conn.execute(
-            "INSERT INTO exchange_rates (from_currency, to_currency, rate) VALUES ('USD', 'INR', 85.0)",
+            "INSERT OR REPLACE INTO exchange_rates (from_currency, to_currency, rate) VALUES ('USD', 'INR', 85.0)",
             [],
         ).unwrap();
 
@@ -858,7 +902,7 @@ mod tests {
 
         // Set exchange rate USD -> INR = 85.0
         conn.execute(
-            "INSERT INTO exchange_rates (from_currency, to_currency, rate) VALUES ('USD', 'INR', 85.0)",
+            "INSERT OR REPLACE INTO exchange_rates (from_currency, to_currency, rate) VALUES ('USD', 'INR', 85.0)",
             [],
         ).unwrap();
 
@@ -1011,6 +1055,72 @@ mod tests {
         ).unwrap();
         assert!(bcrypt::verify("123456", &stored_hash).unwrap());
         assert!(!bcrypt::verify("654321", &stored_hash).unwrap());
+    }
+
+    #[test]
+    fn test_wipe_all_data_and_currency_change() {
+        let mut conn = setup_test_db();
+
+        // Populate an account and some data
+        conn.execute(
+            "INSERT INTO accounts (id, name, type, currency, opening_balance, current_balance)
+             VALUES (1, 'Main Bank', 'bank', 'INR', 1000.0, 1000.0)",
+            [],
+        ).unwrap();
+
+        // Perform wipe transaction simulation
+        let tx = conn.transaction().unwrap();
+        tx.execute_batch(
+            "DELETE FROM transaction_tags;
+             DELETE FROM transactions;
+             DELETE FROM account_ledger;
+             DELETE FROM budget_categories;
+             DELETE FROM budgets;
+             DELETE FROM bills;
+             DELETE FROM investment_price_history;
+             DELETE FROM investment_holdings;
+             DELETE FROM exchange_rates;
+             DELETE FROM debts;
+             DELETE FROM networth_history;
+             DELETE FROM shopping_list_items;
+             DELETE FROM warranties;
+             DELETE FROM recurring_rules;
+             DELETE FROM goal_contributions;
+             DELETE FROM goals;
+             DELETE FROM tags;
+             DELETE FROM categories;
+             DELETE FROM accounts;
+             DELETE FROM app_settings;
+             DELETE FROM sqlite_sequence;"
+        ).unwrap();
+        seed_defaults(&tx).unwrap();
+        tx.commit().unwrap();
+
+        // App settings must exist immediately
+        let base_cur: String = conn.query_row(
+            "SELECT base_currency FROM app_settings WHERE id = 1",
+            [],
+            |r| r.get(0),
+        ).unwrap();
+        assert_eq!(base_cur, "INR");
+
+        // Starter categories and tags must exist
+        let cat_count: i64 = conn.query_row("SELECT COUNT(*) FROM categories", [], |r| r.get(0)).unwrap();
+        assert!(cat_count > 0);
+
+        // Change currency to USD via UPSERT
+        conn.execute(
+            "INSERT INTO app_settings (id, base_currency) VALUES (1, ?1)
+             ON CONFLICT(id) DO UPDATE SET base_currency = excluded.base_currency",
+            rusqlite::params!["USD"],
+        ).unwrap();
+
+        let updated_cur: String = conn.query_row(
+            "SELECT base_currency FROM app_settings WHERE id = 1",
+            [],
+            |r| r.get(0),
+        ).unwrap();
+        assert_eq!(updated_cur, "USD");
     }
 }
 
