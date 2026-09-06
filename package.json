@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "release": "npm run build && tauri build --no-bundle && cp -f src-tauri/target/release/lynvest ~/.local/bin/lynvest.tmp && mv -f ~/.local/bin/lynvest.tmp ~/.local/bin/lynvest"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",
