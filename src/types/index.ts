@@ -613,3 +613,12 @@ export interface ChangePinPayload {
   new_pin: string;
 }
 
+export interface AppUpdateInfo {
+  has_update: boolean;
+  current_version: string;
+  latest_version: string;
+  release_notes: string;
+  published_at: string;
+  download_url: string;
+}
+

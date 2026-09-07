@@ -56,6 +56,7 @@ import {
   CreateGoalPayload,
   UpdateGoalPayload,
   ContributeGoalPayload,
+  AppUpdateInfo,
 } from '../types';
 
 interface AppStoreState {
@@ -125,6 +126,18 @@ interface AppStoreState {
   fetchCategorySpendingReport: (filter?: ReportDateFilter) => Promise<CategorySpendingReportItem[]>;
   fetchIncomeExpenseTrend: (filter?: ReportDateFilter) => Promise<IncomeExpenseTrendItem[]>;
   fetchInvestmentPerformanceReport: () => Promise<InvestmentPerformanceReport>;
+
+  // In-App Auto Update System
+  updateInfo: AppUpdateInfo | null;
+  isCheckingUpdate: boolean;
+  isInstallingUpdate: boolean;
+  updateInstallSuccess: boolean;
+  updateError: string | null;
+  dismissUpdateBanner: boolean;
+  checkForAppUpdate: () => Promise<void>;
+  installAppUpdate: () => Promise<void>;
+  restartApp: () => Promise<void>;
+  setDismissUpdateBanner: (dismiss: boolean) => void;
 
   // Accounts
   loadAccounts: (includeArchived?: boolean) => Promise<void>;
@@ -247,6 +260,12 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
   netWorthSummary: null,
   netWorthHistory: [],
   backups: [],
+  updateInfo: null,
+  isCheckingUpdate: false,
+  isInstallingUpdate: false,
+  updateInstallSuccess: false,
+  updateError: null,
+  dismissUpdateBanner: false,
   isUnlocked: true,
   isLoading: true,
   theme: 'dark',
@@ -304,6 +323,8 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
         get().loadNetWorthHistory(),
       ]);
       set({ isLoading: false });
+      // Quietly check for app updates in background
+      get().checkForAppUpdate();
     } catch (err: unknown) {
       set({
         isLoading: false,
@@ -1475,4 +1496,45 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
       throw new Error(msg);
     }
   },
+
+  // In-App Auto Update System
+  checkForAppUpdate: async () => {
+    set({ isCheckingUpdate: true, updateError: null });
+    try {
+      const info = await invoke<AppUpdateInfo>('check_app_update');
+      set({ updateInfo: info, isCheckingUpdate: false });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error('Failed to check for updates:', msg);
+      set({ isCheckingUpdate: false });
+    }
+  },
+
+  installAppUpdate: async () => {
+    const info = get().updateInfo;
+    set({ isInstallingUpdate: true, updateError: null });
+    try {
+      await invoke<string>('install_app_update', {
+        downloadUrl: info?.download_url || null,
+      });
+      set({ isInstallingUpdate: false, updateInstallSuccess: true });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      set({ isInstallingUpdate: false, updateError: msg });
+      throw new Error(msg);
+    }
+  },
+
+  restartApp: async () => {
+    try {
+      await invoke('restart_application');
+    } catch (err: unknown) {
+      console.error('Failed to restart application:', err);
+    }
+  },
+
+  setDismissUpdateBanner: (dismiss: boolean) => {
+    set({ dismissUpdateBanner: dismiss });
+  },
 }));
+

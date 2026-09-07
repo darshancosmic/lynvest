@@ -16,6 +16,7 @@ import { DebtsPage } from './pages/DebtsPage';
 import { ReportsPage } from './pages/ReportsPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { TransactionModal } from './components/TransactionModal';
+import { UpdateBanner } from './components/UpdateBanner';
 import { RefreshCw, Coins } from 'lucide-react';
 import './App.css';
 
@@ -81,6 +82,7 @@ export const App: React.FC = () => {
     }`}>
       <Sidebar onOpenQuickTransaction={() => setIsQuickTxnOpen(true)} />
       <main className="flex-1 h-full overflow-y-auto p-6 sm:p-8 max-w-7xl custom-scrollbar">
+        <UpdateBanner />
         {activeTab === 'dashboard' && <Dashboard />}
         {activeTab === 'accounts' && <AccountsPage />}
         {activeTab === 'transactions' && <TransactionsPage />}

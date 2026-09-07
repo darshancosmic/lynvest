@@ -19,7 +19,7 @@ use crate::models::{
     UpdateCategoryPayload, UpdateDebtPayload, UpdateHoldingPayload,
     UpdateRecurringRulePayload, UpdateTransactionPayload, UpdateWarrantyPayload, WarrantyItem,
     Goal, CreateGoalPayload, UpdateGoalPayload, ContributeGoalPayload,
-    BillReminder, UpdateNotificationSettingsPayload,
+    BillReminder, UpdateNotificationSettingsPayload, AppUpdateInfo,
 };
 
 // --- Exchange Rate Helper ---
@@ -4372,3 +4372,163 @@ pub fn check_and_send_due_reminders(state: State<AppState>) -> Result<Vec<BillRe
 
     Ok(reminders)
 }
+
+// --- In-App Auto Update System ---
+fn is_version_greater(latest: &str, current: &str) -> bool {
+    let parse_parts = |v: &str| -> Vec<u32> {
+        v.trim_start_matches('v')
+            .split('.')
+            .filter_map(|p| p.parse::<u32>().ok())
+            .collect()
+    };
+    let l_parts = parse_parts(latest);
+    let c_parts = parse_parts(current);
+
+    for i in 0..std::cmp::max(l_parts.len(), c_parts.len()) {
+        let l = l_parts.get(i).copied().unwrap_or(0);
+        let c = c_parts.get(i).copied().unwrap_or(0);
+        if l > c {
+            return true;
+        } else if l < c {
+            return false;
+        }
+    }
+    false
+}
+
+#[tauri::command]
+pub fn check_app_update() -> Result<AppUpdateInfo, String> {
+    let current_version = env!("CARGO_PKG_VERSION").to_string();
+
+    let output = std::process::Command::new("curl")
+        .arg("-fsSL")
+        .arg("--connect-timeout")
+        .arg("4")
+        .arg("--max-time")
+        .arg("8")
+        .arg("https://raw.githubusercontent.com/darshancosmic/lynvest/main/version.json")
+        .output();
+
+    if let Ok(out) = output {
+        if out.status.success() {
+            if let Ok(json_str) = String::from_utf8(out.stdout) {
+                if let Ok(val) = serde_json::from_str::<serde_json::Value>(&json_str) {
+                    let latest_ver = val["version"].as_str().unwrap_or(&current_version).to_string();
+                    let release_notes = val["notes"].as_str().unwrap_or("Performance improvements and bug fixes.").to_string();
+                    let published_at = val["release_date"].as_str().unwrap_or("").to_string();
+                    let download_url = val["tarball_url"].as_str().unwrap_or(
+                        "https://raw.githubusercontent.com/darshancosmic/lynvest/main/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz"
+                    ).to_string();
+
+                    let has_update = is_version_greater(&latest_ver, &current_version);
+
+                    return Ok(AppUpdateInfo {
+                        has_update,
+                        current_version: current_version.clone(),
+                        latest_version: latest_ver,
+                        release_notes,
+                        published_at,
+                        download_url,
+                    });
+                }
+            }
+        }
+    }
+
+    Ok(AppUpdateInfo {
+        has_update: false,
+        current_version: current_version.clone(),
+        latest_version: current_version,
+        release_notes: String::new(),
+        published_at: String::new(),
+        download_url: String::new(),
+    })
+}
+
+#[tauri::command]
+pub fn install_app_update(download_url: Option<String>) -> Result<String, String> {
+    let url = download_url.unwrap_or_else(|| {
+        "https://raw.githubusercontent.com/darshancosmic/lynvest/main/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz".to_string()
+    });
+
+    let home = std::env::var("HOME").map_err(|_| "Could not find HOME directory".to_string())?;
+    let target_bin_dir = PathBuf::from(&home).join(".local/bin");
+    let target_bin = target_bin_dir.join("lynvest");
+    let temp_dir = PathBuf::from("/tmp/lynvest_update_staging");
+
+    if temp_dir.exists() {
+        let _ = fs::remove_dir_all(&temp_dir);
+    }
+    fs::create_dir_all(&temp_dir).map_err(|e| format!("Failed to create temp directory: {}", e))?;
+
+    let tar_file = temp_dir.join("package.tar.gz");
+
+    let curl_status = std::process::Command::new("curl")
+        .arg("-fsSL")
+        .arg("--connect-timeout")
+        .arg("10")
+        .arg(&url)
+        .arg("-o")
+        .arg(&tar_file)
+        .status()
+        .map_err(|e| format!("Failed to download update: {}", e))?;
+
+    if !curl_status.success() {
+        let _ = fs::remove_dir_all(&temp_dir);
+        return Err("Failed to download update package. Please verify network connection.".to_string());
+    }
+
+    let tar_status = std::process::Command::new("tar")
+        .arg("-xzf")
+        .arg(&tar_file)
+        .arg("-C")
+        .arg(&temp_dir)
+        .status()
+        .map_err(|e| format!("Failed to extract update package: {}", e))?;
+
+    if !tar_status.success() {
+        let _ = fs::remove_dir_all(&temp_dir);
+        return Err("Failed to extract update archive".to_string());
+    }
+
+    let mut extracted_bin = temp_dir.join("lynvest");
+    if !extracted_bin.exists() {
+        if let Ok(entries) = fs::read_dir(&temp_dir) {
+            for entry in entries.flatten() {
+                let candidate = entry.path().join("lynvest");
+                if candidate.exists() {
+                    extracted_bin = candidate;
+                    break;
+                }
+            }
+        }
+    }
+
+    if !extracted_bin.exists() {
+        let _ = fs::remove_dir_all(&temp_dir);
+        return Err("Extracted package is missing 'lynvest' executable".to_string());
+    }
+
+    fs::create_dir_all(&target_bin_dir).map_err(|e| format!("Failed to ensure ~/.local/bin exists: {}", e))?;
+
+    let staging_bin = target_bin_dir.join("lynvest.new");
+    fs::copy(&extracted_bin, &staging_bin).map_err(|e| format!("Failed to stage binary: {}", e))?;
+
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        let _ = fs::set_permissions(&staging_bin, fs::Permissions::from_mode(0o755));
+    }
+
+    fs::rename(&staging_bin, &target_bin).map_err(|e| format!("Failed to replace lynvest executable: {}", e))?;
+
+    let _ = fs::remove_dir_all(&temp_dir);
+
+    Ok("Update installed successfully!".to_string())
+}
+
+#[tauri::command]
+pub fn restart_application(app: AppHandle) -> Result<(), String> {
+    app.restart();
+}
+

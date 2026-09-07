@@ -681,3 +681,13 @@ pub struct ContributeGoalPayload {
     pub note: Option<String>,
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct AppUpdateInfo {
+    pub has_update: bool,
+    pub current_version: String,
+    pub latest_version: String,
+    pub release_notes: String,
+    pub published_at: String,
+    pub download_url: String,
+}
+

@@ -28,6 +28,7 @@ import {
   Calendar,
   Sun,
   Moon,
+  Sparkles,
 } from 'lucide-react';
 import {
   getNumberFormatSystem,
@@ -58,6 +59,14 @@ export const SettingsPage: React.FC = () => {
   const setActiveTab = useAppStore(state => state.setActiveTab);
   const updateNotificationSettings = useAppStore(state => state.updateNotificationSettings);
   const sendOsDesktopNotification = useAppStore(state => state.sendOsDesktopNotification);
+  const updateInfo = useAppStore(state => state.updateInfo);
+  const isCheckingUpdate = useAppStore(state => state.isCheckingUpdate);
+  const isInstallingUpdate = useAppStore(state => state.isInstallingUpdate);
+  const updateInstallSuccess = useAppStore(state => state.updateInstallSuccess);
+  const updateError = useAppStore(state => state.updateError);
+  const checkForAppUpdate = useAppStore(state => state.checkForAppUpdate);
+  const installAppUpdate = useAppStore(state => state.installAppUpdate);
+  const restartApp = useAppStore(state => state.restartApp);
 
   // Wipe modal
   const [isWipeModalOpen, setIsWipeModalOpen] = useState(false);
@@ -398,6 +407,85 @@ export const SettingsPage: React.FC = () => {
         }`}>
           <span>Created by <strong className={theme === 'light' ? 'text-purple-700 font-extrabold' : 'text-purple-300 font-extrabold'}>Darshan Cosmic</strong></span>
           <span className="font-mono">Lynvest v0.1.0 • Native Linux Desktop</span>
+        </div>
+      </div>
+
+      {/* Software Version & Updates Card */}
+      <div className={`p-5 rounded-2xl border transition-all ${
+        theme === 'light'
+          ? 'bg-white border-purple-200/80 shadow-sm'
+          : 'bg-zinc-900/80 border-zinc-800'
+      }`}>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-purple-400" />
+              <h3 className={`text-sm font-bold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
+                Software Version & In-App Updates
+              </h3>
+              <span className={`px-2 py-0.5 rounded-full text-[10px] font-black border ${
+                updateInfo?.has_update
+                  ? 'bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-700'
+                  : 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800'
+              }`}>
+                {updateInfo?.has_update ? `Update Available: v${updateInfo.latest_version}` : 'Up to Date (v0.1.0)'}
+              </span>
+            </div>
+            <p className={`text-xs ${theme === 'light' ? 'text-slate-600' : 'text-zinc-400'}`}>
+              {updateInfo?.has_update
+                ? (updateInfo.release_notes || 'A new release is available on GitHub.')
+                : 'You are running the latest compiled native release of Lynvest.'}
+            </p>
+            {updateError && (
+              <p className="text-xs text-rose-500 font-bold pt-1">{updateError}</p>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2.5 shrink-0">
+            {updateInstallSuccess ? (
+              <button
+                type="button"
+                onClick={restartApp}
+                className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black flex items-center gap-2 shadow-md shadow-emerald-950/40 cursor-pointer animate-pulse"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Restart to Apply</span>
+              </button>
+            ) : updateInfo?.has_update ? (
+              <button
+                type="button"
+                disabled={isInstallingUpdate}
+                onClick={installAppUpdate}
+                className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white text-xs font-black flex items-center gap-2 shadow-md shadow-purple-950/40 cursor-pointer transition-all"
+              >
+                {isInstallingUpdate ? (
+                  <>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    <span>Installing...</span>
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Install v{updateInfo.latest_version}</span>
+                  </>
+                )}
+              </button>
+            ) : (
+              <button
+                type="button"
+                disabled={isCheckingUpdate}
+                onClick={checkForAppUpdate}
+                className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 border cursor-pointer transition-all ${
+                  theme === 'light'
+                    ? 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-800'
+                    : 'bg-zinc-800 hover:bg-zinc-750 border-zinc-700 text-zinc-200'
+                }`}
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isCheckingUpdate ? 'animate-spin text-purple-400' : ''}`} />
+                <span>{isCheckingUpdate ? 'Checking...' : 'Check for Updates'}</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
