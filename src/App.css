@@ -82,9 +82,14 @@ aside nav button {
 }
 
 /* NIGHT MODE FORM CONTROLS - NEVER WHITE BACKGROUND */
+html.theme-dark,
+body.theme-dark,
+.theme-dark {
+  color-scheme: dark !important;
+}
+
 .theme-dark input,
-.theme-dark textarea,
-.theme-dark select {
+.theme-dark textarea {
   background-color: #130f1e !important;
   color: #ffffff !important;
   border: 1.5px solid rgba(168, 85, 247, 0.3) !important;
@@ -92,9 +97,38 @@ aside nav button {
   font-weight: 600 !important;
 }
 
-.theme-dark select option {
+.theme-dark select {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
   background-color: #130f1e !important;
   color: #ffffff !important;
+  border: 1.5px solid rgba(168, 85, 247, 0.3) !important;
+  box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.5), 0 0 6px rgba(147, 51, 234, 0.1) !important;
+  font-weight: 600 !important;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a855f7' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.75rem center !important;
+  background-size: 1rem !important;
+  padding-right: 2.25rem !important;
+  cursor: pointer !important;
+}
+
+.theme-dark select option,
+.theme-dark select optgroup {
+  background-color: #18181b !important;
+  color: #ffffff !important;
+}
+
+.theme-dark input[type="date"],
+.theme-dark input[type="datetime-local"],
+.theme-dark input[type="time"] {
+  color-scheme: dark !important;
+}
+
+.theme-dark input[type="checkbox"],
+.theme-dark input[type="radio"] {
+  accent-color: #a855f7 !important;
 }
 
 .theme-dark input::placeholder,

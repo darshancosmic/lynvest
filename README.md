@@ -9,7 +9,7 @@
 [![Built with: Tauri v2](https://img.shields.io/badge/Built%20with-Tauri%20v2-24C8D8.svg)](https://tauri.app/)
 [![Rust: 1.84+](https://img.shields.io/badge/Rust-1.84%2B-DEA584.svg)](https://www.rust-lang.org/)
 [![Ko-fi: Support](https://img.shields.io/badge/Ko--fi-Support%20Creator-FF5E5B?logo=kofi&logoColor=white)](https://ko-fi.com/cosmicdarshan)
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Donate-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/cosmicdarshan)
+[![UPI: Support (India)](https://img.shields.io/badge/UPI-darshancosmic%40upi-00B074)](public/upi-qr.png)
 [![Architecture & Guide](https://img.shields.io/badge/Documentation-Project%20Guide-8A2BE2.svg)](PROJECT_GUIDE.md)
 
 *Modeled on the productivity of top personal finance suites, built completely local, private, and bloat-free.*
@@ -125,20 +125,21 @@ The compiled binary will be placed at `~/.local/bin/lynvest` and `src-tauri/targ
 - Automated daily backup snapshots rotated to keep the last 10 versions.
 - Off-machine USB export to back up your database to physical drives.
 
----
-
 ## Support & Sponsorship
 
-If Lynvest helps you take control of your financial privacy and simplifies your personal accounting, please consider buying a coffee to support continued development and maintenance:
+If Lynvest helps you take control of your financial privacy and simplifies your personal accounting, please consider supporting continued development and maintenance:
+
+### 🇮🇳 For Indian Supporters (UPI & QR Code)
+- **UPI ID**: `darshancosmic@upi`
+- **Supported Apps**: Google Pay, PhonePe, Paytm, BHIM, CRED, Navi & any Indian banking app.
 
 <div align="center">
-
-[![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20on%20Ko--fi-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white)](https://ko-fi.com/cosmicdarshan)
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Donate-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/cosmicdarshan)
-
-☕ **Ko-fi**: [https://ko-fi.com/cosmicdarshan](https://ko-fi.com/cosmicdarshan) &nbsp;•&nbsp; 💛 **Buy Me a Coffee**: [https://buymeacoffee.com/cosmicdarshan](https://buymeacoffee.com/cosmicdarshan)
-
+  <img src="public/upi-qr.png" alt="UPI QR Code - darshancosmic@upi" width="220" />
 </div>
+
+### 🌍 For International Supporters (Ko-fi)
+- [![Support on Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20on%20Ko--fi-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white)](https://ko-fi.com/cosmicdarshan)
+- ☕ **Ko-fi**: [https://ko-fi.com/cosmicdarshan](https://ko-fi.com/cosmicdarshan) (Credit/Debit Card & PayPal accepted)
 
 ---
 

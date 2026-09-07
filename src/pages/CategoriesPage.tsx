@@ -350,7 +350,7 @@ export const CategoriesPage: React.FC = () => {
                 <select
                   value={parentId || ''}
                   onChange={(e) => setParentId(e.target.value ? Number(e.target.value) : null)}
-                  className="w-full px-3 py-2  rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                  className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
                 >
                   <option value="">None (Top-Level Category)</option>
                   {rootCategories

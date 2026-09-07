@@ -1,7 +1,7 @@
 {
   "name": "lynvest",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Lynvest — Offline, private personal money and investment manager for Linux",
   "type": "module",
   "scripts": {

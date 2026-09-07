@@ -249,7 +249,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                 required
                 value={accountId}
                 onChange={(e) => setAccountId(Number(e.target.value))}
-                className="w-full px-3 py-2  rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
               >
                 {activeAccounts.map((acc) => (
                   <option key={acc.id} value={acc.id}>
@@ -268,7 +268,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                   required
                   value={transferToAccountId || ''}
                   onChange={(e) => setTransferToAccountId(Number(e.target.value))}
-                  className="w-full px-3 py-2  rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                  className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
                 >
                   <option value="">-- Select Target --</option>
                   {activeAccounts
@@ -288,7 +288,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
                 <select
                   value={categoryId || ''}
                   onChange={(e) => setCategoryId(e.target.value ? Number(e.target.value) : null)}
-                  className="w-full px-3 py-2  rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                  className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
                 >
                   <option value="">Uncategorized</option>
                   {filteredCategories.map((c) => (
@@ -325,7 +325,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
               <select
                 value={frequency}
                 onChange={(e) => setFrequency(e.target.value as RecurringFrequency)}
-                className="w-full px-3 py-2  rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
               >
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
@@ -359,7 +359,7 @@ export const RecurringRuleModal: React.FC<RecurringRuleModalProps> = ({
               <select
                 value={paymentType}
                 onChange={(e) => setPaymentType(e.target.value as PaymentType)}
-                className="w-full px-3 py-2  rounded-xl text-sm text-zinc-950 font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
               >
                 <option value="upi">UPI</option>
                 <option value="card">Card</option>

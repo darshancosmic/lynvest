@@ -333,7 +333,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
               required
               value={accountId}
               onChange={(e) => setAccountId(Number(e.target.value))}
-              className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+              className="w-full px-3 py-2 rounded-xl text-sm font-bold bg-zinc-950 border border-zinc-800 text-white focus:outline-none focus:border-purple-500 cursor-pointer"
             >
               {activeAccounts.map((acc) => (
                 <option key={acc.id} value={acc.id}>
@@ -358,7 +358,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                 required
                 value={transferToAccountId || ''}
                 onChange={(e) => setTransferToAccountId(Number(e.target.value))}
-                className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                className="w-full px-3 py-2 rounded-xl text-sm font-bold bg-zinc-950 border border-zinc-800 text-white focus:outline-none focus:border-purple-500 cursor-pointer"
               >
                 <option value="">-- Select Destination Account --</option>
                 {activeAccounts
@@ -386,7 +386,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
               <select
                 value={categoryId || ''}
                 onChange={(e) => setCategoryId(e.target.value ? Number(e.target.value) : null)}
-                className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                className="w-full px-3 py-2 rounded-xl text-sm font-bold bg-zinc-950 border border-zinc-800 text-white focus:outline-none focus:border-purple-500 cursor-pointer"
               >
                 <option value="">Uncategorized</option>
                 {filteredCategories.map((c) => (
@@ -475,7 +475,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
               <select
                 value={paymentType}
                 onChange={(e) => setPaymentType(e.target.value as PaymentType)}
-                className="w-full px-3 py-2 rounded-xl text-sm font-bold focus:outline-none focus:border-purple-500 cursor-pointer"
+                className="w-full px-3 py-2 rounded-xl text-sm font-bold bg-zinc-950 border border-zinc-800 text-white focus:outline-none focus:border-purple-500 cursor-pointer"
               >
                 <option value="upi">UPI</option>
                 <option value="card">Debit/Credit Card</option>
