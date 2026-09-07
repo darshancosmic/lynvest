@@ -106,7 +106,7 @@ export const SettingsPage: React.FC = () => {
   const [copiedUpi, setCopiedUpi] = useState(false);
 
   const handleCopyUpi = () => {
-    navigator.clipboard.writeText('darshancosmic@upi');
+    navigator.clipboard.writeText('cosmicdarshan@upi');
     setCopiedUpi(true);
     setTimeout(() => setCopiedUpi(false), 2500);
   };
@@ -1465,7 +1465,7 @@ export const SettingsPage: React.FC = () => {
             <div className="p-3 bg-white rounded-2xl shadow-inner flex flex-col items-center justify-center">
               <img
                 src="/upi-qr.png"
-                alt="UPI QR Code - darshancosmic@upi"
+                alt="UPI QR Code - cosmicdarshan@upi"
                 className="w-52 h-52 object-contain rounded-lg"
               />
               <span className="text-[11px] font-bold text-zinc-800 mt-1">BHIM / UPI Accepted</span>
@@ -1475,7 +1475,7 @@ export const SettingsPage: React.FC = () => {
               <label className="text-xs text-zinc-400 font-semibold block">UPI ID</label>
               <div className="flex items-center gap-2 p-2 rounded-xl bg-zinc-950 border border-zinc-800">
                 <span className="text-xs font-mono font-bold text-emerald-400 flex-1 select-all pl-1">
-                  darshancosmic@upi
+                  cosmicdarshan@upi
                 </span>
                 <button
                   type="button"
