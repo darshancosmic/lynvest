@@ -18,6 +18,8 @@ import {
   Camera,
   Target,
   Trophy,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -53,6 +55,7 @@ export const Dashboard: React.FC = () => {
 
   const [isTxnModalOpen, setIsTxnModalOpen] = useState(false);
   const [payingBillId, setPayingBillId] = useState<number | null>(null);
+  const [isPrivacyMode, setIsPrivacyMode] = useState(false);
 
   useEffect(() => {
     loadAccounts(false);
@@ -78,6 +81,7 @@ export const Dashboard: React.FC = () => {
   const baseCurrency = settings?.base_currency || 'INR';
 
   const formatCurrency = (val: number, cur = baseCurrency) => {
+    if (isPrivacyMode) return '••••••';
     return formatIndianCurrency(val, cur);
   };
 
@@ -120,13 +124,33 @@ export const Dashboard: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-white">Financial Dashboard</h2>
+          <div className="flex items-center gap-2.5">
+            <h2 className="text-2xl font-bold tracking-tight text-white">Financial Dashboard</h2>
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-500/20 text-purple-400 border border-purple-500/30">
+              v0.1.1
+            </span>
+          </div>
           <p className="text-xs text-zinc-400 mt-1">
             Real-time balance derived via audit-ready SQLite ledger
           </p>
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            title={isPrivacyMode ? "Show Balances" : "Hide Balances for Privacy"}
+            onClick={() => setIsPrivacyMode(!isPrivacyMode)}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
+              isPrivacyMode
+                ? 'bg-purple-600/20 border-purple-500/50 text-purple-400'
+                : theme === 'light'
+                ? 'bg-white hover:bg-zinc-100 text-black border-zinc-300'
+                : 'bg-zinc-900 hover:bg-zinc-800 text-white border-zinc-700'
+            }`}
+          >
+            {isPrivacyMode ? <EyeOff className="w-3.5 h-3.5 text-purple-400" /> : <Eye className="w-3.5 h-3.5" />}
+            <span>{isPrivacyMode ? 'Masked' : 'Privacy'}</span>
+          </button>
           <button
             type="button"
             title="Snapshot Net Worth Now"

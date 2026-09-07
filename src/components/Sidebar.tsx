@@ -64,11 +64,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenQuickTransaction }) => {
             <Coins className="w-5 h-5" />
           </div>
           <div>
-            <h1 className={`font-black text-sm tracking-tight leading-tight ${
-              theme === 'light' ? 'text-black' : 'text-white'
-            }`}>
-              Lynvest
-            </h1>
+            <div className="flex items-center gap-1.5">
+              <h1 className={`font-black text-sm tracking-tight leading-tight ${
+                theme === 'light' ? 'text-black' : 'text-white'
+              }`}>
+                Lynvest
+              </h1>
+              <span className="px-1.5 py-0.2 rounded text-[9px] font-black bg-purple-500/15 text-purple-400 border border-purple-500/25">
+                v0.1.1
+              </span>
+            </div>
             <p className={`text-[10px] font-extrabold tracking-wide flex items-center gap-1 ${
               theme === 'light' ? 'text-purple-700' : 'text-purple-400'
             }`}>

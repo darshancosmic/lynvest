@@ -1,7 +1,7 @@
 {
   "name": "lynvest",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lynvest — Offline, private personal money and investment manager for Linux",
   "type": "module",
   "scripts": {
@@ -9,7 +9,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "release": "npm run build && tauri build --no-bundle && cp -f src-tauri/target/release/lynvest ~/.local/bin/lynvest.tmp && mv -f ~/.local/bin/lynvest.tmp ~/.local/bin/lynvest"
+    "release": "npm run build && tauri build --no-bundle",
+    "install:local": "npm run release && cp -f src-tauri/target/release/lynvest ~/.local/bin/lynvest.tmp && mv -f ~/.local/bin/lynvest.tmp ~/.local/bin/lynvest"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

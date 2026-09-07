@@ -1,6 +1,6 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "release_date": "2026-09-07",
-  "notes": "Apple-inspired fluid UI, double-entry ledger security, 100% offline private vault.",
-  "tarball_url": "https://raw.githubusercontent.com/darshancosmic/lynvest/main/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz"
+  "notes": "Added Quick Balance Privacy Mask toggle in header and v0.1.1 performance polish!",
+  "tarball_url": "https://raw.githubusercontent.com/darshancosmic/lynvest/main/dist-packages/lynvest-0.1.1-linux-x86_64.tar.gz"
 }

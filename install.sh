@@ -119,35 +119,45 @@ elif [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/lynvest" ]; then
     SOURCE_BIN="$SCRIPT_DIR/lynvest"
     SOURCE_ICON="$SCRIPT_DIR/lynvest.png"
     SOURCE_DESKTOP="$SCRIPT_DIR/lynvest.desktop"
-elif [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz" ]; then
-    print_sub "Extracting from local dist-packages tarball"
+elif [ -n "$SCRIPT_DIR" ] && compgen -G "$SCRIPT_DIR/dist-packages/lynvest-*-linux-x86_64.tar.gz" >/dev/null; then
+    LOCAL_TAR=$(ls -1t "$SCRIPT_DIR"/dist-packages/lynvest-*-linux-x86_64.tar.gz | head -n 1)
+    print_sub "Extracting from $(basename "$LOCAL_TAR")"
     TEMP_DIR=$(mktemp -d)
-    tar -xzf "$SCRIPT_DIR/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz" -C "$TEMP_DIR"
-    SOURCE_BIN="$TEMP_DIR/lynvest-0.1.0/lynvest"
-    SOURCE_ICON="$TEMP_DIR/lynvest-0.1.0/lynvest.png"
-    SOURCE_DESKTOP="$TEMP_DIR/lynvest-0.1.0/lynvest.desktop"
-elif [ -f "$HOME/Projects/lynvest/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz" ]; then
-    print_sub "Extracting from ~/Projects/lynvest dist-packages tarball"
+    tar -xzf "$LOCAL_TAR" -C "$TEMP_DIR"
+    SOURCE_BIN=$(find "$TEMP_DIR" -type f -name "lynvest" | head -n 1)
+    SOURCE_ICON=$(find "$TEMP_DIR" -type f -name "*.png" | head -n 1)
+    SOURCE_DESKTOP=$(find "$TEMP_DIR" -type f -name "*.desktop" | head -n 1)
+elif [ -d "$HOME/Projects/lynvest/dist-packages" ] && compgen -G "$HOME/Projects/lynvest/dist-packages/lynvest-*-linux-x86_64.tar.gz" >/dev/null; then
+    LOCAL_TAR=$(ls -1t "$HOME"/Projects/lynvest/dist-packages/lynvest-*-linux-x86_64.tar.gz | head -n 1)
+    print_sub "Extracting from $(basename "$LOCAL_TAR")"
     TEMP_DIR=$(mktemp -d)
-    tar -xzf "$HOME/Projects/lynvest/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz" -C "$TEMP_DIR"
-    SOURCE_BIN="$TEMP_DIR/lynvest-0.1.0/lynvest"
-    SOURCE_ICON="$TEMP_DIR/lynvest-0.1.0/lynvest.png"
-    SOURCE_DESKTOP="$TEMP_DIR/lynvest-0.1.0/lynvest.desktop"
+    tar -xzf "$LOCAL_TAR" -C "$TEMP_DIR"
+    SOURCE_BIN=$(find "$TEMP_DIR" -type f -name "lynvest" | head -n 1)
+    SOURCE_ICON=$(find "$TEMP_DIR" -type f -name "*.png" | head -n 1)
+    SOURCE_DESKTOP=$(find "$TEMP_DIR" -type f -name "*.desktop" | head -n 1)
 else
     print_sub "Downloading verified release package from GitHub..."
     TEMP_DIR=$(mktemp -d)
-    RAW_URL="https://raw.githubusercontent.com/$GITHUB_REPO/main/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz"
-    RELEASE_URL="https://github.com/$GITHUB_REPO/releases/download/v0.1.0/lynvest-0.1.0-linux-x86_64.tar.gz"
+    
+    # Query latest version from version.json or fallback
+    LATEST_VER=$(curl -fsSL --connect-timeout 4 "https://raw.githubusercontent.com/$GITHUB_REPO/main/version.json" 2>/dev/null | grep -o '"version": *"[^"]*"' | head -n 1 | cut -d'"' -f4 || echo "0.1.1")
+    [ -z "$LATEST_VER" ] && LATEST_VER="0.1.1"
+
+    RAW_URL="https://raw.githubusercontent.com/$GITHUB_REPO/main/dist-packages/lynvest-${LATEST_VER}-linux-x86_64.tar.gz"
+    FALLBACK_RAW_URL="https://raw.githubusercontent.com/$GITHUB_REPO/main/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz"
+    RELEASE_URL="https://github.com/$GITHUB_REPO/releases/download/v${LATEST_VER}/lynvest-${LATEST_VER}-linux-x86_64.tar.gz"
     
     if curl -fSL --progress-bar "$RAW_URL" -o "$TEMP_DIR/lynvest.tar.gz" 2>/dev/null; then
-        print_ok "Downloaded latest build from repository"
+        print_ok "Downloaded v${LATEST_VER} build from repository"
+    elif curl -fSL --progress-bar "$FALLBACK_RAW_URL" -o "$TEMP_DIR/lynvest.tar.gz" 2>/dev/null; then
+        print_ok "Downloaded build from repository"
     else
         curl -fSL --progress-bar "$RELEASE_URL" -o "$TEMP_DIR/lynvest.tar.gz"
     fi
     tar -xzf "$TEMP_DIR/lynvest.tar.gz" -C "$TEMP_DIR"
-    SOURCE_BIN="$TEMP_DIR/lynvest-0.1.0/lynvest"
-    SOURCE_ICON="$TEMP_DIR/lynvest-0.1.0/lynvest.png"
-    SOURCE_DESKTOP="$TEMP_DIR/lynvest-0.1.0/lynvest.desktop"
+    SOURCE_BIN=$(find "$TEMP_DIR" -type f -name "lynvest" | head -n 1)
+    SOURCE_ICON=$(find "$TEMP_DIR" -type f -name "*.png" | head -n 1)
+    SOURCE_DESKTOP=$(find "$TEMP_DIR" -type f -name "*.desktop" | head -n 1)
 fi
 print_ok "Package extracted and verified successfully"
 echo ""

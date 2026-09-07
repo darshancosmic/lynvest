@@ -406,7 +406,7 @@ export const SettingsPage: React.FC = () => {
           theme === 'light' ? 'border-purple-200 text-slate-700' : 'border-zinc-800 text-zinc-300'
         }`}>
           <span>Created by <strong className={theme === 'light' ? 'text-purple-700 font-extrabold' : 'text-purple-300 font-extrabold'}>Darshan Cosmic</strong></span>
-          <span className="font-mono">Lynvest v0.1.0 • Native Linux Desktop</span>
+          <span className="font-mono">Lynvest v0.1.1 • Native Linux Desktop</span>
         </div>
       </div>
 
@@ -428,7 +428,7 @@ export const SettingsPage: React.FC = () => {
                   ? 'bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-700'
                   : 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800'
               }`}>
-                {updateInfo?.has_update ? `Update Available: v${updateInfo.latest_version}` : 'Up to Date (v0.1.0)'}
+                {updateInfo?.has_update ? `Update Available: v${updateInfo.latest_version}` : `Up to Date (v${updateInfo?.current_version || '0.1.1'})`}
               </span>
             </div>
             <p className={`text-xs ${theme === 'light' ? 'text-slate-600' : 'text-zinc-400'}`}>

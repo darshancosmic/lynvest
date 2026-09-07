@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BIN="$ROOT_DIR/src-tauri/target/release/lynvest"
 DIST="$ROOT_DIR/dist-packages"
 PKG_DIR="$ROOT_DIR/packaging"
-VERSION="0.1.0"
+VERSION="0.1.1"
 
 if [ ! -f "$BIN" ]; then
     echo "Binary $BIN not found! Run npm run release first."

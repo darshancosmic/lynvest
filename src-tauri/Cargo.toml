@@ -1,6 +1,6 @@
 [package]
 name = "lynvest"
-version = "0.1.0"
+version = "0.1.1"
 description = "Lynvest - Linux Personal Money & Investment Manager"
 authors = ["Darshan Cosmic <darshancosmic>"]
 license = "GPL-3.0-or-later"
