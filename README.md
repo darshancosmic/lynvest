@@ -10,6 +10,7 @@
 [![Rust: 1.84+](https://img.shields.io/badge/Rust-1.84%2B-DEA584.svg)](https://www.rust-lang.org/)
 [![Ko-fi: Support](https://img.shields.io/badge/Ko--fi-Support%20Creator-FF5E5B?logo=kofi&logoColor=white)](https://ko-fi.com/cosmicdarshan)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Donate-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/cosmicdarshan)
+[![Architecture & Guide](https://img.shields.io/badge/Documentation-Project%20Guide-8A2BE2.svg)](PROJECT_GUIDE.md)
 
 *Modeled on the productivity of top personal finance suites, built completely local, private, and bloat-free.*
 
