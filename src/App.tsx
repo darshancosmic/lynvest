@@ -15,7 +15,9 @@ import { InvestmentsPage } from './pages/InvestmentsPage';
 import { DebtsPage } from './pages/DebtsPage';
 import { ReportsPage } from './pages/ReportsPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { CalculatorsPage } from './pages/CalculatorsPage';
 import { TransactionModal } from './components/TransactionModal';
+import { CommandPalette } from './components/CommandPalette';
 import { UpdateBanner } from './components/UpdateBanner';
 import { RefreshCw, Coins } from 'lucide-react';
 import './App.css';
@@ -32,6 +34,7 @@ export const App: React.FC = () => {
   const theme = useAppStore(state => state.theme);
 
   const [isQuickTxnOpen, setIsQuickTxnOpen] = React.useState(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false);
 
   useEffect(() => {
     initApp();
@@ -39,19 +42,25 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl+K or Cmd+K opens Command Palette
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen(prev => !prev);
+      }
       // Ctrl+N or Cmd+N opens New Transaction
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+      else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'n') {
         e.preventDefault();
         setIsQuickTxnOpen(true);
       }
-      // Escape closes quick transaction
-      if (e.key === 'Escape' && isQuickTxnOpen) {
-        setIsQuickTxnOpen(false);
+      // Escape closes open modals
+      if (e.key === 'Escape') {
+        if (isCommandPaletteOpen) setIsCommandPaletteOpen(false);
+        if (isQuickTxnOpen) setIsQuickTxnOpen(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isQuickTxnOpen]);
+  }, [isQuickTxnOpen, isCommandPaletteOpen]);
 
   const handleQuickTxnSaved = React.useCallback(async () => {
     await Promise.all([
@@ -80,7 +89,10 @@ export const App: React.FC = () => {
     <div className={`h-screen w-screen overflow-hidden flex transition-colors duration-200 ${
       theme === 'light' ? 'theme-light bg-[#f8fafc] text-zinc-950' : 'theme-dark bg-zinc-950 text-zinc-100'
     }`}>
-      <Sidebar onOpenQuickTransaction={() => setIsQuickTxnOpen(true)} />
+      <Sidebar
+        onOpenQuickTransaction={() => setIsQuickTxnOpen(true)}
+        onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
+      />
       <main className="flex-1 h-full overflow-y-auto p-6 sm:p-8 max-w-7xl custom-scrollbar">
         <UpdateBanner />
         {activeTab === 'dashboard' && <Dashboard />}
@@ -95,6 +107,7 @@ export const App: React.FC = () => {
         {activeTab === 'csv_import' && <CsvImportPage />}
         {activeTab === 'investments' && <InvestmentsPage />}
         {activeTab === 'debts' && <DebtsPage />}
+        {activeTab === 'calculators' && <CalculatorsPage />}
         {activeTab === 'reports' && <ReportsPage />}
         {activeTab === 'settings' && <SettingsPage />}
       </main>
@@ -104,6 +117,13 @@ export const App: React.FC = () => {
         isOpen={isQuickTxnOpen}
         onClose={() => setIsQuickTxnOpen(false)}
         onSaved={handleQuickTxnSaved}
+      />
+
+      {/* Universal Command Palette accessible via Ctrl+K or Sidebar button */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        onOpenNewTransaction={() => setIsQuickTxnOpen(true)}
       />
     </div>
   );

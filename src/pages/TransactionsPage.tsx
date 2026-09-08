@@ -13,6 +13,8 @@ import {
   Clock,
   Filter,
   Layers,
+  Download,
+  Printer,
 } from 'lucide-react';
 import { formatIndianDate, formatIndianCurrency } from '../lib/utils';
 
@@ -25,6 +27,7 @@ export const TransactionsPage: React.FC = () => {
   const loadTransactions = useAppStore(state => state.loadTransactions);
   const deleteTransaction = useAppStore(state => state.deleteTransaction);
   const setActiveTab = useAppStore(state => state.setActiveTab);
+  const theme = useAppStore(state => state.theme);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTxn, setSelectedTxn] = useState<Transaction | null>(null);
@@ -109,34 +112,140 @@ export const TransactionsPage: React.FC = () => {
 
   const baseCurrency = settings?.base_currency || 'INR';
 
+  // 1-Click Export to CSV
+  const exportToCsv = () => {
+    if (!transactions.length) {
+      alert('No transactions to export.');
+      return;
+    }
+
+    const headers = [
+      'ID',
+      'Date',
+      'Type',
+      'Account',
+      'Category',
+      'Amount',
+      'Currency',
+      'Base Amount',
+      'Base Currency',
+      'Payment Type',
+      'Note',
+      'Status',
+    ];
+
+    const rows = transactions.map((t) => [
+      t.id,
+      `"${t.txn_date}"`,
+      `"${t.type}"`,
+      `"${(t.account_name || '').replace(/"/g, '""')}"`,
+      `"${(t.category_name || '').replace(/"/g, '""')}"`,
+      t.amount,
+      `"${t.account_currency}"`,
+      t.base_amount,
+      `"${baseCurrency}"`,
+      `"${t.payment_type || ''}"`,
+      `"${(t.note || '').replace(/"/g, '""')}"`,
+      t.is_confirmed ? 'Confirmed' : 'Pending',
+    ]);
+
+    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute(
+      'download',
+      `lynvest-transactions-${new Date().toISOString().split('T')[0]}.csv`
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handlePrintStatement = () => {
+    window.print();
+  };
+
+  // Filtered Summary Stats
+  const filterStats = React.useMemo(() => {
+    let inflow = 0;
+    let outflow = 0;
+    transactions.forEach((t) => {
+      if (t.type === 'income') inflow += t.base_amount;
+      if (t.type === 'expense') outflow += t.base_amount;
+    });
+    return {
+      count: transactions.length,
+      inflow,
+      outflow,
+      net: inflow - outflow,
+    };
+  }, [transactions]);
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-white">Transactions</h2>
-          <p className="text-xs text-zinc-400 mt-1">
+          <h2 className={`text-2xl font-bold tracking-tight ${theme === 'light' ? 'text-slate-950' : 'text-white'}`}>
+            Transactions
+          </h2>
+          <p className={`text-xs mt-1 ${theme === 'light' ? 'text-slate-600 font-medium' : 'text-zinc-400'}`}>
             Real-time income, expense, and transfer records backed by SQLite ledger
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
           <button
             type="button"
-            onClick={() => setActiveTab('accounts')}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs font-medium text-zinc-300 transition-colors cursor-pointer"
+            onClick={exportToCsv}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+              theme === 'light'
+                ? 'bg-white hover:bg-slate-50 border-slate-300 text-slate-800 shadow-xs'
+                : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-zinc-300'
+            }`}
+            title="Export filtered transactions as CSV"
           >
-            <Layers className="w-4 h-4" />
-            Categories
+            <Download className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Export CSV</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handlePrintStatement}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+              theme === 'light'
+                ? 'bg-white hover:bg-slate-50 border-slate-300 text-slate-800 shadow-xs'
+                : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-zinc-300'
+            }`}
+            title="Print statement or save to PDF"
+          >
+            <Printer className="w-3.5 h-3.5 text-purple-400" />
+            <span>Print Statement</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('categories')}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-bold transition-colors cursor-pointer ${
+              theme === 'light'
+                ? 'bg-white hover:bg-slate-50 border-slate-300 text-slate-800'
+                : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-zinc-300'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            <span>Categories</span>
           </button>
 
           <button
             type="button"
             onClick={handleOpenCreate}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-lg shadow-purple-950/50 transition-all cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-black shadow-lg shadow-purple-950/40 transition-all cursor-pointer active:scale-95"
           >
             <Plus className="w-4 h-4" />
-            Add Transaction
+            <span>Add Transaction</span>
           </button>
         </div>
       </div>
@@ -279,6 +388,46 @@ export const TransactionsPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Filtered Summary Stats Banner */}
+      {transactions.length > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className={`p-3 rounded-xl border ${
+            theme === 'light' ? 'bg-white border-slate-200 shadow-xs' : 'bg-zinc-900/80 border-zinc-800'
+          }`}>
+            <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Filtered Count</span>
+            <span className={`text-base font-black font-mono ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
+              {filterStats.count} txns
+            </span>
+          </div>
+          <div className={`p-3 rounded-xl border ${
+            theme === 'light' ? 'bg-emerald-50/50 border-emerald-200' : 'bg-emerald-950/20 border-emerald-900/40'
+          }`}>
+            <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider block">Total Inflows (+)</span>
+            <span className="text-base font-black font-mono text-emerald-400">
+              +{formatIndianCurrency(filterStats.inflow, baseCurrency)}
+            </span>
+          </div>
+          <div className={`p-3 rounded-xl border ${
+            theme === 'light' ? 'bg-rose-50/50 border-rose-200' : 'bg-rose-950/20 border-rose-900/40'
+          }`}>
+            <span className="text-[10px] font-bold text-rose-500 uppercase tracking-wider block">Total Outflows (-)</span>
+            <span className="text-base font-black font-mono text-rose-400">
+              -{formatIndianCurrency(filterStats.outflow, baseCurrency)}
+            </span>
+          </div>
+          <div className={`p-3 rounded-xl border ${
+            filterStats.net >= 0
+              ? theme === 'light' ? 'bg-purple-50 border-purple-200 text-purple-950' : 'bg-purple-950/30 border-purple-800/50 text-purple-200'
+              : 'bg-rose-950/30 border-rose-800 text-rose-300'
+          }`}>
+            <span className="text-[10px] font-bold uppercase tracking-wider block opacity-80">Net Cashflow</span>
+            <span className="text-base font-black font-mono">
+              {filterStats.net >= 0 ? '+' : ''}{formatIndianCurrency(filterStats.net, baseCurrency)}
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Transaction List */}
       {transactions.length === 0 ? (

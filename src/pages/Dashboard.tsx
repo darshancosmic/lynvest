@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { TransactionModal } from '../components/TransactionModal';
+import { FinancialHealthWidget } from '../components/FinancialHealthWidget';
+import { CashflowForecastWidget } from '../components/CashflowForecastWidget';
 import {
   Wallet,
   Building2,
@@ -455,6 +457,12 @@ export const Dashboard: React.FC = () => {
             <CreditCard className="w-5 h-5 text-rose-400" />
           </div>
         </div>
+      </div>
+
+      {/* Financial Health Cockpit & 30-Day Cashflow Projection */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <FinancialHealthWidget />
+        <CashflowForecastWidget />
       </div>
 
       {/* Recent Transactions List */}

@@ -20,10 +20,13 @@ import {
   Target,
   Sun,
   Moon,
+  Calculator,
+  Search,
 } from 'lucide-react';
 
 interface SidebarProps {
   onOpenQuickTransaction?: () => void;
+  onOpenCommandPalette?: () => void;
 }
 
 const navItems = [
@@ -39,11 +42,15 @@ const navItems = [
   { id: 'recurring', label: 'Recurring Rules', icon: Repeat },
   { id: 'investments', label: 'Investments', icon: TrendingUp },
   { id: 'debts', label: 'Debts & Loans', icon: CreditCard },
+  { id: 'calculators', label: 'Calculators', icon: Calculator },
   { id: 'reports', label: 'Reports', icon: BarChart3 },
   { id: 'settings', label: 'Settings', icon: Settings },
 ] as const;
 
-export const Sidebar: React.FC<SidebarProps> = ({ onOpenQuickTransaction }) => {
+export const Sidebar: React.FC<SidebarProps> = ({
+  onOpenQuickTransaction,
+  onOpenCommandPalette,
+}) => {
   const activeTab = useAppStore(state => state.activeTab);
   const setActiveTab = useAppStore(state => state.setActiveTab);
   const billReminders = useAppStore(state => state.billReminders);
@@ -71,7 +78,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenQuickTransaction }) => {
                 Lynvest
               </h1>
               <span className="px-1.5 py-0.2 rounded text-[9px] font-black bg-purple-500/15 text-purple-400 border border-purple-500/25">
-                v0.1.1
+                v0.1.3
               </span>
             </div>
             <p className={`text-[10px] font-extrabold tracking-wide flex items-center gap-1 ${
@@ -85,8 +92,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenQuickTransaction }) => {
         <NotificationBell />
       </div>
 
-      {/* Quick Action Button */}
-      <div className="p-3 pb-1 shrink-0">
+      {/* Quick Action Buttons */}
+      <div className="p-3 pb-1 shrink-0 space-y-1.5">
         <button
           type="button"
           onClick={onOpenQuickTransaction}
@@ -96,6 +103,24 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenQuickTransaction }) => {
           <span>New Transaction</span>
           <kbd className="ml-auto text-[10px] bg-purple-700 px-1.5 py-0.5 rounded text-white font-mono font-bold">
             Ctrl+N
+          </kbd>
+        </button>
+
+        <button
+          type="button"
+          onClick={onOpenCommandPalette}
+          className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl border text-xs transition-colors cursor-pointer ${
+            theme === 'light'
+              ? 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
+              : 'bg-zinc-900 hover:bg-zinc-850 border-zinc-800 text-zinc-300'
+          }`}
+        >
+          <div className="flex items-center gap-2">
+            <Search className="w-3.5 h-3.5 text-purple-400" />
+            <span className="font-semibold text-[11px]">Command Palette</span>
+          </div>
+          <kbd className="text-[10px] px-1.5 py-0.2 rounded font-mono font-bold bg-zinc-800 text-zinc-400 border border-zinc-700">
+            Ctrl+K
           </kbd>
         </button>
       </div>

@@ -99,7 +99,8 @@ interface AppStoreState {
     | 'warranties'
     | 'csv_import'
     | 'reports'
-    | 'settings';
+    | 'settings'
+    | 'calculators';
 
   setActiveTab: (tab: AppStoreState['activeTab']) => void;
   initApp: () => Promise<void>;

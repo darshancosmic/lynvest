@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BIN="$ROOT_DIR/src-tauri/target/release/lynvest"
 DIST="$ROOT_DIR/dist-packages"
 PKG_DIR="$ROOT_DIR/packaging"
-VERSION="0.1.1"
+VERSION="$(grep '"version":' "$ROOT_DIR/package.json" | head -n 1 | awk -F '"' '{print $4}')"
 
 if [ ! -f "$BIN" ]; then
     echo "Binary $BIN not found! Run npm run release first."
@@ -14,7 +14,7 @@ fi
 
 mkdir -p "$DIST"
 
-echo "==> Packaging Universal Portable Tarball with Installer..."
+echo "==> Packaging Universal Portable Tarball with Installer for v$VERSION..."
 TAR_STAGING="$PKG_DIR/tarball_staging/lynvest-$VERSION"
 rm -rf "$PKG_DIR/tarball_staging"
 mkdir -p "$TAR_STAGING"
@@ -29,8 +29,8 @@ cp "$ROOT_DIR/install.sh" "$TAR_STAGING/install.sh"
 cp "$ROOT_DIR/uninstall.sh" "$TAR_STAGING/uninstall.sh"
 chmod +x "$TAR_STAGING/install.sh" "$TAR_STAGING/uninstall.sh"
 
-cat << 'README_EOF' > "$TAR_STAGING/README.txt"
-Lynvest — Personal Finance & Investments (v0.1.0)
+cat << README_EOF > "$TAR_STAGING/README.txt"
+Lynvest — Personal Finance & Investments (v$VERSION)
 ==================================================
 
 Lynvest is a 100% offline, privacy-first personal finance tracker for Linux.
@@ -46,8 +46,8 @@ UNINSTALL:
     ./uninstall.sh
 
 Support & Sponsorship:
-  Buy Me a Coffee: https://buymeacoffee.com/cosmicdarshan
-  Ko-fi:           https://ko-fi.com/cosmicdarshan
+  Ko-fi: https://ko-fi.com/cosmicdarshan
+  UPI:   darshancosmic@axl
 README_EOF
 
 tar -czf "$DIST/lynvest-${VERSION}-linux-x86_64.tar.gz" -C "$PKG_DIR/tarball_staging" "lynvest-$VERSION"

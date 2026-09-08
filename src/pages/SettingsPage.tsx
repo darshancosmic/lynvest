@@ -22,7 +22,6 @@ import {
   Bell,
   Check,
   Heart,
-  QrCode,
   Copy,
   ExternalLink,
   Globe,
@@ -103,6 +102,7 @@ export const SettingsPage: React.FC = () => {
 
   // UPI Support Modal
   const [isUpiModalOpen, setIsUpiModalOpen] = useState(false);
+  const [showUpiDetails, setShowUpiDetails] = useState(false);
   const [copiedUpi, setCopiedUpi] = useState(false);
 
   const handleCopyUpi = () => {
@@ -387,35 +387,28 @@ export const SettingsPage: React.FC = () => {
               theme === 'light' ? 'text-slate-800' : 'text-zinc-100'
             }`}>
               Lynvest is free, 100% offline, and private desktop software built for Linux users worldwide. Zero tracking, zero telemetry.
-              If you find it useful, consider supporting its creator via UPI (India) or Ko-fi!
+              If you find it useful, consider supporting its independent development!
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <div className="flex items-center gap-2.5 shrink-0">
             <button
               type="button"
-              onClick={() => setIsUpiModalOpen(true)}
-              className="px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs flex items-center justify-center gap-2 shadow-md shadow-emerald-950/30 cursor-pointer transition-all active:scale-95 shrink-0"
-            >
-              <QrCode className="w-4 h-4 text-white" />
-              <span>UPI / QR (India)</span>
-            </button>
-            <a
-              href="https://ko-fi.com/cosmicdarshan"
-              target="_blank"
-              rel="noreferrer"
-              className="px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white font-black text-xs flex items-center justify-center gap-2 shadow-md shadow-orange-950/30 cursor-pointer transition-all active:scale-95 shrink-0"
+              onClick={() => {
+                setShowUpiDetails(false);
+                setIsUpiModalOpen(true);
+              }}
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-xs flex items-center justify-center gap-2 shadow-md shadow-purple-950/40 cursor-pointer transition-all active:scale-95 shrink-0"
             >
               <Heart className="w-4 h-4 fill-white" />
-              <span>Ko-fi (International)</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
+              <span>Support Project</span>
+            </button>
           </div>
         </div>
         <div className={`pt-2 border-t flex items-center justify-between text-[11px] font-bold ${
           theme === 'light' ? 'border-purple-200 text-slate-700' : 'border-zinc-800 text-zinc-300'
         }`}>
           <span>Created by <strong className={theme === 'light' ? 'text-purple-700 font-extrabold' : 'text-purple-300 font-extrabold'}>Darshan Cosmic</strong></span>
-          <span className="font-mono">Lynvest v0.1.2 • Native Linux Desktop</span>
+          <span className="font-mono">Lynvest v0.1.3 • Native Linux Desktop</span>
         </div>
       </div>
 
@@ -1439,72 +1432,146 @@ export const SettingsPage: React.FC = () => {
         </div>
       )}
 
-      {/* UPI QR Support Modal (India) */}
+      {/* Progressive Support Modal */}
       {isUpiModalOpen && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-purple-500/30 rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in duration-200">
-            <div className="flex items-center justify-between pb-2 border-b border-zinc-800">
+          <div className={`border rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in duration-200 ${
+            theme === 'light'
+              ? 'bg-white border-purple-200 text-slate-900 shadow-purple-950/20'
+              : 'bg-zinc-900 border-purple-500/30 text-white shadow-2xl'
+          }`}>
+            <div className={`flex items-center justify-between pb-2 border-b ${
+              theme === 'light' ? 'border-slate-200' : 'border-zinc-800'
+            }`}>
               <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-emerald-950/60 text-emerald-400 border border-emerald-800/60">
-                  <QrCode className="w-5 h-5" />
+                <div className="p-2 rounded-xl bg-purple-500/15 text-purple-400 border border-purple-500/30">
+                  <Heart className="w-5 h-5 fill-purple-400/20 text-purple-400" />
                 </div>
                 <div>
-                  <h3 className="font-extrabold text-white text-sm">Support via UPI (India)</h3>
-                  <p className="text-[11px] text-zinc-400">Scan or copy UPI ID</p>
+                  <h3 className={`font-extrabold text-sm ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
+                    Support Lynvest
+                  </h3>
+                  <p className="text-[11px] text-zinc-400">Independent & 100% Offline</p>
                 </div>
               </div>
               <button
                 type="button"
-                onClick={() => setIsUpiModalOpen(false)}
-                className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
+                onClick={() => {
+                  setIsUpiModalOpen(false);
+                  setShowUpiDetails(false);
+                }}
+                className={`p-1 rounded-lg transition-colors cursor-pointer ${
+                  theme === 'light' ? 'text-slate-400 hover:text-slate-900 hover:bg-slate-100' : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+                }`}
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="p-3 bg-[#090d16] border border-zinc-800 rounded-2xl shadow-inner flex flex-col items-center justify-center">
-              <img
-                src="/upi-qr.jpg"
-                alt="UPI QR Code - darshancosmic@axl"
-                className="w-52 h-52 object-contain rounded-xl"
-              />
-              <span className="text-[11px] font-bold text-zinc-400 mt-1.5">Karnataka Bank UPI</span>
-            </div>
+            <p className="text-xs leading-relaxed text-zinc-400">
+              Lynvest is free, private, and 100% offline. If this app brings peace of mind to your financial life, consider supporting continued development!
+            </p>
 
-            <div className="space-y-1.5">
-              <label className="text-xs text-zinc-400 font-semibold block">UPI ID</label>
-              <div className="flex items-center gap-2 p-2 rounded-xl bg-zinc-950 border border-zinc-800">
-                <span className="text-xs font-mono font-bold text-emerald-400 flex-1 select-all pl-1">
-                  darshancosmic@axl
-                </span>
-                <button
-                  type="button"
-                  onClick={handleCopyUpi}
-                  className="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold flex items-center gap-1.5 transition-all active:scale-95 shadow-sm shadow-purple-900/50 cursor-pointer"
-                >
-                  {copiedUpi ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-white" />
-                      <span>Copied!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5 text-white" />
-                      <span>Copy</span>
-                    </>
-                  )}
-                </button>
+            {/* Primary Action: Ko-fi */}
+            <div className="space-y-3 pt-1">
+              <a
+                href="https://ko-fi.com/cosmicdarshan"
+                target="_blank"
+                rel="noreferrer"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white font-black text-xs flex items-center justify-center gap-2 shadow-md shadow-orange-950/30 cursor-pointer transition-all active:scale-[0.98]"
+              >
+                <Heart className="w-4 h-4 fill-white" />
+                <span>Support on Ko-fi (Card / PayPal)</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+
+              {/* Small blue color link: If you are from India, you can pay in UPI */}
+              <div className="text-center pt-1">
+                {!showUpiDetails ? (
+                  <p className="text-xs text-zinc-400">
+                    If you are from India, you can{' '}
+                    <button
+                      type="button"
+                      onClick={() => setShowUpiDetails(true)}
+                      className="text-blue-500 hover:text-blue-400 font-bold underline underline-offset-2 transition-colors cursor-pointer"
+                    >
+                      pay in UPI
+                    </button>
+                  </p>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setShowUpiDetails(false)}
+                    className="text-xs text-zinc-400 hover:text-zinc-300 font-medium underline cursor-pointer"
+                  >
+                    Hide UPI scanner
+                  </button>
+                )}
               </div>
             </div>
 
-            <p className="text-[11px] text-zinc-400 leading-relaxed text-center">
-              Works with Google Pay, PhonePe, Paytm, BHIM, CRED, Navi & any Indian banking app.
-            </p>
+            {/* Revealed UPI Scanner and UPI ID (Shows ONLY after clicking the blue link) */}
+            {showUpiDetails && (
+              <div className={`p-4 rounded-2xl border space-y-3 animate-in fade-in slide-in-from-top-2 duration-200 ${
+                theme === 'light' ? 'bg-blue-50/60 border-blue-200' : 'bg-[#090d16] border-blue-900/40'
+              }`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-blue-500 font-extrabold text-xs">
+                    <span>🇮🇳</span>
+                    <span>UPI QR SCANNER & ID</span>
+                  </div>
+                  <span className="text-[10px] font-bold text-zinc-400">Karnataka Bank UPI</span>
+                </div>
+
+                <div className="p-2 bg-[#05070e] border border-zinc-800 rounded-2xl shadow-inner flex flex-col items-center justify-center mx-auto w-fit">
+                  <img
+                    src="/upi-qr.jpg"
+                    alt="UPI QR Code - darshancosmic@axl"
+                    className="w-48 h-48 object-contain rounded-xl"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2 p-2 rounded-xl bg-zinc-950 border border-zinc-800">
+                    <span className="text-xs font-mono font-bold text-blue-400 flex-1 select-all pl-1">
+                      darshancosmic@axl
+                    </span>
+                    <button
+                      type="button"
+                      onClick={handleCopyUpi}
+                      className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-1.5 transition-all active:scale-95 shadow-sm shadow-blue-900/50 cursor-pointer"
+                    >
+                      {copiedUpi ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-white" />
+                          <span>Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5 text-white" />
+                          <span>Copy</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-zinc-400 text-center font-medium">
+                    Google Pay • PhonePe • Paytm • BHIM • CRED • Any UPI App
+                  </p>
+                </div>
+              </div>
+            )}
 
             <button
               type="button"
-              onClick={() => setIsUpiModalOpen(false)}
-              className="w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-bold transition-colors cursor-pointer"
+              onClick={() => {
+                setIsUpiModalOpen(false);
+                setShowUpiDetails(false);
+              }}
+              className={`w-full py-2.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+                theme === 'light'
+                  ? 'bg-slate-100 hover:bg-slate-200 text-slate-800'
+                  : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200'
+              }`}
             >
               Close
             </button>
