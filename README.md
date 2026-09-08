@@ -9,7 +9,7 @@
 [![Built with: Tauri v2](https://img.shields.io/badge/Built%20with-Tauri%20v2-24C8D8.svg)](https://tauri.app/)
 [![Rust: 1.84+](https://img.shields.io/badge/Rust-1.84%2B-DEA584.svg)](https://www.rust-lang.org/)
 [![Ko-fi: Support](https://img.shields.io/badge/Ko--fi-Support%20Creator-FF5E5B?logo=kofi&logoColor=white)](https://ko-fi.com/cosmicdarshan)
-[![UPI: Support (India)](https://img.shields.io/badge/UPI-cosmicdarshan%40upi-00B074)](public/upi-qr.png)
+[![UPI: Support (India)](https://img.shields.io/badge/UPI-darshancosmic%40axl-00B074)](public/upi-qr.jpg)
 [![Architecture & Guide](https://img.shields.io/badge/Documentation-Project%20Guide-8A2BE2.svg)](PROJECT_GUIDE.md)
 
 *Modeled on the productivity of top personal finance suites, built completely local, private, and bloat-free.*
@@ -130,11 +130,11 @@ The compiled binary will be placed at `~/.local/bin/lynvest` and `src-tauri/targ
 If Lynvest helps you take control of your financial privacy and simplifies your personal accounting, please consider supporting continued development and maintenance:
 
 ### 🇮🇳 For Indian Supporters (UPI & QR Code)
-- **UPI ID**: `cosmicdarshan@upi`
+- **UPI ID**: `darshancosmic@axl`
 - **Supported Apps**: Google Pay, PhonePe, Paytm, BHIM, CRED, Navi & any Indian banking app.
 
 <div align="center">
-  <img src="public/upi-qr.png" alt="UPI QR Code - cosmicdarshan@upi" width="220" />
+  <img src="public/upi-qr.jpg" alt="UPI QR Code - darshancosmic@axl" width="220" />
 </div>
 
 ### 🌍 For International Supporters (Ko-fi)
