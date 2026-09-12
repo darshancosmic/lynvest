@@ -425,12 +425,16 @@ export const SettingsPage: React.FC = () => {
               <h3 className={`text-sm font-bold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                 Software Version & In-App Updates
               </h3>
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-black border ${
+              <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border flex items-center gap-1.5 ${
                 updateInfo?.has_update
-                  ? 'bg-purple-100 text-purple-800 border-purple-300 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-700'
-                  : 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800'
+                  ? theme === 'light'
+                    ? 'bg-white text-purple-700 border-purple-300 shadow-sm'
+                    : 'bg-purple-950/70 text-purple-300 border-purple-800'
+                  : theme === 'light'
+                    ? 'bg-white text-emerald-700 border-emerald-300 shadow-sm'
+                    : 'bg-emerald-950/70 text-emerald-300 border-emerald-800'
               }`}>
-                {updateInfo?.has_update ? `Update Available: v${updateInfo.latest_version}` : `Up to Date (v${updateInfo?.current_version || '0.1.1'})`}
+                {updateInfo?.has_update ? `Update Available: v${updateInfo.latest_version}` : `Up to Date (v${updateInfo?.current_version || '0.1.3'})`}
               </span>
             </div>
             <p className={`text-xs ${theme === 'light' ? 'text-slate-600' : 'text-zinc-400'}`}>

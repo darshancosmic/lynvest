@@ -135,17 +135,29 @@ export const CashflowForecastWidget: React.FC = () => {
         </div>
 
         {isDeficitWarning ? (
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-950/70 text-rose-400 border border-rose-800 flex items-center gap-1">
+          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border flex items-center gap-1.5 transition-colors ${
+            theme === 'light'
+              ? 'bg-white text-rose-600 border-rose-300 shadow-sm'
+              : 'bg-rose-950/70 text-rose-400 border-rose-800'
+          }`}>
             <AlertTriangle className="w-3 h-3" />
             <span>Deficit Warning</span>
           </span>
         ) : netCashflow >= 0 ? (
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-950/70 text-emerald-400 border border-emerald-800 flex items-center gap-1">
-            <CheckCircle2 className="w-3 h-3" />
+          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border flex items-center gap-1.5 transition-colors ${
+            theme === 'light'
+              ? 'bg-white text-emerald-600 border-emerald-300 shadow-sm'
+              : 'bg-emerald-950/70 text-emerald-400 border-emerald-800'
+          }`}>
+            <CheckCircle2 className="w-3 h-3 text-emerald-500" />
             <span>Surplus Runway</span>
           </span>
         ) : (
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-950/70 text-amber-400 border border-amber-800 flex items-center gap-1">
+          <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border flex items-center gap-1.5 transition-colors ${
+            theme === 'light'
+              ? 'bg-white text-amber-600 border-amber-300 shadow-sm'
+              : 'bg-amber-950/70 text-amber-400 border-amber-800'
+          }`}>
             <span>Mild Outflow</span>
           </span>
         )}
@@ -173,10 +185,10 @@ export const CashflowForecastWidget: React.FC = () => {
           <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider block mb-1">
             Est. Inflows
           </span>
-          <span className="text-sm sm:text-base font-black font-mono text-emerald-400">
+          <span className="text-sm sm:text-base font-black font-mono text-emerald-500">
             +{formatIndianCurrency(totalProjectedInflows, baseCurrency)}
           </span>
-          <span className="text-[10px] text-emerald-600 dark:text-emerald-500 block mt-0.5">Next 30 days</span>
+          <span className="text-[10px] text-emerald-600 block mt-0.5">Next 30 days</span>
         </div>
 
         {/* Expected Outflows */}
@@ -186,21 +198,23 @@ export const CashflowForecastWidget: React.FC = () => {
           <span className="text-[10px] font-bold text-rose-500 uppercase tracking-wider block mb-1">
             Est. Outflows
           </span>
-          <span className="text-sm sm:text-base font-black font-mono text-rose-400">
+          <span className="text-sm sm:text-base font-black font-mono text-rose-500">
             -{formatIndianCurrency(totalProjectedOutflows, baseCurrency)}
           </span>
-          <span className="text-[10px] text-rose-600 dark:text-rose-500 block mt-0.5">Bills & recurring</span>
+          <span className="text-[10px] text-rose-600 block mt-0.5">Bills & recurring</span>
         </div>
 
         {/* Projected Ending Balance */}
         <div className={`p-3 rounded-xl border ${
           isDeficitWarning
-            ? 'bg-rose-950/30 border-rose-800 text-rose-300'
+            ? theme === 'light'
+              ? 'bg-rose-50 border-rose-200 text-rose-950'
+              : 'bg-rose-950/30 border-rose-800 text-rose-300'
             : theme === 'light'
             ? 'bg-purple-50 border-purple-200 text-purple-950'
             : 'bg-purple-950/30 border-purple-800/50 text-purple-200'
         }`}>
-          <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider block mb-1">
+          <span className="text-[10px] font-bold text-purple-600 uppercase tracking-wider block mb-1">
             Day 30 Forecast
           </span>
           <span className="text-sm sm:text-base font-black font-mono">
@@ -213,11 +227,13 @@ export const CashflowForecastWidget: React.FC = () => {
       </div>
 
       {/* Expandable Upcoming Events List */}
-      <div className="mt-3 pt-3 border-t border-zinc-800/60">
+      <div className={`mt-3 pt-3 border-t ${theme === 'light' ? 'border-slate-200' : 'border-zinc-800/60'}`}>
         <button
           type="button"
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full flex items-center justify-between text-xs font-bold text-purple-400 hover:text-purple-300 transition-colors cursor-pointer"
+          className={`w-full flex items-center justify-between text-xs font-bold transition-colors cursor-pointer ${
+            theme === 'light' ? 'text-purple-700 hover:text-purple-600' : 'text-purple-400 hover:text-purple-300'
+          }`}
         >
           <span>
             {upcomingEvents.length} scheduled cash event{upcomingEvents.length !== 1 ? 's' : ''} in the next 30 days

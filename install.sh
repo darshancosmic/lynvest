@@ -140,8 +140,8 @@ else
     TEMP_DIR=$(mktemp -d)
     
     # Query latest version from version.json or fallback
-    LATEST_VER=$(curl -fsSL --connect-timeout 4 "https://raw.githubusercontent.com/$GITHUB_REPO/main/version.json" 2>/dev/null | grep -o '"version": *"[^"]*"' | head -n 1 | cut -d'"' -f4 || echo "0.1.1")
-    [ -z "$LATEST_VER" ] && LATEST_VER="0.1.1"
+    LATEST_VER=$(curl -fsSL --connect-timeout 4 "https://raw.githubusercontent.com/$GITHUB_REPO/main/version.json" 2>/dev/null | grep -o '"version": *"[^"]*"' | head -n 1 | cut -d'"' -f4 || echo "0.1.3")
+    [ -z "$LATEST_VER" ] && LATEST_VER="0.1.3"
 
     RAW_URL="https://raw.githubusercontent.com/$GITHUB_REPO/main/dist-packages/lynvest-${LATEST_VER}-linux-x86_64.tar.gz"
     FALLBACK_RAW_URL="https://raw.githubusercontent.com/$GITHUB_REPO/main/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz"

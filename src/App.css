@@ -261,9 +261,13 @@ body.theme-light,
 .theme-light h2,
 .theme-light h3,
 .theme-light h4,
-.theme-light th,
-.theme-light .font-black,
-.theme-light .font-extrabold {
+.theme-light th {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+.theme-light .font-black:not([class*="text-"]),
+.theme-light .font-extrabold:not([class*="text-"]) {
   color: #000000 !important;
   font-weight: 800 !important;
 }
@@ -277,9 +281,9 @@ body.theme-light,
 }
 
 .theme-light p,
-.theme-light span,
+.theme-light span:not([class*="text-"]),
 .theme-light label,
-.theme-light td {
+.theme-light td:not([class*="text-"]) {
   color: #1e293b;
 }
 
@@ -313,17 +317,43 @@ body.theme-light,
 
 .theme-light .text-emerald-400,
 .theme-light .text-emerald-500,
-.theme-light .text-emerald-600 {
+.theme-light .text-emerald-600,
+.theme-light .text-emerald-700 {
   color: #16a34a !important;
-  font-weight: 800 !important;
+  font-weight: 700 !important;
 }
 
 .theme-light .text-red-400,
 .theme-light .text-red-500,
 .theme-light .text-red-600,
-.theme-light .text-rose-400 {
+.theme-light .text-rose-400,
+.theme-light .text-rose-500,
+.theme-light .text-rose-600,
+.theme-light .text-rose-700 {
   color: #dc2626 !important;
-  font-weight: 800 !important;
+  font-weight: 700 !important;
+}
+
+.theme-light .text-amber-400,
+.theme-light .text-amber-500,
+.theme-light .text-amber-600,
+.theme-light .text-amber-700 {
+  color: #d97706 !important;
+  font-weight: 700 !important;
+}
+
+/* Ensure no dark-mode badge backgrounds leak into light theme */
+.theme-light [class*="bg-emerald-950"]:not(.theme-dark *) {
+  background-color: #ffffff !important;
+}
+.theme-light [class*="bg-rose-950"]:not(.theme-dark *) {
+  background-color: #ffffff !important;
+}
+.theme-light [class*="bg-amber-950"]:not(.theme-dark *) {
+  background-color: #ffffff !important;
+}
+.theme-light [class*="bg-purple-950"]:not(.theme-dark *) {
+  background-color: #ffffff !important;
 }
 
 .theme-light [class*="fixed inset-0"] {

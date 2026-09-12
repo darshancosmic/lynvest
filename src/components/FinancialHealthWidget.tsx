@@ -66,11 +66,31 @@ export const FinancialHealthWidget: React.FC = () => {
   score = Math.min(100, Math.max(10, score));
 
   const getGrade = (s: number) => {
-    if (s >= 90) return { grade: 'A+', label: 'Financial Fortress', color: 'text-emerald-400 border-emerald-500/30 bg-emerald-950/40' };
-    if (s >= 75) return { grade: 'A', label: 'Healthy & Solid', color: 'text-purple-400 border-purple-500/30 bg-purple-950/40' };
-    if (s >= 60) return { grade: 'B', label: 'Stable Growth', color: 'text-blue-400 border-blue-500/30 bg-blue-950/40' };
-    if (s >= 40) return { grade: 'C', label: 'Needs Optimization', color: 'text-amber-400 border-amber-500/30 bg-amber-950/40' };
-    return { grade: 'D', label: 'High Fragility', color: 'text-rose-400 border-rose-500/30 bg-rose-950/40' };
+    if (s >= 90) return {
+      grade: 'A+',
+      label: 'Financial Fortress',
+      color: theme === 'light' ? 'bg-white text-emerald-700 border-emerald-300 shadow-sm' : 'text-emerald-400 border-emerald-500/30 bg-emerald-950/40',
+    };
+    if (s >= 75) return {
+      grade: 'A',
+      label: 'Healthy & Solid',
+      color: theme === 'light' ? 'bg-white text-purple-700 border-purple-300 shadow-sm' : 'text-purple-400 border-purple-500/30 bg-purple-950/40',
+    };
+    if (s >= 60) return {
+      grade: 'B',
+      label: 'Stable Growth',
+      color: theme === 'light' ? 'bg-white text-blue-700 border-blue-300 shadow-sm' : 'text-blue-400 border-blue-500/30 bg-blue-950/40',
+    };
+    if (s >= 40) return {
+      grade: 'C',
+      label: 'Needs Optimization',
+      color: theme === 'light' ? 'bg-white text-amber-700 border-amber-300 shadow-sm' : 'text-amber-400 border-amber-500/30 bg-amber-950/40',
+    };
+    return {
+      grade: 'D',
+      label: 'High Fragility',
+      color: theme === 'light' ? 'bg-white text-rose-700 border-rose-300 shadow-sm' : 'text-rose-400 border-rose-500/30 bg-rose-950/40',
+    };
   };
 
   const gradeInfo = getGrade(score);

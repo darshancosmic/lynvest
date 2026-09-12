@@ -19,11 +19,13 @@ import { CalculatorsPage } from './pages/CalculatorsPage';
 import { TransactionModal } from './components/TransactionModal';
 import { CommandPalette } from './components/CommandPalette';
 import { UpdateBanner } from './components/UpdateBanner';
+import { PinScreen } from './components/PinScreen';
 import { RefreshCw, Coins } from 'lucide-react';
 import './App.css';
 
 export const App: React.FC = () => {
   const isLoading = useAppStore(state => state.isLoading);
+  const isUnlocked = useAppStore(state => state.isUnlocked);
   const activeTab = useAppStore(state => state.activeTab);
   const initApp = useAppStore(state => state.initApp);
   const loadTransactions = useAppStore(state => state.loadTransactions);
@@ -83,6 +85,10 @@ export const App: React.FC = () => {
         </div>
       </div>
     );
+  }
+
+  if (!isUnlocked) {
+    return <PinScreen />;
   }
 
   return (

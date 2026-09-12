@@ -57,7 +57,8 @@ export const Dashboard: React.FC = () => {
 
   const [isTxnModalOpen, setIsTxnModalOpen] = useState(false);
   const [payingBillId, setPayingBillId] = useState<number | null>(null);
-  const [isPrivacyMode, setIsPrivacyMode] = useState(false);
+  const isPrivacyMode = useAppStore(state => state.isPrivacyMode);
+  const togglePrivacyMode = useAppStore(state => state.togglePrivacyMode);
 
   useEffect(() => {
     loadAccounts(false);
@@ -141,7 +142,7 @@ export const Dashboard: React.FC = () => {
           <button
             type="button"
             title={isPrivacyMode ? "Show Balances" : "Hide Balances for Privacy"}
-            onClick={() => setIsPrivacyMode(!isPrivacyMode)}
+            onClick={togglePrivacyMode}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
               isPrivacyMode
                 ? 'bg-purple-600/20 border-purple-500/50 text-purple-400'

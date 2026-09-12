@@ -57,18 +57,28 @@ pub fn get_exchange_rate(conn: &Connection, from_curr: &str, to_curr: &str) -> f
 
 // --- Account Balance Recomputation via Ledger (AGENTS.md Section 5.1) ---
 pub fn recompute_account_balance(tx: &SqliteTx, account_id: i64) -> Result<f64, rusqlite::Error> {
-    let bal: f64 = tx.query_row(
-        "SELECT ROUND(COALESCE(SUM(amount), 0), 2) FROM account_ledger WHERE account_id = ?1",
-        params![account_id],
-        |r| r.get(0),
+    let mut stmt = tx.prepare(
+        "SELECT id, amount FROM account_ledger WHERE account_id = ?1 ORDER BY id ASC"
     )?;
+    let entries: Vec<(i64, f64)> = stmt.query_map(params![account_id], |row| {
+        Ok((row.get(0)?, row.get(1)?))
+    })?.filter_map(|r| r.ok()).collect();
+
+    let mut running_bal = 0.0;
+    for (ledger_id, amount) in entries {
+        running_bal = ((running_bal + amount) * 100.0).round() / 100.0;
+        tx.execute(
+            "UPDATE account_ledger SET balance_after = ?1 WHERE id = ?2",
+            params![running_bal, ledger_id],
+        )?;
+    }
 
     tx.execute(
         "UPDATE accounts SET current_balance = ?1 WHERE id = ?2",
-        params![bal, account_id],
+        params![running_bal, account_id],
     )?;
 
-    Ok(bal)
+    Ok(running_bal)
 }
 
 // --- Date Math Helpers ---
@@ -471,6 +481,33 @@ pub fn delete_account(state: State<'_, AppState>, id: i64) -> Result<(), String>
 
     if txn_count > 0 {
         return Err("Cannot delete account with existing transactions. Please archive it instead to preserve financial history.".to_string());
+    }
+
+    let bill_count: i64 = conn.query_row(
+        "SELECT COUNT(*) FROM bills WHERE account_id = ?1",
+        params![id],
+        |r| r.get(0),
+    ).unwrap_or(0);
+    if bill_count > 0 {
+        return Err("Cannot delete account associated with existing bills. Please reassign or delete those bills first.".to_string());
+    }
+
+    let recurring_count: i64 = conn.query_row(
+        "SELECT COUNT(*) FROM recurring_rules WHERE account_id = ?1",
+        params![id],
+        |r| r.get(0),
+    ).unwrap_or(0);
+    if recurring_count > 0 {
+        return Err("Cannot delete account associated with recurring rules. Please reassign or delete those rules first.".to_string());
+    }
+
+    let debt_count: i64 = conn.query_row(
+        "SELECT COUNT(*) FROM debts WHERE account_id = ?1",
+        params![id],
+        |r| r.get(0),
+    ).unwrap_or(0);
+    if debt_count > 0 {
+        return Err("Cannot delete account associated with debt tracking. Please settle or delete those debts first.".to_string());
     }
 
     let tx = conn.transaction().map_err(|e| e.to_string())?;
@@ -4114,16 +4151,13 @@ pub fn restore_backup(
 
     let db_path = crate::db::get_db_path(&app)?;
 
-    // Lock mutex
-    let conn_guard = state.db.lock().map_err(|e| e.to_string())?;
+    // Lock database mutex exclusively during entire restore operation
+    let mut conn_guard = state.db.lock().map_err(|e| e.to_string())?;
 
-    // Close WAL mode / flush
-    let _ = conn_guard.execute_batch("PRAGMA foreign_keys = OFF;");
+    // Checkpoint and flush WAL mode
+    let _ = conn_guard.execute_batch("PRAGMA wal_checkpoint(TRUNCATE); PRAGMA foreign_keys = OFF;");
 
-    // Replace db file
-    drop(conn_guard); // Release lock before reconnecting
-
-    // Also remove WAL and SHM files if they exist
+    // Remove WAL and SHM files
     let wal_path = db_path.with_extension("db-wal");
     let shm_path = db_path.with_extension("db-shm");
     let _ = fs::remove_file(&wal_path);
@@ -4132,7 +4166,7 @@ pub fn restore_backup(
     fs::copy(src, &db_path)
         .map_err(|e| format!("Failed to restore database file: {}", e))?;
 
-    // Reopen connection
+    // Reopen restored database
     let mut new_conn = Connection::open(&db_path)
         .map_err(|e| format!("Failed to reopen restored database: {}", e))?;
     new_conn.execute_batch(
@@ -4143,7 +4177,6 @@ pub fn restore_backup(
     crate::db::run_migrations(&mut new_conn)?;
     let _ = crate::db::seed_defaults(&new_conn);
 
-    let mut conn_guard = state.db.lock().map_err(|e| e.to_string())?;
     *conn_guard = new_conn;
 
     Ok(())
@@ -4450,6 +4483,13 @@ pub fn install_app_update(download_url: Option<String>) -> Result<String, String
     let url = download_url.unwrap_or_else(|| {
         "https://raw.githubusercontent.com/darshancosmic/lynvest/main/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz".to_string()
     });
+
+    // Security Guard: Validate update package URL origin against official trusted endpoints
+    let is_trusted_url = url.starts_with("https://github.com/darshancosmic/lynvest/")
+        || url.starts_with("https://raw.githubusercontent.com/darshancosmic/lynvest/");
+    if !is_trusted_url {
+        return Err("Untrusted update source. Update binaries must originate from the verified official repository.".to_string());
+    }
 
     let home = std::env::var("HOME").map_err(|_| "Could not find HOME directory".to_string())?;
     let target_bin_dir = PathBuf::from(&home).join(".local/bin");

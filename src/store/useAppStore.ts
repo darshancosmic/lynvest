@@ -138,6 +138,11 @@ interface AppStoreState {
   checkForAppUpdate: () => Promise<void>;
   installAppUpdate: () => Promise<void>;
   restartApp: () => Promise<void>;
+
+  // Global Privacy Mode
+  isPrivacyMode: boolean;
+  togglePrivacyMode: () => void;
+
   setDismissUpdateBanner: (dismiss: boolean) => void;
 
   // Accounts
@@ -267,7 +272,19 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
   updateInstallSuccess: false,
   updateError: null,
   dismissUpdateBanner: false,
-  isUnlocked: true,
+  isPrivacyMode: typeof window !== 'undefined' ? localStorage.getItem('lynvest_privacy_mode') === 'true' : false,
+  togglePrivacyMode: () => {
+    set((state) => {
+      const next = !state.isPrivacyMode;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('lynvest_privacy_mode', String(next));
+        window.dispatchEvent(new Event('lynvest_format_changed'));
+      }
+      return { isPrivacyMode: next };
+    });
+  },
+
+  isUnlocked: false,
   isLoading: true,
   theme: 'dark',
   error: null,
@@ -276,7 +293,7 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
   setActiveTab: (tab) => set({ activeTab: tab }),
 
   initApp: async () => {
-    set({ isLoading: true, error: null, isUnlocked: true });
+    set({ isLoading: true, error: null });
     try {
       const settings = await invoke<AppSettings>('get_app_settings');
       if (typeof window !== 'undefined' && settings?.base_currency) {
@@ -299,7 +316,14 @@ export const useAppStore = create<AppStoreState>((set, get) => ({
         }
       }
 
-      // Load all data directly on launch without any PIN login gate
+      // PIN Security Authentication Gate
+      if (settings?.has_pin) {
+        set({ isUnlocked: false, isLoading: false });
+        return;
+      }
+
+      // No PIN configured - auto unlock and populate data
+      set({ isUnlocked: true });
       await get().processRecurringRules();
       await get().checkAndSnapshotNetWorth();
       await get().checkAndRunDailyBackup();

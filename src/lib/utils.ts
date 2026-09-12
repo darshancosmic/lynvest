@@ -59,12 +59,17 @@ export function setDateFormatSystem(format: DateFormatSystem): void {
  */
 export function formatCurrency(
   val: number | string | null | undefined,
-  currencyCode?: string
+  currencyCode?: string,
+  ignorePrivacy = false
 ): string {
+  if (!ignorePrivacy && typeof window !== 'undefined' && localStorage.getItem('lynvest_privacy_mode') === 'true') {
+    return '••••••';
+  }
+
   const num = Number(val) || 0;
   const numSystem = getNumberFormatSystem();
-  const savedBaseCurrency = (typeof window !== 'undefined' && localStorage.getItem('lynvest_base_currency')) || 'USD';
-  const curr = (currencyCode || savedBaseCurrency || 'USD').trim().toUpperCase();
+  const savedBaseCurrency = (typeof window !== 'undefined' && localStorage.getItem('lynvest_base_currency')) || 'INR';
+  const curr = (currencyCode || savedBaseCurrency || 'INR').trim().toUpperCase();
 
   const locale = numSystem === 'indian' ? 'en-IN' : 'en-US';
 

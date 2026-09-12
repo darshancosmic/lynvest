@@ -150,25 +150,25 @@ export const CalculatorsPage: React.FC = () => {
     if (months >= 6) {
       return {
         label: 'Fortress Runway 🛡️',
-        color: 'text-emerald-400 bg-emerald-950/60 border-emerald-800/80',
+        color: theme === 'light' ? 'bg-white text-emerald-700 border-emerald-300 shadow-sm' : 'text-emerald-400 bg-emerald-950/60 border-emerald-800/80',
         desc: 'Exceptional security! You can comfortably handle unforeseen circumstances for over 6 months.',
       };
     } else if (months >= 3) {
       return {
         label: 'Healthy Cushion 🟢',
-        color: 'text-blue-400 bg-blue-950/60 border-blue-800/80',
+        color: theme === 'light' ? 'bg-white text-blue-700 border-blue-300 shadow-sm' : 'text-blue-400 bg-blue-950/60 border-blue-800/80',
         desc: 'Great liquidity. You have standard safety covering 3 to 6 months of living expenses.',
       };
     } else if (months >= 1) {
       return {
         label: 'Moderate Buffer 🟡',
-        color: 'text-amber-400 bg-amber-950/60 border-amber-800/80',
+        color: theme === 'light' ? 'bg-white text-amber-700 border-amber-300 shadow-sm' : 'text-amber-400 bg-amber-950/60 border-amber-800/80',
         desc: 'Adequate for minor emergencies, but prioritize building toward a 3-6 month reserve.',
       };
     } else {
       return {
         label: 'Vulnerable 🔴',
-        color: 'text-rose-400 bg-rose-950/60 border-rose-800/80',
+        color: theme === 'light' ? 'bg-white text-rose-700 border-rose-300 shadow-sm' : 'text-rose-400 bg-rose-950/60 border-rose-800/80',
         desc: 'Low liquid cash reserve. Aim to deposit surplus cash into your emergency bank fund.',
       };
     }
@@ -787,8 +787,12 @@ export const CalculatorsPage: React.FC = () => {
                       key={targetMonths}
                       className={`p-3 rounded-xl border flex items-center justify-between ${
                         isAchieved
-                          ? 'bg-emerald-950/20 border-emerald-800/40 text-emerald-300'
-                          : 'bg-zinc-950 border-zinc-800 text-zinc-300'
+                          ? theme === 'light'
+                            ? 'bg-emerald-50/70 border-emerald-200 text-emerald-900 shadow-sm'
+                            : 'bg-emerald-950/20 border-emerald-800/40 text-emerald-300'
+                          : theme === 'light'
+                            ? 'bg-slate-50 border-slate-200 text-slate-700'
+                            : 'bg-zinc-950 border-zinc-800 text-zinc-300'
                       }`}
                     >
                       <div>
