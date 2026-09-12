@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { Transaction, TransactionFilter } from '../types';
 import { TransactionModal } from '../components/TransactionModal';
+import { StatementModal } from '../components/StatementModal';
 import {
   ArrowLeftRight,
   Search,
@@ -27,9 +28,10 @@ export const TransactionsPage: React.FC = () => {
   const loadTransactions = useAppStore(state => state.loadTransactions);
   const deleteTransaction = useAppStore(state => state.deleteTransaction);
   const setActiveTab = useAppStore(state => state.setActiveTab);
-  const theme = useAppStore(state => state.theme);
+  const theme = useAppStore(themeState => themeState.theme);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isStatementModalOpen, setIsStatementModalOpen] = useState(false);
   const [selectedTxn, setSelectedTxn] = useState<Transaction | null>(null);
   const [isCloneMode, setIsCloneMode] = useState(false);
 
@@ -165,7 +167,7 @@ export const TransactionsPage: React.FC = () => {
   };
 
   const handlePrintStatement = () => {
-    window.print();
+    setIsStatementModalOpen(true);
   };
 
   // Filtered Summary Stats
@@ -185,7 +187,9 @@ export const TransactionsPage: React.FC = () => {
   }, [transactions]);
 
   return (
-    <div className="space-y-6">
+    <div>
+      {/* SCREEN VIEW (Interactive, with search, filters, actions) */}
+      <div className="transactions-screen-view space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -619,6 +623,16 @@ export const TransactionsPage: React.FC = () => {
         }}
         initialTransaction={selectedTxn}
         isClone={isCloneMode}
+      />
+      </div>
+
+      {/* Official Financial Statement Modal & Print Engine */}
+      <StatementModal
+        isOpen={isStatementModalOpen}
+        onClose={() => setIsStatementModalOpen(false)}
+        transactions={transactions}
+        accounts={accounts}
+        baseCurrency={baseCurrency}
       />
     </div>
   );
