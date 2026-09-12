@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { Transaction, TransactionFilter } from '../types';
 import { TransactionModal } from '../components/TransactionModal';
-import { StatementModal } from '../components/StatementModal';
 import {
   ArrowLeftRight,
   Search,
@@ -15,7 +14,6 @@ import {
   Filter,
   Layers,
   Download,
-  Printer,
 } from 'lucide-react';
 import { formatIndianDate, formatIndianCurrency } from '../lib/utils';
 
@@ -31,7 +29,6 @@ export const TransactionsPage: React.FC = () => {
   const theme = useAppStore(themeState => themeState.theme);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isStatementModalOpen, setIsStatementModalOpen] = useState(false);
   const [selectedTxn, setSelectedTxn] = useState<Transaction | null>(null);
   const [isCloneMode, setIsCloneMode] = useState(false);
 
@@ -166,10 +163,6 @@ export const TransactionsPage: React.FC = () => {
     URL.revokeObjectURL(url);
   };
 
-  const handlePrintStatement = () => {
-    setIsStatementModalOpen(true);
-  };
-
   // Filtered Summary Stats
   const filterStats = React.useMemo(() => {
     let inflow = 0;
@@ -187,9 +180,7 @@ export const TransactionsPage: React.FC = () => {
   }, [transactions]);
 
   return (
-    <div>
-      {/* SCREEN VIEW (Interactive, with search, filters, actions) */}
-      <div className="transactions-screen-view space-y-6">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -214,20 +205,6 @@ export const TransactionsPage: React.FC = () => {
           >
             <Download className="w-3.5 h-3.5 text-emerald-400" />
             <span>Export CSV</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handlePrintStatement}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
-              theme === 'light'
-                ? 'bg-white hover:bg-slate-50 border-slate-300 text-slate-800 shadow-xs'
-                : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-zinc-300'
-            }`}
-            title="Print statement or save to PDF"
-          >
-            <Printer className="w-3.5 h-3.5 text-purple-400" />
-            <span>Print Statement</span>
           </button>
 
           <button
@@ -623,16 +600,6 @@ export const TransactionsPage: React.FC = () => {
         }}
         initialTransaction={selectedTxn}
         isClone={isCloneMode}
-      />
-      </div>
-
-      {/* Official Financial Statement Modal & Print Engine */}
-      <StatementModal
-        isOpen={isStatementModalOpen}
-        onClose={() => setIsStatementModalOpen(false)}
-        transactions={transactions}
-        accounts={accounts}
-        baseCurrency={baseCurrency}
       />
     </div>
   );
