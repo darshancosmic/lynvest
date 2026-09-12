@@ -18,6 +18,7 @@ import { CreateDebtPayload, DebtItem, UpdateDebtPayload } from '../types';
 export const DebtsPage: React.FC = () => {
   const debts = useAppStore(state => state.debts);
   const settings = useAppStore(state => state.settings);
+  const theme = useAppStore(state => state.theme);
   const loadDebts = useAppStore(state => state.loadDebts);
   const createDebt = useAppStore(state => state.createDebt);
   const updateDebt = useAppStore(state => state.updateDebt);
@@ -157,11 +158,13 @@ export const DebtsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
-            <CreditCard className="w-6 h-6 text-rose-400" />
+          <h2 className={`text-2xl font-bold tracking-tight flex items-center gap-2.5 ${
+            theme === 'light' ? 'text-zinc-950' : 'text-white'
+          }`}>
+            <CreditCard className="w-6 h-6 text-rose-500" />
             Debts & Liabilities
           </h2>
-          <p className="text-xs text-zinc-400 mt-1">
+          <p className={`text-xs mt-1 ${theme === 'light' ? 'text-zinc-600' : 'text-zinc-400'}`}>
             Track loans and credit debts subtracted from your net worth calculation
           </p>
         </div>
@@ -178,33 +181,43 @@ export const DebtsPage: React.FC = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex flex-col justify-between">
-          <span className="text-xs font-medium text-zinc-400">Total Outstanding Debt</span>
+        <div className={`p-5 rounded-2xl border flex flex-col justify-between ${
+          theme === 'light' ? 'bg-white border-zinc-200 shadow-sm' : 'bg-zinc-900/80 border-zinc-800'
+        }`}>
+          <span className={`text-xs font-medium ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-400'}`}>Total Outstanding Debt</span>
           <div className="mt-2">
-            <span className="text-2xl sm:text-3xl font-extrabold text-rose-400 block">
+            <span className="text-2xl sm:text-3xl font-extrabold text-rose-500 block">
               {formatCurrency(totalOutstanding)}
             </span>
-            <span className="text-[11px] text-zinc-500">Subtracted from Net Worth</span>
+            <span className={`text-[11px] ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-500'}`}>Subtracted from Net Worth</span>
           </div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex flex-col justify-between">
-          <span className="text-xs font-medium text-zinc-400">Total Principal</span>
+        <div className={`p-5 rounded-2xl border flex flex-col justify-between ${
+          theme === 'light' ? 'bg-white border-zinc-200 shadow-sm' : 'bg-zinc-900/80 border-zinc-800'
+        }`}>
+          <span className={`text-xs font-medium ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-400'}`}>Total Principal</span>
           <div className="mt-2">
-            <span className="text-2xl sm:text-3xl font-extrabold text-zinc-200 block">
+            <span className={`text-2xl sm:text-3xl font-extrabold block ${
+              theme === 'light' ? 'text-zinc-950' : 'text-zinc-200'
+            }`}>
               {formatCurrency(totalPrincipal)}
             </span>
-            <span className="text-[11px] text-zinc-500">Original borrowed total</span>
+            <span className={`text-[11px] ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-500'}`}>Original borrowed total</span>
           </div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex flex-col justify-between">
-          <span className="text-xs font-medium text-zinc-400">Active Debts</span>
+        <div className={`p-5 rounded-2xl border flex flex-col justify-between ${
+          theme === 'light' ? 'bg-white border-zinc-200 shadow-sm' : 'bg-zinc-900/80 border-zinc-800'
+        }`}>
+          <span className={`text-xs font-medium ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-400'}`}>Active Debts</span>
           <div className="mt-2">
-            <span className="text-2xl sm:text-3xl font-extrabold text-white block">
+            <span className={`text-2xl sm:text-3xl font-extrabold block ${
+              theme === 'light' ? 'text-zinc-950' : 'text-white'
+            }`}>
               {activeDebts.length}
             </span>
-            <span className="text-[11px] text-zinc-500">
+            <span className={`text-[11px] ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-500'}`}>
               {debts.length - activeDebts.length} paid off / closed
             </span>
           </div>
@@ -212,10 +225,14 @@ export const DebtsPage: React.FC = () => {
       </div>
 
       {/* Debts Table */}
-      <div className="rounded-2xl bg-zinc-900/80 border border-zinc-800 overflow-hidden shadow-sm">
+      <div className={`rounded-2xl border overflow-hidden shadow-sm ${
+        theme === 'light' ? 'bg-white border-zinc-200' : 'bg-zinc-900/80 border-zinc-800'
+      }`}>
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-zinc-300">
-            <thead className="bg-zinc-950/70 text-zinc-400 uppercase tracking-wider font-semibold border-b border-zinc-800">
+          <table className={`w-full text-left text-xs ${theme === 'light' ? 'text-zinc-950' : 'text-zinc-300'}`}>
+            <thead className={`uppercase tracking-wider font-semibold border-b ${
+              theme === 'light' ? 'bg-slate-50 text-slate-700 border-zinc-200' : 'bg-zinc-950/70 text-zinc-400 border-zinc-800'
+            }`}>
               <tr>
                 <th className="py-3.5 px-4">Debt / Loan Name</th>
                 <th className="py-3.5 px-4 text-right">Principal</th>
@@ -243,28 +260,38 @@ export const DebtsPage: React.FC = () => {
                     }`}
                   >
                     <td className="py-3.5 px-4">
-                      <span className="font-bold text-white block text-sm">{debt.name}</span>
+                      <span className={`font-bold block text-sm ${
+                        theme === 'light' ? 'text-zinc-950' : 'text-white'
+                      }`}>
+                        {debt.name}
+                      </span>
                       {debt.notes && (
-                        <span className="text-[11px] text-zinc-400">{debt.notes}</span>
+                        <span className={`text-[11px] ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-400'}`}>
+                          {debt.notes}
+                        </span>
                       )}
                     </td>
 
-                    <td className="py-3.5 px-4 text-right font-mono text-zinc-400">
+                    <td className={`py-3.5 px-4 text-right font-mono font-medium ${
+                      theme === 'light' ? 'text-zinc-800' : 'text-zinc-300'
+                    }`}>
                       {formatCurrency(debt.principal)}
                     </td>
 
-                    <td className="py-3.5 px-4 text-right font-mono font-bold text-rose-400 text-sm">
+                    <td className="py-3.5 px-4 text-right font-mono font-bold text-rose-500 text-sm">
                       {formatCurrency(debt.current_balance)}
                     </td>
 
-                    <td className="py-3.5 px-4 text-right font-mono text-zinc-300">
+                    <td className={`py-3.5 px-4 text-right font-mono ${
+                      theme === 'light' ? 'text-zinc-700' : 'text-zinc-300'
+                    }`}>
                       <span className="inline-flex items-center gap-0.5">
-                        <Percent className="w-3 h-3 text-zinc-500" />
+                        <Percent className="w-3 h-3 text-zinc-400" />
                         {debt.interest_rate}%
                       </span>
                     </td>
 
-                    <td className="py-3.5 px-4 text-zinc-400">
+                    <td className={`py-3.5 px-4 ${theme === 'light' ? 'text-zinc-700' : 'text-zinc-400'}`}>
                       {debt.due_date ? (
                         <span className="inline-flex items-center gap-1.5 font-mono">
                           <Calendar className="w-3.5 h-3.5 text-zinc-500" />

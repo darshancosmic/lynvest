@@ -163,16 +163,18 @@ body.theme-light,
 }
 
 /* Neumorphic Cards in Day Mode */
-.theme-light [class*="rounded-2xl"],
-.theme-light [class*="rounded-xl"]:not(aside nav button) {
+.theme-light div[class*="rounded-2xl"],
+.theme-light div[class*="rounded-xl"]:not(aside nav button):not(button *),
+.theme-light section[class*="rounded-2xl"],
+.theme-light section[class*="rounded-xl"] {
   background-color: #ffffff !important;
   border: 1px solid rgba(147, 51, 234, 0.12) !important;
   box-shadow: 5px 5px 14px rgba(186, 195, 210, 0.35), -4px -4px 10px rgba(255, 255, 255, 0.9), 0 0 6px rgba(147, 51, 234, 0.05) !important;
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.theme-light [class*="rounded-2xl"]:hover,
-.theme-light [class*="rounded-xl"]:not(aside nav button):hover {
+.theme-light div[class*="rounded-2xl"]:hover,
+.theme-light div[class*="rounded-xl"]:not(aside nav button):not(button *):hover {
   border-color: rgba(147, 51, 234, 0.28) !important;
   box-shadow: 6px 6px 18px rgba(186, 195, 210, 0.45), -5px -5px 14px rgba(255, 255, 255, 0.95), 0 0 10px rgba(147, 51, 234, 0.1) !important;
 }
@@ -200,6 +202,33 @@ body.theme-light,
   background-color: #f1f5f9 !important;
 }
 
+/* Action Buttons in Day Mode */
+.theme-light button.bg-rose-600,
+.theme-light button[class*="bg-rose-600"] {
+  background-color: #e11d48 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3) !important;
+  border: none !important;
+}
+
+.theme-light button.bg-rose-600 *,
+.theme-light button[class*="bg-rose-600"] * {
+  color: #ffffff !important;
+}
+
+.theme-light button.bg-emerald-600,
+.theme-light button[class*="bg-emerald-600"] {
+  background-color: #16a34a !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3) !important;
+  border: none !important;
+}
+
+.theme-light button.bg-emerald-600 *,
+.theme-light button[class*="bg-emerald-600"] * {
+  color: #ffffff !important;
+}
+
 /* FIX BLACK ELEMENTS IN LIGHT MODE */
 .theme-light [class*="bg-zinc-900/95"],
 .theme-light [class*="bg-zinc-950"],
@@ -221,6 +250,11 @@ body.theme-light,
   background-color: #f1f5f9 !important;
   color: #0f172a !important;
   border: 1px solid #cbd5e1 !important;
+}
+
+.theme-light button.bg-zinc-800 *,
+.theme-light button[class*="bg-zinc-800"] * {
+  color: #0f172a !important;
 }
 
 .theme-light button.bg-zinc-800:hover,
@@ -256,41 +290,60 @@ body.theme-light,
   color: #1e293b !important;
 }
 
-/* Typography in Day Mode */
+/* Typography in Day Mode: EVERY TEXT MUST BE CRISP BLACK */
+.theme-light {
+  color: #09090b !important;
+}
+
+/* Any text-white or light text outside colored action buttons becomes pure black */
+.theme-light .text-white:not(button[class*="bg-rose-"] *):not(button[class*="bg-purple-"] *):not(button[class*="bg-emerald-"] *):not(button[class*="bg-rose-"]):not(button[class*="bg-purple-"]):not(button[class*="bg-emerald-"]),
+.theme-light .text-zinc-100:not(button[class*="bg-rose-"] *):not(button[class*="bg-purple-"] *):not(button[class*="bg-emerald-"] *),
+.theme-light .text-zinc-200:not(button[class*="bg-rose-"] *):not(button[class*="bg-purple-"] *):not(button[class*="bg-emerald-"] *),
+.theme-light .text-zinc-300:not(button[class*="bg-rose-"] *):not(button[class*="bg-purple-"] *):not(button[class*="bg-emerald-"] *),
+.theme-light .text-slate-100:not(button[class*="bg-rose-"] *):not(button[class*="bg-purple-"] *):not(button[class*="bg-emerald-"] *),
+.theme-light .text-slate-200:not(button[class*="bg-rose-"] *):not(button[class*="bg-purple-"] *):not(button[class*="bg-emerald-"] *),
+.theme-light .text-slate-300:not(button[class*="bg-rose-"] *):not(button[class*="bg-purple-"] *):not(button[class*="bg-emerald-"] *),
+.theme-light .text-gray-100:not(button[class*="bg-rose-"] *):not(button[class*="bg-purple-"] *):not(button[class*="bg-emerald-"] *),
+.theme-light .text-gray-200:not(button[class*="bg-rose-"] *):not(button[class*="bg-purple-"] *):not(button[class*="bg-emerald-"] *),
+.theme-light .text-gray-300:not(button[class*="bg-rose-"] *):not(button[class*="bg-purple-"] *):not(button[class*="bg-emerald-"] *) {
+  color: #09090b !important;
+}
+
+/* All headings, titles, card metric numbers in light mode are black */
 .theme-light h1,
 .theme-light h2,
 .theme-light h3,
 .theme-light h4,
-.theme-light th {
-  color: #000000 !important;
-  font-weight: 800 !important;
-}
-
-.theme-light .font-black:not([class*="text-"]),
-.theme-light .font-extrabold:not([class*="text-"]) {
-  color: #000000 !important;
-  font-weight: 800 !important;
+.theme-light h5,
+.theme-light h6,
+.theme-light th,
+.theme-light .font-black:not([class*="text-rose"]):not([class*="text-emerald"]):not([class*="text-purple"]):not([class*="text-amber"]):not([class*="text-red"]):not(button *),
+.theme-light .font-extrabold:not([class*="text-rose"]):not([class*="text-emerald"]):not([class*="text-purple"]):not([class*="text-amber"]):not([class*="text-red"]):not(button *),
+.theme-light .font-bold:not([class*="text-rose"]):not([class*="text-emerald"]):not([class*="text-purple"]):not([class*="text-amber"]):not([class*="text-red"]):not(button *) {
+  color: #09090b !important;
 }
 
 .theme-light button,
 .theme-light select,
 .theme-light option,
-.theme-light nav button span,
-.theme-light .font-bold {
+.theme-light nav button span {
   font-weight: 700 !important;
 }
 
-.theme-light p,
-.theme-light span:not([class*="text-"]),
+/* All body text, spans, labels, and table cells in light mode are black/dark */
+.theme-light p:not([class*="text-rose"]):not([class*="text-emerald"]):not([class*="text-purple"]):not([class*="text-amber"]):not([class*="text-red"]),
+.theme-light span:not([class*="text-rose"]):not([class*="text-emerald"]):not([class*="text-purple"]):not([class*="text-amber"]):not([class*="text-red"]):not(button *),
 .theme-light label,
-.theme-light td:not([class*="text-"]) {
-  color: #1e293b;
+.theme-light td:not([class*="text-rose"]):not([class*="text-emerald"]):not([class*="text-purple"]):not([class*="text-amber"]):not([class*="text-red"]) {
+  color: #09090b !important;
 }
 
+/* Secondary labels and descriptions are clear dark slate */
 .theme-light .text-zinc-400,
 .theme-light .text-zinc-500,
+.theme-light .text-slate-400,
 .theme-light .text-slate-500 {
-  color: #64748b !important;
+  color: #475569 !important;
 }
 
 /* Royal Purple Buttons */

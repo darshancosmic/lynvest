@@ -65,6 +65,7 @@ export const InvestmentsPage: React.FC = () => {
   const portfolioSummary = useAppStore(state => state.portfolioSummary);
   const accounts = useAppStore(state => state.accounts);
   const settings = useAppStore(state => state.settings);
+  const theme = useAppStore(state => state.theme);
   const loadHoldings = useAppStore(state => state.loadHoldings);
   const loadPortfolioSummary = useAppStore(state => state.loadPortfolioSummary);
   const loadAccounts = useAppStore(state => state.loadAccounts);
@@ -391,11 +392,13 @@ export const InvestmentsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
-            <TrendingUp className="w-6 h-6 text-emerald-400" />
+          <h2 className={`text-2xl font-bold tracking-tight flex items-center gap-2.5 ${
+            theme === 'light' ? 'text-zinc-950' : 'text-white'
+          }`}>
+            <TrendingUp className="w-6 h-6 text-emerald-500" />
             Investments & Holdings
           </h2>
-          <p className="text-xs text-zinc-400 mt-1">
+          <p className={`text-xs mt-1 ${theme === 'light' ? 'text-zinc-600' : 'text-zinc-400'}`}>
             Track stocks & crypto with manual price updates and offline P&L calculations
           </p>
         </div>
@@ -404,7 +407,9 @@ export const InvestmentsPage: React.FC = () => {
           <button
             type="button"
             onClick={openBulkUpdateModal}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold border border-zinc-700 transition-colors cursor-pointer"
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-colors cursor-pointer ${
+              theme === 'light' ? 'bg-zinc-100 hover:bg-zinc-200 text-zinc-900 border-zinc-300' : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border-zinc-700'
+            }`}
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Bulk Update Prices
@@ -423,8 +428,8 @@ export const InvestmentsPage: React.FC = () => {
       {/* No Investment Account Warning */}
       {investmentAccounts.length === 0 && (
         <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between">
-          <div className="flex items-center gap-3 text-xs text-amber-300">
-            <AlertCircle className="w-5 h-5 text-amber-400 shrink-0" />
+          <div className="flex items-center gap-3 text-xs text-amber-700 dark:text-amber-300">
+            <AlertCircle className="w-5 h-5 text-amber-500 shrink-0" />
             <span>
               You do not have any <strong>Investment-type accounts</strong> created yet. Holdings must be linked to an investment account (e.g. "Zerodha", "Binance").
             </span>
@@ -432,7 +437,7 @@ export const InvestmentsPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setActiveTab('accounts')}
-            className="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 text-xs font-semibold transition-colors cursor-pointer shrink-0 ml-4"
+            className="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-900 dark:text-amber-200 text-xs font-semibold transition-colors cursor-pointer shrink-0 ml-4"
           >
             Create Account
           </button>
@@ -442,34 +447,44 @@ export const InvestmentsPage: React.FC = () => {
       {/* Portfolio Summary KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Current Portfolio Value */}
-        <div className="p-5 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex flex-col justify-between">
-          <span className="text-xs font-medium text-zinc-400">Total Portfolio Value</span>
+        <div className={`p-5 rounded-2xl border flex flex-col justify-between ${
+          theme === 'light' ? 'bg-white border-zinc-200 shadow-sm' : 'bg-zinc-900/80 border-zinc-800'
+        }`}>
+          <span className={`text-xs font-medium ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-400'}`}>Total Portfolio Value</span>
           <div className="mt-2">
-            <span className="text-2xl sm:text-3xl font-extrabold text-white block">
+            <span className={`text-2xl sm:text-3xl font-extrabold block ${
+              theme === 'light' ? 'text-zinc-950' : 'text-white'
+            }`}>
               {formatCurrency(portfolioSummary?.total_current_value_base || 0)}
             </span>
-            <span className="text-[11px] text-zinc-500">Converted to {baseCurrency}</span>
+            <span className={`text-[11px] ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-500'}`}>Converted to {baseCurrency}</span>
           </div>
         </div>
 
         {/* Total Invested */}
-        <div className="p-5 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex flex-col justify-between">
-          <span className="text-xs font-medium text-zinc-400">Total Invested</span>
+        <div className={`p-5 rounded-2xl border flex flex-col justify-between ${
+          theme === 'light' ? 'bg-white border-zinc-200 shadow-sm' : 'bg-zinc-900/80 border-zinc-800'
+        }`}>
+          <span className={`text-xs font-medium ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-400'}`}>Total Invested</span>
           <div className="mt-2">
-            <span className="text-2xl sm:text-3xl font-extrabold text-zinc-200 block">
+            <span className={`text-2xl sm:text-3xl font-extrabold block ${
+              theme === 'light' ? 'text-zinc-950' : 'text-zinc-200'
+            }`}>
               {formatCurrency(portfolioSummary?.total_invested_base || 0)}
             </span>
-            <span className="text-[11px] text-zinc-500">Total cost basis</span>
+            <span className={`text-[11px] ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-500'}`}>Total cost basis</span>
           </div>
         </div>
 
         {/* Unrealized P&L */}
-        <div className="p-5 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex flex-col justify-between">
-          <span className="text-xs font-medium text-zinc-400">Unrealized P&L</span>
+        <div className={`p-5 rounded-2xl border flex flex-col justify-between ${
+          theme === 'light' ? 'bg-white border-zinc-200 shadow-sm' : 'bg-zinc-900/80 border-zinc-800'
+        }`}>
+          <span className={`text-xs font-medium ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-400'}`}>Unrealized P&L</span>
           <div className="mt-2">
             <span
               className={`text-2xl sm:text-3xl font-extrabold block ${
-                isOverallProfit ? 'text-emerald-400' : 'text-rose-400'
+                isOverallProfit ? 'text-emerald-500' : 'text-rose-500'
               }`}
             >
               {isOverallProfit ? '+' : ''}
@@ -477,7 +492,7 @@ export const InvestmentsPage: React.FC = () => {
             </span>
             <span
               className={`text-xs font-semibold ${
-                isOverallProfit ? 'text-emerald-400' : 'text-rose-400'
+                isOverallProfit ? 'text-emerald-600' : 'text-rose-600'
               }`}
             >
               {isOverallProfit ? '▲ +' : '▼ '}
@@ -487,13 +502,17 @@ export const InvestmentsPage: React.FC = () => {
         </div>
 
         {/* Active Holdings Count */}
-        <div className="p-5 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex flex-col justify-between">
-          <span className="text-xs font-medium text-zinc-400">Active Holdings</span>
+        <div className={`p-5 rounded-2xl border flex flex-col justify-between ${
+          theme === 'light' ? 'bg-white border-zinc-200 shadow-sm' : 'bg-zinc-900/80 border-zinc-800'
+        }`}>
+          <span className={`text-xs font-medium ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-400'}`}>Active Holdings</span>
           <div className="mt-2">
-            <span className="text-2xl sm:text-3xl font-extrabold text-white block">
+            <span className={`text-2xl sm:text-3xl font-extrabold block ${
+              theme === 'light' ? 'text-zinc-950' : 'text-white'
+            }`}>
               {portfolioSummary?.holdings_count || 0}
             </span>
-            <span className="text-[11px] text-zinc-500">Stocks, Crypto, Funds</span>
+            <span className={`text-[11px] ${theme === 'light' ? 'text-zinc-500' : 'text-zinc-500'}`}>Stocks, Crypto, Funds</span>
           </div>
         </div>
       </div>
