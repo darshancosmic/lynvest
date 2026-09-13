@@ -2,10 +2,11 @@
 
 <div align="center">
 
-**Fast, 100% Offline Personal Finance & Investment Tracker for Linux**
+**Fast, 100% Offline Personal Finance & Investment Tracker for Linux & Android**
 
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 [![Platform: Linux](https://img.shields.io/badge/Platform-Linux-orange.svg)]()
+[![Android Beta](https://img.shields.io/badge/Android%20Beta-v0.2.1-3DDC84.svg?logo=android&logoColor=white)](dist-packages/lynvest-mobile.apk)
 [![Built with: Tauri v2](https://img.shields.io/badge/Built%20with-Tauri%20v2-24C8D8.svg)](https://tauri.app/)
 [![Rust: 1.84+](https://img.shields.io/badge/Rust-1.84%2B-DEA584.svg)](https://www.rust-lang.org/)
 [![Ko-fi: Support](https://img.shields.io/badge/Ko--fi-Support%20Creator-FF5E5B?logo=kofi&logoColor=white)](https://ko-fi.com/cosmicdarshan)
@@ -21,6 +22,7 @@
 ## Highlights
 
 - **100% Offline & Private**: Zero telemetry, zero cloud synchronizations, and zero bank logins. Your financial data stays exclusively on your machine in a local SQLite database with WAL durability.
+- **Cross-Platform Vault**: Native Linux desktop application alongside an offline Android mobile beta companion.
 - **Double-Entry Style Ledger Math**: Account balances are never directly overwritten. Every balance is mathematically derived from atomic ledger rows (`account_ledger`), guaranteeing auditability and consistency.
 - **International Number & Currency Support**:
   - Toggle between **International Millions** (`$1,234,567.89`) and **Indian Lakhs/Crores** (`₹12,34,567.89`).
@@ -29,14 +31,14 @@
 - **Investment Portfolio Tracker**: Track stocks, cryptocurrencies, mutual funds, and custom assets. Manage cost basis, manual price updates with historical pricing records, and real-time unrealized P&L.
 - **Live Budget Pace Projections**: Know whether you will overshoot your budget *before* the month ends with automatic velocity pace warnings.
 - **Consolidated Net Worth Engine**: Automated daily snapshots plotting your combined net worth (Bank + Cash + Investments - Debts) over time.
-- **PIN Lock Protection**: 6-digit PIN protection hashed securely with bcrypt.
+- **Biometric & PIN Lock Protection**: 6-digit PIN protection hashed securely with bcrypt on desktop, and biometric fingerprint unlock on mobile.
 - **Automated Daily Backups**: Automated snapshot rotation keeping the newest 10 backups, plus one-click export to external USB storage.
 
 ---
 
 ## Installation
 
-### One-Line Fast Install (Any Linux Distro)
+### 🐧 Linux Desktop (One-Line Fast Install)
 
 Run this command in any Linux terminal (Ubuntu, Arch, Fedora, Debian, Mint, Pop!_OS, openSUSE, etc.):
 
@@ -47,6 +49,19 @@ curl -fsSL https://raw.githubusercontent.com/darshancosmic/lynvest/main/install.
 - **User-Level**: Installs to `~/.local/bin/lynvest` (no `sudo` or root password needed).
 - **Desktop Integrated**: Adds high-res icon and application launcher shortcut to your app menu.
 - **Zero Dependencies**: Fully compiled standalone binary with SQLite embedded.
+
+### 📱 Lynvest Mobile for Android (Public Beta)
+
+Download the native Android APK directly to test the offline mobile companion:
+
+- **Direct Download**: [lynvest-mobile.apk](https://raw.githubusercontent.com/darshancosmic/lynvest/main/dist-packages/lynvest-mobile.apk) (~10.2 MB)
+- **Version**: `v0.2.1 Beta`
+- **Requires**: Android 8.0+ (Oreo) or later.
+- **Features**: Biometric fingerprint auth, offline SQLite vault, scheduled bill alerts, quick expense logging, zero network tracking.
+- **How to Install**:
+  1. Download `lynvest-mobile.apk` to your Android device.
+  2. Tap the downloaded APK and select **Install**.
+  3. If prompted by Android, tap *"Allow from this source"* to complete installation.
 
 ### One-Line Clean Uninstall
 

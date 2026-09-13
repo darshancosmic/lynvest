@@ -38,6 +38,7 @@ target/
 # Packaging & Dist output
 dist-packages/*
 !dist-packages/*.tar.gz
+!dist-packages/*.apk
 !dist-packages/SHA256SUMS
 packaging/*_staging/
 packaging/deb_build/

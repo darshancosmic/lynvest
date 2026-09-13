@@ -221,6 +221,7 @@ if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then
 fi
 
 echo -e " ${DIM}Enjoying Lynvest? Consider supporting development:${RESET}"
-echo -e "   ❤️  Ko-fi: ${CYAN}https://ko-fi.com/cosmicdarshan${RESET}"
-echo -e "   🇮🇳  UPI:   ${CYAN}darshancosmic@axl${RESET}"
+echo -e "   ❤️  Ko-fi:   ${CYAN}https://ko-fi.com/cosmicdarshan${RESET}"
+echo -e "   🇮🇳  UPI:     ${CYAN}darshancosmic@axl${RESET}"
+echo -e "   📱  Android: ${CYAN}https://raw.githubusercontent.com/darshancosmic/lynvest/main/dist-packages/lynvest-mobile.apk${RESET} ${DIM}(Beta)${RESET}"
 echo ""
