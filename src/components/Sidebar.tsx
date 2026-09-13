@@ -84,7 +84,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <p className={`text-[10px] font-extrabold tracking-wide flex items-center gap-1 ${
               theme === 'light' ? 'text-purple-700' : 'text-purple-400'
             }`}>
-              <span>{settings?.base_currency || 'USD'} Mode</span>
+              <span>{settings?.base_currency || 'INR'} Mode</span>
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
             </p>
           </div>

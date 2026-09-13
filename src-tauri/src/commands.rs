@@ -4450,7 +4450,7 @@ pub fn check_app_update() -> Result<AppUpdateInfo, String> {
                     let release_notes = val["notes"].as_str().unwrap_or("Performance improvements and bug fixes.").to_string();
                     let published_at = val["release_date"].as_str().unwrap_or("").to_string();
                     let download_url = val["tarball_url"].as_str().unwrap_or(
-                        "https://raw.githubusercontent.com/darshancosmic/lynvest/main/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz"
+                        "https://raw.githubusercontent.com/darshancosmic/lynvest/main/dist-packages/lynvest-0.1.3-linux-x86_64.tar.gz"
                     ).to_string();
 
                     let has_update = is_version_greater(&latest_ver, &current_version);
@@ -4481,7 +4481,7 @@ pub fn check_app_update() -> Result<AppUpdateInfo, String> {
 #[tauri::command]
 pub fn install_app_update(download_url: Option<String>) -> Result<String, String> {
     let url = download_url.unwrap_or_else(|| {
-        "https://raw.githubusercontent.com/darshancosmic/lynvest/main/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz".to_string()
+        "https://raw.githubusercontent.com/darshancosmic/lynvest/main/dist-packages/lynvest-0.1.3-linux-x86_64.tar.gz".to_string()
     });
 
     // Security Guard: Validate update package URL origin against official trusted endpoints

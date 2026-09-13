@@ -144,7 +144,7 @@ else
     [ -z "$LATEST_VER" ] && LATEST_VER="0.1.3"
 
     RAW_URL="https://raw.githubusercontent.com/$GITHUB_REPO/main/dist-packages/lynvest-${LATEST_VER}-linux-x86_64.tar.gz"
-    FALLBACK_RAW_URL="https://raw.githubusercontent.com/$GITHUB_REPO/main/dist-packages/lynvest-0.1.0-linux-x86_64.tar.gz"
+    FALLBACK_RAW_URL="https://raw.githubusercontent.com/$GITHUB_REPO/main/dist-packages/lynvest-0.1.3-linux-x86_64.tar.gz"
     RELEASE_URL="https://github.com/$GITHUB_REPO/releases/download/v${LATEST_VER}/lynvest-${LATEST_VER}-linux-x86_64.tar.gz"
     
     if curl -fSL --progress-bar "$RAW_URL" -o "$TEMP_DIR/lynvest.tar.gz" 2>/dev/null; then
